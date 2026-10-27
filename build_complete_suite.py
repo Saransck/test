@@ -1,0 +1,810 @@
+import json
+import os
+
+def create_all_questions():
+    questions = []
+
+    # =========================================================================
+    # 1. ปรนัย 4 ตัวเลือก (A, B, C, D) - ทฤษฎีและการวิเคราะห์
+    # =========================================================================
+    questions.extend([
+        {
+            "id": "CHOICE_W2_01",
+            "week": 2,
+            "type": "choice",
+            "topic": "FPGA Device & Board Specifications",
+            "question": "ชิป FPGA ที่ติดตั้งอยู่บนบอร์ด Altera DE0 คือรุ่นใด และจัดอยู่ในตระกูล (Family) ใด?",
+            "options": [
+                "Cyclone III รุ่น EP3C16F484C6",
+                "Cyclone IV รุ่น EP4CE22F17C6",
+                "Cyclone II รุ่น EP2C20F484C7",
+                "MAX 10 รุ่น 10M50DAF484C7G"
+            ],
+            "answer_index": 0,
+            "explanation": "บนบอร์ด Altera DE0 ใช้ชิป FPGA ตระกูล Cyclone III หมายเลขรุ่น EP3C16F484C6 มี Logic Elements (LEs) จำนวน 15,408 ตัว และมีตัวถังแบบ 484-pin FBGA ความเร็วเกรด 6",
+            "source": "Week2_software installation.pdf Slide 5 & Practice Lab Sheet 2.pdf หัวข้อที่ 2"
+        },
+        {
+            "id": "CHOICE_W2_02",
+            "week": 2,
+            "type": "choice",
+            "topic": "FPGA Design Flow",
+            "question": "ลำดับขั้นตอนการประมวลผล (Compilation Flow) ที่ถูกต้องในโปรแกรม Quartus II คือข้อใด?",
+            "options": [
+                "Analysis & Synthesis -> Fitter (Place & Route) -> TimeQuest Timing Analyzer -> Assembler",
+                "Fitter (Place & Route) -> Analysis & Synthesis -> Assembler -> TimeQuest",
+                "Assembler -> Analysis & Synthesis -> Fitter -> Programmer",
+                "Analysis & Synthesis -> Assembler -> Fitter -> TimeQuest"
+            ],
+            "answer_index": 0,
+            "explanation": "ขั้นตอน FPGA Design Flow ใน Quartus II เริ่มจาก Analysis & Synthesis -> Fitter -> TimeQuest Timing Analyzer -> Assembler -> Programmer",
+            "source": "Week2_software installation.pdf Slide 7"
+        },
+        {
+            "id": "CHOICE_W2_03",
+            "week": 2,
+            "type": "choice",
+            "topic": "Programming Files (.sof vs .pof)",
+            "question": "ไฟล์ประเภทใดที่ถูกสร้างจาก Assembler เพื่อใช้โปรแกรมลงหน่วยความจำ SRAM ของ FPGA โดยตรงผ่านโหมด JTAG ด้วยสาย USB-Blaster?",
+            "options": [
+                ".sof (SRAM Object File)",
+                ".pof (Programmer Object File)",
+                ".vcd (Value Change Dump)",
+                ".qsf (Quartus Settings File)"
+            ],
+            "answer_index": 0,
+            "explanation": "ไฟล์ .sof (SRAM Object File) ใช้สำหรับการโปรแกรมลงหน่วยความจำ SRAM ของ FPGA ในโหมด JTAG ซึ่งข้อมูลจะสูญหายเมื่อปิดสวิตช์ไฟ ส่วนไฟล์ .pof ใช้สำหรับโปรแกรมลงชิปคอนฟิกูเรชันแฟลช (EPCS)",
+            "source": "Week2_software installation.pdf Slide 14"
+        },
+        {
+            "id": "CHOICE_W3_01",
+            "week": 3,
+            "type": "choice",
+            "topic": "Verilog Port Mapping",
+            "question": "เพราะเหตุใดการเชื่อมโยงพอร์ตแบบระบุชื่อ (Named Port Mapping: `.port(signal)`) จึงได้รับคำแนะนำมากกว่าแบบตามลำดับ (Positional Port Mapping)?",
+            "options": [
+                "ป้องกันความผิดพลาดเมื่อลำดับพอร์ตในโมดูลย่อยมีการเปลี่ยนแปลงหรือสลับตำแหน่ง",
+                "ทำให้วงจรที่สังเคราะห์ได้ทำงานได้ความเร็วสัญญาณนาฬิกา (Fmax) สูงกว่า",
+                "ช่วยลดจำนวน Logic Elements ที่ต้องใช้บนชิป FPGA",
+                "เป็นรูปแบบเดียวที่โปรแกรม ModelSim สามารถจำลองการทำงานได้"
+            ],
+            "answer_index": 0,
+            "explanation": "Named Port Mapping เป็นการจับคู่สัญญาณภายนอกเข้ากับชื่อพอร์ตของโมดูลย่อยโดยตรง ทำให้แม้ว่าจะเรียงลำดับพอร์ตสลับกัน การเชื่อมต่อสายสัญญาณก็จะไม่ผิดพลาด",
+            "source": "Week3_foundations and language basics.pdf Slide 8 & Week8.pdf Slide 6"
+        },
+        {
+            "id": "CHOICE_W3_02",
+            "week": 3,
+            "type": "choice",
+            "topic": "Data Types (wire vs reg)",
+            "question": "ข้อใดอธิบายความแตกต่างระหว่าง `wire` และ `reg` ในภาษา Verilog ได้ถูกต้องที่สุด?",
+            "options": [
+                "`wire` แทนสายสัญญาณที่ต้องถูกขับอย่างต่อเนื่อง, ส่วน `reg` เป็นตัวแปรที่รับค่าใน procedural block (always/initial)",
+                "`wire` สังเคราะห์ได้เกต combinational เสมอ, ส่วน `reg` สังเคราะห์ได้ Flip-Flop เสมอ",
+                "`wire` ใช้ได้เฉพาะในโมดูลระดับบน, ส่วน `reg` ใช้ได้เฉพาะใน testbench",
+                "`wire` มีขนาดข้อมูลได้แค่ 1 บิต, ส่วน `reg` มีขนาดข้อมูลเป็นบัสหลายบิตได้เท่านั้น"
+            ],
+            "answer_index": 0,
+            "explanation": "`wire` ใช้เชื่อมต่อทางกายภาพและไม่เก็บค่า ส่วน `reg` เป็นตัวแปรที่รับค่าในบล็อก procedural อย่างไรก็ตามการประกาศเป็น `reg` ไม่ได้แปลว่าจะได้ Flip-Flop เสมอไป หากเขียนใน `always @(*)` จะสังเคราะห์ได้ Combinational logic",
+            "source": "Week3_foundations and language basics.pdf Slide 12"
+        },
+        {
+            "id": "CHOICE_W3_03",
+            "week": 3,
+            "type": "choice",
+            "topic": "Bitwise vs Logical Operators",
+            "question": "กำหนดให้ `a = 4'b1010` และ `b = 4'b1100` ผลลัพธ์ของนิพจน์ `a & b` และ `a && b` มีค่าเท่ากับข้อใดตามลำดับ?",
+            "options": [
+                "4'b1000 และ 1'b1",
+                "4'b1110 และ 1'b1",
+                "4'b1000 และ 4'b1111",
+                "1'b1 และ 4'b1000"
+            ],
+            "answer_index": 0,
+            "explanation": "`&` คือ Bitwise AND: 1010 & 1100 = 1000 (ขนาด 4 บิต), ส่วน `&&` คือ Logical AND: ทั้งคู่ไม่เท่ากับศูนย์ จึงได้ 1'b1",
+            "source": "Week3_foundations and language basics.pdf Slide 18"
+        },
+        {
+            "id": "CHOICE_W4_01",
+            "week": 4,
+            "type": "choice",
+            "topic": "Inferred Latch Causes & Prevention",
+            "question": "ปัญหา Inferred Latch ในการสังเคราะห์วงจรด้วยบล็อก `always @(*)` เกิดจากสาเหตุใด และแก้ไขได้อย่างไร?",
+            "options": [
+                "เกิดจากเงื่อนไข if ขาด else หรือ case ขาด default; แก้ไขโดยกำหนดค่าเริ่มต้น (default assignment) ไว้ที่ต้นบล็อก",
+                "เกิดจากการใช้ตัวแปรชนิด reg; แก้ไขโดยเปลี่ยนไปใช้ชนิด wire ทั้งหมด",
+                "เกิดจากการใช้เครื่องหมาย blocking (=); แก้ไขโดยเปลี่ยนไปใช้ non-blocking (<=)",
+                "เกิดจากการลืมต่อสัญญาณ clock; แก้ไขโดยเพิ่ม @(posedge clk) เข้าไปใน sensitivity list"
+            ],
+            "answer_index": 0,
+            "explanation": "เมื่อบล็อก combinational มีเงื่อนไขไม่ครบทุกกรณี ตัวแปรจะต้องคงค่าเดิมไว้ ทำให้คอมไพเลอร์สร้าง Latch ขึ้นมาโดยไม่ตั้งใจ การกำหนด default assignment ไว้ที่ต้นบล็อกหรือใส่ else/default ให้ครบจะป้องกันปัญหานี้ได้อย่างสมบูรณ์",
+            "source": "Week4_Combinational_Design.pdf Slide 22-23 & lab 4.pdf Section 4"
+        },
+        {
+            "id": "CHOICE_W4_02",
+            "week": 4,
+            "type": "choice",
+            "topic": "Priority Encoders (casez)",
+            "question": "ในคำสั่ง `casez` ของภาษา Verilog เครื่องหมาย `?` มีหน้าที่และความหมายอย่างไร?",
+            "options": [
+                "แทนบิตที่ไม่ต้องสนใจ (Don't-Care bit) สามารถเทียบตรงกับค่า 0, 1, z หรือ x ได้ทุกค่า",
+                "แทนเงื่อนไขที่ไม่สามารถสังเคราะห์เป็นฮาร์ดแวร์ได้",
+                "แทนการตรวจสอบว่าตัวแปรมีสถานะเป็น High-Impedance หรือไม่",
+                "ใช้เป็นตัวดำเนินการสามส่วน (Ternary Operator) ภายในคำสั่ง case"
+            ],
+            "answer_index": 0,
+            "explanation": "คำสั่ง `casez` ยอมให้ใช้เครื่องหมาย `?` หรือตัวอักษร `z` เป็นตัวแทนของ Don't-Care บิต ซึ่งจะละเว้นการเปรียบเทียบบิตในตำแหน่งนั้น เหมาะอย่างยิ่งสำหรับ Priority Encoder",
+            "source": "Week4_Combinational_Design.pdf Slide 16 & Lab8.pdf Case Study 2"
+        },
+        {
+            "id": "CHOICE_W5_01",
+            "week": 5,
+            "type": "choice",
+            "topic": "Latch vs Flip-Flop",
+            "question": "ความแตกต่างพื้นฐานที่สำคัญที่สุดระหว่าง Latch และ Flip-Flop คือข้อใด?",
+            "options": [
+                "Latch ทำงานตามระดับสัญญาณ (Level-Sensitive), ส่วน Flip-Flop ทำงานตามขอบสัญญาณนาฬิกา (Edge-Triggered)",
+                "Latch มีสัญญาณรีเซ็ตเสมอ, ส่วน Flip-Flop ไม่มีสัญญาณรีเซ็ต",
+                "Latch ใช้เฉพาะในวงจรอะซิงโครนัส, ส่วน Flip-Flop ใช้เฉพาะในวงจรคอมบิเนชันนัล",
+                "Latch สังเคราะห์ได้เฉพาะบน FPGA, ส่วน Flip-Flop สังเคราะห์ได้เฉพาะบน ASIC"
+            ],
+            "answer_index": 0,
+            "explanation": "Latch ตอบสนองตามระดับแรงดัน (Level-Sensitive) โดยจะส่งผ่านข้อมูลตลอดเวลาที่ Enable แอคทีฟ ส่วน Flip-Flop ตอบสนองเฉพาะจังหวะขอบขาขึ้นหรือขอบขาลงของสัญญาณนาฬิกาเท่านั้น (Edge-Triggered)",
+            "source": "Week5_sequential_logic.pdf Slide 5 & lab 5.pdf"
+        },
+        {
+            "id": "CHOICE_W5_02",
+            "week": 5,
+            "type": "choice",
+            "topic": "Asynchronous vs Synchronous Reset",
+            "question": "โค้ด Verilog ด้านล่างนี้ เป็นการทำงานของ Flip-Flop พร้อมระบบรีเซ็ตแบบใด?\n```verilog\nalways @(posedge clk or negedge rst_n) begin\n    if (!rst_n) q <= 1'b0;\n    else        q <= d;\nend\n```",
+            "options": [
+                "Active-Low Asynchronous Reset",
+                "Active-High Synchronous Reset",
+                "Active-Low Synchronous Reset",
+                "Active-High Asynchronous Reset"
+            ],
+            "answer_index": 0,
+            "explanation": "เนื่องจากสัญญาณ `rst_n` ปรากฏอยู่ใน Sensitivity list ด้วยเงื่อนไข `negedge rst_n` วงจรจึงสามารถรีเซ็ตได้ทันทีที่ rst_n ตกเป็น 0 โดยไม่ต้องรอสัญญาณนาฬิกา clk จึงเป็น Active-Low Asynchronous Reset",
+            "source": "Week5_sequential_logic.pdf Slide 9 & lab 5.pdf Exercise 2"
+        },
+        {
+            "id": "CHOICE_W6_01",
+            "week": 6,
+            "type": "choice",
+            "topic": "Clock Divider Calculations",
+            "question": "หากต้องการสร้างสัญญาณพัลส์ความถี่ 1 Hz จากสัญญาณนาฬิกาหลัก CLOCK_50 (ความถี่ 50 MHz) ตัวนับจะต้องนับตั้งแต่ 0 ไปจนถึงค่าสูงสุด (Terminal Count) เท่าใด?",
+            "options": [
+                "49,999,999",
+                "50,000,000",
+                "24,999,999",
+                "99,999,999"
+            ],
+            "answer_index": 0,
+            "explanation": "จำนวนรอบที่ต้องการคือ 50,000,000 รอบต่อ 1 วินาที เมื่อเริ่มนับจาก 0 ค่าสูงสุดที่ต้องวนรอบกลับคือ N - 1 = 50,000,000 - 1 = 49,999,999",
+            "source": "Week6_Counters_ShiftRegisters.pdf Slide 11 & Lab7.pdf หน้า 1 ข้อ 6"
+        },
+        {
+            "id": "CHOICE_W6_02",
+            "week": 6,
+            "type": "choice",
+            "topic": "Counter Bit Width",
+            "question": "ตัวนับที่ต้องนับค่าตั้งแต่ 0 ถึง 49,999,999 ต้องประกาศตัวแปร Register ด้วยขนาดอย่างน้อยกี่บิต?",
+            "options": [
+                "26 บิต (`reg [25:0] cnt;`)",
+                "25 บิต (`reg [24:0] cnt;`)",
+                "24 บิต (`reg [23:0] cnt;`)",
+                "32 บิต (`reg [31:0] cnt;`)"
+            ],
+            "answer_index": 0,
+            "explanation": "เนื่องจาก 2^25 = 33,554,432 (ไม่เพียงพอ) ส่วน 2^26 = 67,108,864 (ครอบคลุมได้) ดังนั้นจำนวนบิตขั้นต่ำคือ ceil(log2 50,000,000) = 26 บิต",
+            "source": "Week6_Counters_ShiftRegisters.pdf Slide 12 & Lab7.pdf หน้า 8"
+        },
+        {
+            "id": "CHOICE_W7_01",
+            "week": 7,
+            "type": "choice",
+            "topic": "Moore vs Mealy Output Dependency",
+            "question": "ข้อใดอธิบายความแตกต่างด้านฟังก์ชันของเอาต์พุตระหว่าง Moore FSM และ Mealy FSM ได้ถูกต้องที่สุด?",
+            "options": [
+                "Moore FSM เอาต์พุตขึ้นกับ Current State เท่านั้น, ส่วน Mealy FSM เอาต์พุตขึ้นกับทั้ง Current State และ Current Input",
+                "Moore FSM เอาต์พุตขึ้นกับทั้ง State และ Input, ส่วน Mealy FSM เอาต์พุตขึ้นกับ State เท่านั้น",
+                "Moore FSM ต้องทำงานแบบ Asynchronous, ส่วน Mealy FSM ต้องทำงานแบบ Synchronous",
+                "Moore FSM มีความเร็วตอบสนองเร็วกว่า Mealy FSM 1 clock cycle เสมอ"
+            ],
+            "answer_index": 0,
+            "explanation": "Moore FSM เอาต์พุตเป็นฟังก์ชันของสถานะปัจจุบันเพียงอย่างเดียว (Output = f(State)) ทำให้สัญญาณนิ่ง ไร้ Glitch ส่วน Mealy FSM เอาต์พุตเป็นฟังก์ชันของสถานะร่วมกับอินพุต (Output = f(State, Input))",
+            "source": "Week7_FSM.pdf Slide 4 & Lab7.pdf หน้า 1 ข้อ 1-4"
+        },
+        {
+            "id": "CHOICE_W7_02",
+            "week": 7,
+            "type": "choice",
+            "topic": "Moore FSM 3-Always-Block Style",
+            "question": "โครงสร้างโค้ดมาตรฐานแบบ 3-Always-Block ของ Moore FSM แบ่งหน้าที่การทำงานอย่างไร?",
+            "options": [
+                "Block 1 (Sequential): State Register, Block 2 (Combinational): Next-State Logic, Block 3 (Combinational): Output Logic",
+                "Block 1: Input buffer, Block 2: Next-State Logic, Block 3: State Register",
+                "Block 1: Clock divider, Block 2: State Register, Block 3: Mealy Output Logic",
+                "Block 1: Reset Controller, Block 2: State Register, Block 3: 7-Segment Decoder"
+            ],
+            "answer_index": 0,
+            "explanation": "Moore FSM แยก 3 บล็อกชัดเจน: 1) Sequential block อัปเดต state register ตาม clock/reset, 2) Combinational block คำนวณ next-state, และ 3) Combinational block สร้าง output จาก current state",
+            "source": "Week7_FSM.pdf Slide 11 & Lab7.pdf หน้า 1 ข้อ 1"
+        },
+        {
+            "id": "CHOICE_W8_01",
+            "week": 8,
+            "type": "choice",
+            "topic": "Self-Checking Testbench Concept",
+            "question": "หัวใจสำคัญของ Self-Checking Testbench ที่เหนือกว่าการทดสอบแบบดั้งเดิมคือข้อใด?",
+            "options": [
+                "โปรแกรมตัดสินผล PASS/FAIL ได้เองอัตโนมัติด้วยคำสั่งเปรียบเทียบและ $display โดยไม่ต้องอาศัยคนนั่งดู waveform ด้วยตา",
+                "สามารถสังเคราะห์ลงชิป FPGA ได้เพื่อทดสอบความเร็วสูงสุดของฮาร์ดแวร์จริง",
+                "ไม่ต้องใช้สัญญาณนาฬิกาในการทดสอบวงจร Sequential",
+                "บังคับให้ใช้เฉพาะตัวดำเนินการ == และ != ในการตรวจสอบค่า"
+            ],
+            "answer_index": 0,
+            "explanation": "Self-Checking Testbench จะเขียนเงื่อนไขเปรียบเทียบค่าเอาต์พุตจริงที่ได้จาก DUT กับค่าที่คาดหวังล่วงหน้า หากไม่ตรงกันจะรายงาน [FAIL] และบวกค่าตัวแปร errors อัตโนมัติ",
+            "source": "Week8.pdf Slide 3, 8 & Lab8.pdf หน้า 1 หัวข้อ 2.1"
+        },
+        {
+            "id": "CHOICE_W8_02",
+            "week": 8,
+            "type": "choice",
+            "topic": "Case Equality Operators (=== vs ==)",
+            "question": "เพราะเหตุใดใน Testbench จึงแนะนำให้ใช้ Case Equality (`===` และ `!==`) แทน Logical Equality (`==` และ `!=`) ในการเปรียบเทียบค่า?",
+            "options": [
+                "เพราะ `===` และ `!==` ตรวจสอบสถานะบิต 'X' (Unknown) และ 'Z' (High-Z) ได้อย่างแม่นยำ ไม่มองข้ามบั๊กวงจรที่ลืมรีเซ็ต",
+                "เพราะ `===` ทำงานเร็วกว่าในระดับฮาร์ดแวร์ FPGA จริง",
+                "เพราะ `==` ไม่สามารถใช้เปรียบเทียบตัวแปรประเภท reg ได้",
+                "เพราะคำสั่ง `$display` รองรับเฉพาะตัวดำเนินการ `===` เท่านั้น"
+            ],
+            "answer_index": 0,
+            "explanation": "Logical Equality `==` หากมีบิตใดเป็น X หรือ Z ผลลัพธ์จะเป็น X ซึ่งในเงื่อนไข if จะถือว่าเป็นเท็จ แต่ Case Equality `===` จะเปรียบเทียบบิตต่อบิตตรงๆ ทั้ง 4 สถานะ (0, 1, X, Z)",
+            "source": "Week8.pdf Slide 8, 30 & Lab8.pdf หน้า 5 ข้อ 2"
+        },
+        {
+            "id": "CHOICE_W8_03",
+            "week": 8,
+            "type": "choice",
+            "topic": "Race Condition in Testbench (#1 delay)",
+            "question": "ใน Testbench ของวงจร Sequential การใส่การหน่วงเวลา `#1;` หลังขอบขา `@(posedge clk)` ก่อนทำการตรวจเช็คค่าเอาต์พุต มีวัตถุประสงค์เพื่ออะไร?",
+            "options": [
+                "ป้องกัน Race Condition โดยรอให้คำสั่ง Non-blocking (<=) ใน DUT อัปเดตค่าเสร็จสมบูรณ์ก่อนอ่านค่า",
+                "หน่วงเวลาเพื่อรอให้ผู้ใช้กดปุ่มบนคีย์บอร์ดเพื่อยืนยันผล",
+                "ลดความเร็วของสัญญาณนาฬิกาใน ModelSim ให้ช้าลงครึ่งหนึ่ง",
+                "ป้องกันการเกิด Inferred Latch ภายในตัว Testbench"
+            ],
+            "answer_index": 0,
+            "explanation": "คำสั่ง Non-blocking assignment ใน DUT จะอัปเดตค่าในคิวเฟส NBA หาก Testbench ตรวจสอบค่าทันที ณ ขอบ clk จะเป็นการอ่านค่าใน Active region ซึ่งจะได้ค่าเก่าก่อนอัปเดต การใส่ `#1;` จะขยับเวลาไปข้างหน้าเล็กน้อย ทำให้อ่านค่าใหม่ที่นิ่งแล้ว",
+            "source": "Week8.pdf Slide 8, 30 & Lab8.pdf หน้า 4 Case Study 1, หน้า 5 ข้อ 5"
+        },
+        {
+            "id": "CHOICE_W8_04",
+            "week": 8,
+            "type": "choice",
+            "topic": "Simulation Levels",
+            "question": "การจำลองการทำงานระดับใดที่รวมค่าความหน่วงเวลาจริงของลอจิกเกต (Gate Delay) และสายสัญญาณ (Routing Delay) จากไฟล์ SDF และใกล้เคียงฮาร์ดแวร์จริงที่สุด?",
+            "options": [
+                "Post-Implementation (Timing) Simulation",
+                "RTL (Functional) Simulation",
+                "Post-Synthesis Simulation",
+                "Behavioral Architectural Simulation"
+            ],
+            "answer_index": 0,
+            "explanation": "Post-Implementation (Timing) Simulation รวมค่าหน่วงเวลาจริงจากชิปมาจำลอง ทำให้ตรวจพบปัญหา Glitch, Hazard, และ Setup/Hold Violation ร่วมกับ TimeQuest ได้",
+            "source": "Week8.pdf Slide 19, 22 & Lab8.pdf หน้า 5 ข้อ 7"
+        },
+        {
+            "id": "CHOICE_W8_05",
+            "week": 8,
+            "type": "choice",
+            "topic": "ModelSim-Altera Workflow",
+            "question": "ลำดับคำสั่งที่ถูกต้องในการสั่งงาน ModelSim-Altera ผ่าน Command Line ตั้งแต่เริ่มต้นจนจบการทดสอบคือข้อใด?",
+            "options": [
+                "vlib work -> vlog *.v -> vsim top_tb -> add wave -> run -all",
+                "vsim top_tb -> vlib work -> vlog *.v -> run -all",
+                "vlog *.v -> vlib work -> add wave -> vsim top_tb",
+                "run -all -> vlib work -> vlog *.v -> vsim top_tb"
+            ],
+            "answer_index": 0,
+            "explanation": "ขั้นตอนการรัน ModelSim มาตรฐานคือ: 1) `vlib work`, 2) `vlog *.v`, 3) `vsim top_tb`, 4) `add wave`, 5) `run -all`",
+            "source": "Week8.pdf Slide 14 & Lab8.pdf หน้า 5 ข้อ 10, หน้า 12 ข้อ 5.3"
+        }
+    ])
+
+    # =========================================================================
+    # 2. ข้อสอบเติมโค้ด โดยมีตัวเลือกให้เลือก (Code Fill-in with Choices A, B, C, D)
+    # =========================================================================
+    questions.extend([
+        {
+            "id": "CODE_W3_01",
+            "week": 3,
+            "type": "code_fill",
+            "topic": "Full Adder Dataflow Code Completion",
+            "question": "พิจารณาโค้ดโมดูล Full Adder ด้านล่างนี้ จงเลือกนิพจน์ที่ถูกต้องเพื่อเติมลงในช่องว่าง `______`:\n```verilog\nmodule full_adder(\n  input  a, b, cin,\n  output sum, cout\n);\n  assign sum  = ______;\n  assign cout = (a & b) | (b & cin) | (a & cin);\nendmodule\n```",
+            "options": [
+                "a ^ b ^ cin;",
+                "a & b & cin;",
+                "a | b | cin;",
+                "(a & b) ^ cin;"
+            ],
+            "answer_index": 0,
+            "explanation": "สมการผลรวม (Sum) ของ Full Adder คำนวณจาก XOR ของอินพุตทั้งสามตัว คือ sum = a ^ b ^ cin",
+            "source": "Week3_foundations and language basics.pdf Slide 20 & Lab8.pdf หน้า 6 ข้อ 4.1"
+        },
+        {
+            "id": "CODE_W3_02",
+            "week": 3,
+            "type": "code_fill",
+            "topic": "Majority Circuit Code Completion",
+            "question": "ในใบปฏิบัติการ Lab 3 วงจรเสียงข้างมาก 3 อินพุต (Majority Voter) ต้องเติมพจน์ใดลงในช่องว่าง `______` จึงจะสมบูรณ์?\n```verilog\nmodule majority3(input a, b, c, output m);\n  assign m = (a & b) | (b & c) | ______;\nendmodule\n```",
+            "options": [
+                "(a & c);",
+                "(a | c);",
+                "(a ^ c);",
+                "(~a & ~c);"
+            ],
+            "answer_index": 0,
+            "explanation": "วงจร Majority Voter 3 ขา จะให้เอาต์พุต 1 เมื่อมีอินพุตเป็น 1 ตั้งแต่ 2 ขาขึ้นไป คือ (a & b) หรือ (b & c) หรือ (a & c)",
+            "source": "lab3.pdf Exercise 3 & Practice Lab Sheet 2.pdf"
+        },
+        {
+            "id": "CODE_W4_01",
+            "week": 4,
+            "type": "code_fill",
+            "topic": "4-to-1 Multiplexer Code Completion",
+            "question": "จงเลือกโค้ดที่ถูกต้องเติมลงในช่องว่าง `______` ของวงจร 4-to-1 Multiplexer:\n```verilog\nmodule mux4to1(\n  input  [3:0] in,\n  input  [1:0] sel,\n  output reg   y\n);\n  always @(*) begin\n    case (sel)\n      2'b00: y = in[0];\n      2'b01: y = in[1];\n      2'b10: y = in[2];\n      2'b11: y = in[3];\n      default: ______\n    endcase\n  end\nendmodule\n```",
+            "options": [
+                "y = 1'b0;",
+                "y <= 1'b0;",
+                "assign y = 1'b0;",
+                "in[0] = y;"
+            ],
+            "answer_index": 0,
+            "explanation": "ภายในบล็อก combinational `always @(*)` ต้องใช้ blocking assignment (`=`) และควรกำหนด default case ให้ชัดเจนเพื่อป้องกัน Inferred Latch",
+            "source": "Week4_Combinational_Design.pdf Slide 8 & lab 4.pdf Exercise 1"
+        },
+        {
+            "id": "CODE_W4_02",
+            "week": 4,
+            "type": "code_fill",
+            "topic": "BCD to 7-Segment Decoder Code Completion",
+            "question": "ในวงจรถอดรหัส 7-Segment แบบ Common Anode (Active-Low: 0=ติด, 1=ดับ) รหัสบิตใดต้องเติมลงในช่องว่าง `______` สำหรับแสดงตัวเลข '0' (ดับเฉพาะ segment g):\n```verilog\ncase (bcd)\n  4'd0: seg = ______; // รูปแบบบิต {g, f, e, d, c, b, a}\n  4'd1: seg = 7'b1111001;\n  // ...\n```",
+            "options": [
+                "7'b1000000;",
+                "7'b0000000;",
+                "7'b0111111;",
+                "7'b1111111;"
+            ],
+            "answer_index": 0,
+            "explanation": "เลข 0 ต้องให้ส่วน a, b, c, d, e, f สว่าง (ลอจิก 0) และส่วน g ดับ (ลอจิก 1) ดังนั้นรหัสบิต {g,f,e,d,c,b,a} คือ 7'b1000000 (หรือ 7'h40)",
+            "source": "Week4_Combinational_Design.pdf Slide 20 & lab 4.pdf Exercise 4"
+        },
+        {
+            "id": "CODE_W5_01",
+            "week": 5,
+            "type": "code_fill",
+            "topic": "D Flip-Flop with Async Reset Code Completion",
+            "question": "จงเลือกโค้ดที่ถูกต้องเติมลงในช่องว่าง `______` ของ D Flip-Flop with Active-Low Asynchronous Reset:\n```verilog\nalways @(posedge clk or negedge rst_n) begin\n  if (!rst_n)\n    q <= ______;\n  else\n    q <= d;\nend\n```",
+            "options": [
+                "1'b0;",
+                "d;",
+                "1'b1;",
+                "1'bx;"
+            ],
+            "answer_index": 0,
+            "explanation": "เมื่อสัญญาณรีเซ็ต rst_n เป็น 0 (Active) เอาต์พุต q จะต้องถูกรีเซ็ตเคลียร์ค่าเป็น 0 ด้วยคำสั่ง non-blocking `q <= 1'b0;`",
+            "source": "Week5_sequential_logic.pdf Slide 9 & lab 5.pdf Exercise 2"
+        },
+        {
+            "id": "CODE_W5_02",
+            "week": 5,
+            "type": "code_fill",
+            "topic": "Shift Register SIPO Code Completion",
+            "question": "ในโมดูล Shift Register ขนาด 4 บิต (SIPO) โค้ดเลื่อนบิต `sin` เข้าทางขวา (LSB) แล้วเลื่อนบิตเดิมไปทางซ้าย ควรเติมอะไรในช่องว่าง `______`?\n```verilog\nalways @(posedge clk) begin\n  if (rst)\n    pout <= 4'b0000;\n  else\n    pout <= ______;\nend\n```",
+            "options": [
+                "{pout[2:0], sin};",
+                "{sin, pout[3:1]};",
+                "{pout[3:1], sin};",
+                "{sin, pout[2:0]};"
+            ],
+            "answer_index": 0,
+            "explanation": "การเลื่อนบิตเดิม 2:0 ไปอยู่ที่ 3:1 และนำบิตใหม่ sin เข้ามาที่ตำแหน่งบิต 0 (LSB) เขียนด้วย Concatenation operator ได้เป็น `{pout[2:0], sin}`",
+            "source": "Week5_sequential_logic.pdf Slide 12 & Lab8.pdf หน้า 3 Case Study 1"
+        },
+        {
+            "id": "CODE_W6_01",
+            "week": 6,
+            "type": "code_fill",
+            "topic": "Clock Divider 50MHz to 1Hz Code Completion",
+            "question": "ในโมดูล `tick_gen.v` จงเลือกค่าตัวเลขที่ถูกต้องเติมลงในช่องว่าง `______` เพื่อสร้างพัลส์ 1 Hz จากความถี่ 50 MHz:\n```verilog\nalways @(posedge clk or negedge rst_n) begin\n  if (!rst_n) begin\n    cnt  <= 26'd0;\n    tick <= 1'b0;\n  end else begin\n    if (cnt == ______) begin\n      cnt  <= 26'd0;\n      tick <= 1'b1;\n    end else begin\n      cnt  <= cnt + 1'b1;\n      tick <= 1'b0;\n    end\n  end\nend\n```",
+            "options": [
+                "26'd49_999_999",
+                "26'd50_000_000",
+                "26'd24_999_999",
+                "26'd99_999_999"
+            ],
+            "answer_index": 0,
+            "explanation": "ที่ความถี่ 50 MHz เมื่อเริ่มนับจาก 0 ค่า Terminal Count ของ 1 วินาทีคือ 50,000,000 - 1 = 49,999,999",
+            "source": "Week6_Counters_ShiftRegisters.pdf Slide 11 & Lab7.pdf หน้า 8 ข้อ 10"
+        },
+        {
+            "id": "CODE_W6_02",
+            "week": 6,
+            "type": "code_fill",
+            "topic": "Mod-10 Up Counter Wrap Around Code Completion",
+            "question": "ในโมดูล Mod-10 Up Counter (นับ 0 ถึง 9) เมื่อตัวนับมีค่าถึง 9 จะต้องวนรอบกลับเป็นค่าใดในช่องว่าง `______`?\n```verilog\nif (updown) begin\n  if (count == 4'd9)\n    count <= ______;\n  else\n    count <= count + 4'd1;\nend\n```",
+            "options": [
+                "4'd0;",
+                "4'd9;",
+                "4'd10;",
+                "4'd1;"
+            ],
+            "answer_index": 0,
+            "explanation": "ระบบนับฐานมอดุโล 10 (Mod-10) เมื่อนับขึ้นถึง 9 ในรอบถัดไปจะต้องวนกลับ (Wrap around) สู่ 0",
+            "source": "Week6_Counters_ShiftRegisters.pdf Slide 7 & Lab8.pdf หน้า 11 ข้อ 5"
+        },
+        {
+            "id": "CODE_W7_01",
+            "week": 7,
+            "type": "code_fill",
+            "topic": "Edge Detector Logic Code Completion",
+            "question": "ในโมดูล `edge_detector.v` (Lab 7) การตรวจจับขอบขาลง (Falling Edge) ของปุ่มกด Active-Low ต้องเติมสมการใดลงในช่องว่าง `______`?\n```verilog\nreg r1, r2;\nalways @(posedge clk or negedge rst_n) begin\n  if (!rst_n) begin r1 <= 1'b1; r2 <= 1'b1; end\n  else        begin r1 <= key_in; r2 <= r1; end\nend\nassign pulse_out = ______;\n```",
+            "options": [
+                "r2 & ~r1;",
+                "~r2 & r1;",
+                "r1 ^ r2;",
+                "r1 & r2;"
+            ],
+            "answer_index": 0,
+            "explanation": "เมื่อสัญญาณ key_in เปลี่ยนจาก 1 -> 0 ค่า r1 (ใหม่) จะเป็น 0 ขณะที่ r2 (เก่า) ยังเป็น 1 ดังนั้นเงื่อนไข r2 & ~r1 จึงให้พัลส์ความกว้าง 1 รอบ clock",
+            "source": "Week7_FSM.pdf Slide 31 & Lab7.pdf หน้า 7 ข้อ 9"
+        },
+        {
+            "id": "CODE_W7_02",
+            "week": 7,
+            "type": "code_fill",
+            "topic": "Combination Lock FSM Next-State Code Completion",
+            "question": "ใน Lab 7 โมดูล `combo_lock_fsm.v` ที่สถานะ `IDLE` เมื่อมีการกดปุ่ม Enter (`enter == 1`) หากรหัสถูกต้อง (`digit == PW0`) จะไปสถานะ `D1_OK` แต่หากรหัสผิดจะต้องไปสถานะใดในช่องว่าง `______`?\n```verilog\ncase (state)\n  IDLE: if (enter) next_state = (digit == PW0) ? D1_OK : ______;\n```",
+            "options": [
+                "WRONG;",
+                "IDLE;",
+                "LOCKOUT;",
+                "UNLOCKED;"
+            ],
+            "answer_index": 0,
+            "explanation": "ในระบบกลอนประตู หากป้อนรหัสไม่ตรงกับ PW0 จะต้องเปลี่ยนสถานะไปยัง WRONG เพื่อหน่วงเวลาและเพิ่มตัวนับความพยายาม",
+            "source": "Lab7.pdf หน้า 9 ข้อ 11 TODO 2"
+        },
+        {
+            "id": "CODE_W8_01",
+            "week": 8,
+            "type": "code_fill",
+            "topic": "Testbench Clock Generator Code Completion",
+            "question": "ใน Testbench การสร้างสัญญาณนาฬิกาคาบ 10 หน่วยเวลา (เช่น 100 MHz เมื่อ timescale เป็น 1ns) ต้องเติมโค้ดใดในช่องว่าง `______`?\n```verilog\nreg clk = 0;\nalways #5 clk = ______;\n```",
+            "options": [
+                "~clk;",
+                "clk;",
+                "1'b1;",
+                "1'b0;"
+            ],
+            "answer_index": 0,
+            "explanation": "คำสั่ง `always #5 clk = ~clk;` จะสลับค่าสัญญาณนาฬิกาทุกๆ 5 หน่วยเวลา ทำให้ได้คาบเวลา T = 5 + 5 = 10 หน่วยเวลา",
+            "source": "Week8.pdf Slide 6 & Lab8.pdf หน้า 11 ข้อ 5.2"
+        },
+        {
+            "id": "CODE_W8_02",
+            "week": 8,
+            "type": "code_fill",
+            "topic": "Testbench Self-Checking Assertion Code Completion",
+            "question": "ใน Task ตรวจสอบผลลัพธ์ของ Testbench ควรใช้ตัวดำเนินการใดในช่องว่าง `______` เพื่อเปรียบเทียบหาข้อผิดพลาดและรองรับค่า X/Z ได้อย่างสมบูรณ์?\n```verilog\ntask check_count(input [3:0] exp, input [127:0] label);\n  begin\n    if (count ______ exp) begin\n      $display(\"[FAIL] %s: expected=%0d got=%0d\", label, exp, count);\n      errors = errors + 1;\n    end\n  end\nendtask\n```",
+            "options": [
+                "!==",
+                "===",
+                "=",
+                "<="
+            ],
+            "answer_index": 0,
+            "explanation": "ต้องใช้ Case Inequality (`!==`) เพื่อตรวจสอบว่าค่าที่ได้จริงไม่ตรงกับค่าคาดหวัง โดยสามารถจับค่า X และ Z ได้อย่างแม่นยำ",
+            "source": "Week8.pdf Slide 8 & Lab8.pdf หน้า 12 ข้อ 5.2"
+        },
+        {
+            "id": "CODE_W8_03",
+            "week": 8,
+            "type": "code_fill",
+            "topic": "Testbench Race Condition Prevention Code Completion",
+            "question": "ใน Testbench ของวงจร Sequential ต้องเติมคำสั่งใดในช่องว่าง `______` หลังขอบขา clock เพื่อรอให้คำสั่ง Non-blocking อัปเดตเสร็จสมบูรณ์ก่อนเรียกตัวตรวจเช็ค?\n```verilog\nrst = 1; en = 0; updown = 1; @(posedge clk); ______;\ncheck_count(4'd0, \"after reset\");\n```",
+            "options": [
+                "#1;",
+                "#10;",
+                "@(posedge clk);",
+                "$finish;"
+            ],
+            "answer_index": 0,
+            "explanation": "การใส่ `#1;` จะหน่วงเวลาไปข้างหน้าเล็กน้อยเพื่อเลี่ยง Active region ณ ขอบ clock ทำให้อ่านค่าใหม่ใน DUT ที่อัปเดตเสร็จใน NBA region ได้อย่างถูกต้อง",
+            "source": "Week8.pdf Slide 8 & Lab8.pdf หน้า 12 ข้อ 5.2"
+        },
+        {
+            "id": "CODE_W8_04",
+            "week": 8,
+            "type": "code_fill",
+            "topic": "Traffic Light TB Pulse Task Code Completion",
+            "question": "ใน Testbench ของ Traffic Light FSM (Lab 8) Task `pulse_tick` สำหรับสร้างพัลส์กว้าง 1 clock cycle ต้องเติมโค้ดใดในช่องว่าง `______`?\n```verilog\ntask pulse_tick;\n  begin\n    tick = 1;\n    @(posedge clk);\n    tick = ______;\n  end\nendtask\n```",
+            "options": [
+                "1'b0;",
+                "1'b1;",
+                "~tick;",
+                "1'bx;"
+            ],
+            "answer_index": 0,
+            "explanation": "เมื่อเซ็ต tick = 1 แล้วรอผ่านไป 1 ขอบขา clock (`@(posedge clk)`) จะต้องเคลียร์สัญญาณกลับเป็น 0 ด้วย `tick = 1'b0;` เพื่อให้ได้พัลส์กว้าง 1 clock cycle",
+            "source": "Week8.pdf Slide 28 & Lab8.pdf หน้า 15 ข้อ 6.2"
+        }
+    ])
+
+    # =========================================================================
+    # 3. ข้อสอบ ถูก / ผิด (True / False)
+    # =========================================================================
+    questions.extend([
+        {
+            "id": "TF_W2_01",
+            "week": 2,
+            "type": "tf",
+            "topic": "DE0 Board Push Buttons",
+            "question": "ปุ่มกด KEY[2:0] บนบอร์ด Altera DE0 มีพฤติกรรมทางไฟฟ้าเป็นแบบ Active-Low กล่าวคือ ขณะไม่กดจะมีค่าลอจิกเป็น 1 และขณะกดปุ่มจะมีค่าลอจิกเป็น 0",
+            "options": [
+                "ถูก (True)",
+                "ผิด (False)"
+            ],
+            "answer_index": 0,
+            "explanation": "ถูกต้อง เพราะบนบอร์ด DE0 มีวงจร Pull-up Resistor ต่อดึงสัญญาณไว้ที่ไฟเลี้ยง VCC ทำให้เมื่อไม่ได้กดปุ่มจะได้ลอจิก 1 และเมื่อกดปุ่มจะได้ลอจิก 0",
+            "source": "Practice Lab Sheet 2.pdf หัวข้อที่ 2 & Lab7.pdf หน้า 1 ข้อ 7"
+        },
+        {
+            "id": "TF_W2_02",
+            "week": 2,
+            "type": "tf",
+            "topic": "Pin Planner in Quartus II",
+            "question": "ในโปรแกรม Quartus II เครื่องมือ Pin Planner มีหน้าที่เชื่อมโยงชื่อพอร์ตอินพุต/เอาต์พุตของโมดูลระดับบนสุด (Top-level) เข้ากับหมายเลขขาฟิสิคัลจริงของชิป FPGA",
+            "options": [
+                "ถูก (True)",
+                "ผิด (False)"
+            ],
+            "answer_index": 0,
+            "explanation": "ถูกต้อง Pin Planner เป็นเครื่องมือ GUI ใน Quartus สำหรับกำหนดขาพินทางกายภาพ (เช่น PIN_J6 สำหรับ SW[0] หรือ PIN_J1 สำหรับ LEDG[0])",
+            "source": "Week2_software installation.pdf Slide 12 & Practice Lab Sheet 2.pdf"
+        },
+        {
+            "id": "TF_W3_01",
+            "week": 3,
+            "type": "tf",
+            "topic": "Continuous Assignment in Procedural Blocks",
+            "question": "ในภาษา Verilog คำสั่ง Continuous Assignment (`assign`) สามารถนำไปวางเขียนไว้ภายในบล็อก `always` หรือ `initial` ได้อย่างอิสระ",
+            "options": [
+                "ถูก (True)",
+                "ผิด (False)"
+            ],
+            "answer_index": 1,
+            "explanation": "ผิด คำสั่ง `assign` ใช้สำหรับการกำหนดค่านอกบล็อก procedural เท่านั้น หากอยู่ภายในบล็อก `always` จะต้องใช้ Procedural Assignment (คือ `=` หรือ `<=`) เท่านั้น",
+            "source": "Week3_foundations and language basics.pdf Slide 13"
+        },
+        {
+            "id": "TF_W3_02",
+            "week": 3,
+            "type": "tf",
+            "topic": "Verilog Logic Levels",
+            "question": "ในระบบตรรกะ 4 ระดับของ Verilog ค่า 'X' หมายถึงสถานะความต้านทานสูง (High-Impedance) และค่า 'Z' หมายถึงสถานะที่ไม่ทราบค่า (Unknown)",
+            "options": [
+                "ถูก (True)",
+                "ผิด (False)"
+            ],
+            "answer_index": 1,
+            "explanation": "ผิด สลับความหมายกัน: ใน Verilog ค่า 'X' คือ Unknown / Contention ส่วนค่า 'Z' คือ High-Impedance / Tristate",
+            "source": "Week3_foundations and language basics.pdf Slide 14"
+        },
+        {
+            "id": "TF_W4_01",
+            "week": 4,
+            "type": "tf",
+            "topic": "Combinational Circuit Feedback",
+            "question": "วงจร Combinational Logic ที่ดีจะต้องไม่มีวงรอบการป้อนกลับของสัญญาณ (No Feedback Loop) และไม่มีหน่วยความจำ",
+            "options": [
+                "ถูก (True)",
+                "ผิด (False)"
+            ],
+            "answer_index": 0,
+            "explanation": "ถูกต้อง หากวงจร Combinational มี Feedback loop จะทำให้เกิดการแกว่ง (Oscillation) หรือเกิด Latch ซึ่งผิดหลักการออกแบบวงจรคอมบิเนชันนัล",
+            "source": "Week4_Combinational_Design.pdf Slide 4"
+        },
+        {
+            "id": "TF_W5_01",
+            "week": 5,
+            "type": "tf",
+            "topic": "Multiple Drivers Violation",
+            "question": "ในภาษา Verilog การกำหนดค่าให้กับตัวแปร `reg` ตัวเดียวกันจากบล็อก `always` สองบล็อกที่แยกจากกัน ถือเป็นข้อปฏิบัติที่ยอมรับได้และช่วยเพิ่มประสิทธิภาพ",
+            "options": [
+                "ถูก (True)",
+                "ผิด (False)"
+            ],
+            "answer_index": 1,
+            "explanation": "ผิด ถือเป็นข้อห้ามเด็ดขาด (Multiple Drivers) เพราะในทางฮาร์ดแวร์จริงคือการนำเอาต์พุตของวงจรสองตัวมาต่อชนกัน ทำให้เกิดการลัดวงจร",
+            "source": "Week5_sequential_logic.pdf Slide 18"
+        },
+        {
+            "id": "TF_W5_02",
+            "week": 5,
+            "type": "tf",
+            "topic": "Sequential Assignment Rules",
+            "question": "ใน Sequential Always Block (`@(posedge clk)`) ควรใช้ Non-blocking assignment (`<=`) เพื่อป้องกันปัญหา Race Condition",
+            "options": [
+                "ถูก (True)",
+                "ผิด (False)"
+            ],
+            "answer_index": 0,
+            "explanation": "ถูกต้อง เพราะคำสั่ง non-blocking จะประเมินค่าฝั่งขวาทั้งหมดก่อน แล้วอัปเดตลงตัวแปรพร้อมกันในเฟส NBA ป้องกัน race condition ใน simulator",
+            "source": "Week5_sequential_logic.pdf Slide 14 & Lab7.pdf หน้า 1 ข้อ 8"
+        },
+        {
+            "id": "TF_W6_01",
+            "week": 6,
+            "type": "tf",
+            "topic": "Ring vs Johnson Counter States",
+            "question": "Ring Counter ขนาด N บิต มีจำนวนสถานะการทำงานเท่ากับ 2N สถานะ ในขณะที่ Johnson Counter ขนาด N บิต มีจำนวนสถานะเท่ากับ N สถานะ",
+            "options": [
+                "ถูก (True)",
+                "ผิด (False)"
+            ],
+            "answer_index": 1,
+            "explanation": "ผิด สลับกัน: Ring Counter ขนาด N บิต มี N สถานะ ส่วน Johnson Counter ขนาด N บิต มี 2N สถานะ",
+            "source": "Week6_Counters_ShiftRegisters.pdf Slide 20"
+        },
+        {
+            "id": "TF_W7_01",
+            "week": 7,
+            "type": "tf",
+            "topic": "Moore Output in State Diagram",
+            "question": "ใน State Diagram ของ Moore FSM ค่าเอาต์พุตจะถูกเขียนกำกับอยู่ภายในวงกลมของ State ส่วนใน Mealy FSM จะเขียนอยู่บนลูกศรการเปลี่ยนสถานะ",
+            "options": [
+                "ถูก (True)",
+                "ผิด (False)"
+            ],
+            "answer_index": 0,
+            "explanation": "ถูกต้อง เพราะเอาต์พุตของ Moore ขึ้นกับ State เท่านั้นจึงเขียนในวงกลม ส่วน Mealy ขึ้นกับทั้ง State และ Input จึงเขียนบนลูกศรในรูปแบบ Input / Output",
+            "source": "Week7_FSM.pdf Slide 4-6 & Lab7.pdf หน้า 1 ข้อ 4"
+        },
+        {
+            "id": "TF_W7_02",
+            "week": 7,
+            "type": "tf",
+            "topic": "One-Hot Encoding Flip-Flop Count",
+            "question": "One-Hot Encoding ใช้ Flip-Flop จำนวน 1 ตัวต่อ 1 State ดังนั้นหาก FSM มี 6 สถานะ จะต้องใช้ Flip-Flop ทั้งหมด 6 ตัว",
+            "options": [
+                "ถูก (True)",
+                "ผิด (False)"
+            ],
+            "answer_index": 0,
+            "explanation": "ถูกต้อง One-Hot Encoding ใช้จำนวน Flip-Flop เท่ากับจำนวนสถานะ N เสมอ แตกต่างจาก Binary ที่ใช้ ceil(log2 N) = 3 ตัว",
+            "source": "Week7_FSM.pdf Slide 7 & Lab7.pdf หน้า 1 ข้อ 3, 10"
+        },
+        {
+            "id": "TF_W7_03",
+            "week": 7,
+            "type": "tf",
+            "topic": "Mechanical Button Edge Detector Necessity",
+            "question": "สัญญาณจากปุ่มกดเชิงกลจำเป็นต้องผ่านวงจร Edge Detector ก่อนนำเข้า FSM เสมอ มิฉะนั้นการกดปุ่มเพียงครั้งเดียวอาจทำให้ FSM มองเห็นสัญญาณค้างและทริกเกอร์ซ้ำนับล้านรอบที่ความถี่ 50 MHz",
+            "options": [
+                "ถูก (True)",
+                "ผิด (False)"
+            ],
+            "answer_index": 0,
+            "explanation": "ถูกต้อง การกดปุ่มด้วยมือมนุษย์นานหลายสิบมิลลิวินาที ที่สัญญาณนาฬิกา 50 MHz จะคิดเป็นเวลาหลายล้าน clock cycle จึงต้องแปลงเป็นพัลส์ 1 cycle ด้วย Edge Detector เสมอ",
+            "source": "Week7_FSM.pdf Slide 31 & Lab7.pdf หน้า 1 ข้อ 5, 10"
+        },
+        {
+            "id": "TF_W8_01",
+            "week": 8,
+            "type": "tf",
+            "topic": "Self-Checking Waveform Inspection",
+            "question": "Self-checking Testbench ต้องอาศัยคนนั่งดูรูปคลื่น Waveform เปรียบเทียบค่าด้วยตาเสมอ จึงจะตัดสินผล PASS/FAIL ได้",
+            "options": [
+                "ถูก (True)",
+                "ผิด (False)"
+            ],
+            "answer_index": 1,
+            "explanation": "ผิด Self-checking Testbench ตัดสินผลอัตโนมัติด้วยคำสั่งเปรียบเทียบในโค้ดและรายงานผลผ่าน $display ไม่ต้องอาศัยคนนั่งดู waveform ด้วยตา",
+            "source": "Week8.pdf Slide 3, 8 & Lab8.pdf หน้า 5 ข้อ 1"
+        },
+        {
+            "id": "TF_W8_02",
+            "week": 8,
+            "type": "tf",
+            "topic": "Testbench Synthesis",
+            "question": "ไฟล์ Testbench (tb_*.v) จะถูก Quartus II สังเคราะห์ (Synthesize) ลงชิป FPGA บนบอร์ด DE0 เช่นเดียวกับไฟล์โมดูลวงจรหลัก (DUT)",
+            "options": [
+                "ถูก (True)",
+                "ผิด (False)"
+            ],
+            "answer_index": 1,
+            "explanation": "ผิด ไฟล์ Testbench ใช้สำหรับการจำลองการทำงาน (Simulation) ใน ModelSim เท่านั้น ไม่มีพอร์ต I/O จริง และมีคำสั่งที่ไม่สามารถสังเคราะห์เป็นฮาร์ดแวร์ได้ เช่น #delay, $display, $finish",
+            "source": "Week8.pdf Slide 5 & Lab8.pdf หน้า 5 ข้อ 4"
+        },
+        {
+            "id": "TF_W8_03",
+            "week": 8,
+            "type": "tf",
+            "topic": "Functional vs Code Coverage",
+            "question": "Code coverage 100% มีความหมายเดียวกับและรับประกันได้ว่าวงจรทำ Functional coverage 100% ครบตาม Specification แล้ว",
+            "options": [
+                "ถูก (True)",
+                "ผิด (False)"
+            ],
+            "answer_index": 1,
+            "explanation": "ผิด Code coverage บอกเพียงว่าโค้ดทุกบรรทัดถูก execute หรือไม่ แต่ Functional coverage ตรวจสอบว่าเงื่อนไขและสถานการณ์ตาม spec (เช่น ทุก state และทุก transition) ถูกทดสอบครบหรือไม่",
+            "source": "Week8.pdf Slide 29 & Lab8.pdf หน้า 5 ข้อ 9"
+        },
+        {
+            "id": "TF_W8_04",
+            "week": 8,
+            "type": "tf",
+            "topic": "Simulation Termination with $finish",
+            "question": "ใน Testbench จำเป็นต้องเรียกคำสั่ง `$finish;` ท้ายสุดเสมอ มิฉะนั้นการจำลองใน ModelSim อาจรันวนลูปนาฬิกาค้างไม่สิ้นสุด",
+            "options": [
+                "ถูก (True)",
+                "ผิด (False)"
+            ],
+            "answer_index": 0,
+            "explanation": "ถูกต้อง เพราะบล็อกสร้างสัญญาณนาฬิกา `always #5 clk = ~clk;` จะทำงานวนลูปตลอดไป การเรียก `$finish;` จึงเป็นสิ่งจำเป็นเพื่อสั่งยุติ simulation",
+            "source": "Week8.pdf Slide 7, 30 & Lab8.pdf หน้า 5 ข้อ 6"
+        }
+    ])
+
+    # Assign origin to every question
+    for q in questions:
+        src = q.get('source', '')
+        has_lec = ('Week' in src or 'Slide' in src) and not ('Lab8' in src and 'Slide' not in src)
+        has_lab = 'Lab' in src or 'Practice' in src or 'ใบปฏิบัติการ' in src
+        
+        if q['type'] == 'code_fill':
+            origin = 'lab'
+            origin_th = 'มาจาก: LAB (ใบงานปฏิบัติการ)'
+        elif has_lec and has_lab:
+            origin = 'both'
+            origin_th = 'มาจาก: ทั้ง LECTURE และ LAB'
+        elif has_lab:
+            origin = 'lab'
+            origin_th = 'มาจาก: LAB (ใบงานปฏิบัติการ)'
+        else:
+            origin = 'lec'
+            origin_th = 'มาจาก: LECTURE (สไลด์บรรยาย)'
+            
+        q['origin'] = origin
+        q['origin_th'] = origin_th
+
+    return questions
+
+def main():
+    questions = create_all_questions()
+    json_path = r"D:\vhdl\exam_questions.json"
+    with open(json_path, "w", encoding="utf-8") as f:
+        json.dump(questions, f, ensure_ascii=False, indent=2)
+
+    type_counts = {}
+    week_counts = {}
+    origin_counts = {}
+    for q in questions:
+        t = q["type"]
+        w = q["week"]
+        o = q["origin"]
+        type_counts[t] = type_counts.get(t, 0) + 1
+        week_counts[w] = week_counts.get(w, 0) + 1
+        origin_counts[o] = origin_counts.get(o, 0) + 1
+
+    print(f"Generated {len(questions)} questions successfully!")
+    print("Types breakdown:", type_counts)
+    print("Origins breakdown:", origin_counts)
+    print("Weeks breakdown:", sorted(week_counts.items()))
+
+if __name__ == "__main__":
+    main()
