@@ -1,0 +1,1006 @@
+import json
+import os
+
+def build_questions():
+    q = []
+
+    # =========================================================================
+    # WEEK 2 / LAB 2: Quartus II Flow & DE0 Setup
+    # =========================================================================
+    q.append({
+        "id": "LAB2_CHOICE_01",
+        "week": 2,
+        "type": "choice",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 2: สเปกบอร์ด DE0]",
+        "source": "Practice Lab Sheet 2.pdf หน้า 1-2 & Week2_software installation.pdf Slide 5",
+        "question": "ชิป FPGA Altera Cyclone III บนบอร์ด DE0 มีหมายเลขพาร์ตคือ `EP3C16F484C6` มีจำนวน Logic Elements (LEs) และหน่วยความจำ M9K เท่าใด?",
+        "options": [
+            "A. 15,408 LEs และ 56 บล็อก M9K (504 Kbits)",
+            "B. 10,000 LEs และ 32 บล็อก M9K (288 Kbits)",
+            "C. 24,624 LEs และ 66 บล็อก M9K (594 Kbits)",
+            "D. 5,136 LEs และ 26 บล็อก M9K (234 Kbits)"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามเอกสาร Practice Lab Sheet 2 และสไลด์ Week 2 หน้า 5 ชิปเป้าหมายคือ Altera Cyclone III EP3C16F484C6 มี 15,408 Logic Elements (LEs), 56 M9K Embedded Memory Blocks (ความจุรวม 504 Kbits), 56 Embedded Multipliers, 4 PLLs และ 346 User I/O Pins"
+    })
+
+    q.append({
+        "id": "LAB2_CHOICE_02",
+        "week": 2,
+        "type": "choice",
+        "origin": "both",
+        "origin_th": "[ปฏิบัติการ LAB 2 & LECTURE Week 2: Design Flow]",
+        "source": "Practice Lab Sheet 2.pdf หน้า 3 & Week2_software installation.pdf Slide 7-14",
+        "question": "ลำดับขั้นตอนที่ถูกต้องของ FPGA Design Flow ในโปรแกรม Quartus II เมื่อกดปุ่ม Start Compilation คือข้อใด?",
+        "options": [
+            "A. Analysis & Synthesis -> Fitter (Place & Route) -> TimeQuest Timing Analysis -> Assembler",
+            "B. Fitter -> Analysis & Synthesis -> Assembler -> TimeQuest",
+            "C. Analysis & Synthesis -> Assembler -> Fitter -> TimeQuest",
+            "D. TimeQuest -> Analysis & Synthesis -> Fitter -> Assembler"
+        ],
+        "answer_index": 0,
+        "explanation": "Quartus II เริ่มด้วย Analysis & Synthesis (แปลง Verilog เป็นเกตตรรกะ), ตามด้วย Fitter (จัดสรร LEs และเดินสาย Routing), TimeQuest (วิเคราะห์ timing setup/hold time และ Fmax) และจบด้วย Assembler (สร้างไฟล์ .sof/.pof สำหรับดาวน์โหลด)"
+    })
+
+    q.append({
+        "id": "LAB2_CHOICE_03",
+        "week": 2,
+        "type": "choice",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 2: ชนิดไฟล์คอนฟิกูเรชัน]",
+        "source": "Practice Lab Sheet 2.pdf หน้า 3-4 & Week2_software installation.pdf Slide 15",
+        "question": "ไฟล์ผลลัพธ์จากการคอมไพล์ใน Quartus II ข้อใดใช้สำหรับโปรแกรมลงชิป FPGA ชั่วคราวผ่านโหมด JTAG โดยข้อมูลจะหายเมื่อดับไฟ?",
+        "options": [
+            "A. .sof (SRAM Object File)",
+            "B. .pof (Programmer Object File)",
+            "C. .qsf (Quartus Settings File)",
+            "D. .qpf (Quartus Project File)"
+        ],
+        "answer_index": 0,
+        "explanation": "ไฟล์ .sof (SRAM Object File) ใช้สำหรับดาวน์โหลดวงจรลงสู่หน่วยความจำ SRAM ของ FPGA โดยตรงผ่านโหมด JTAG ซึ่งเป็นการคอนฟิกแบบชั่วคราว ข้อมูลจะสูญหายเมื่อปิดไฟเลี้ยง ส่วน .pof ใช้สำหรับโปรแกรมลงชิปแฟลช EPCS ผ่านโหมด Active Serial (AS) เพื่อเก็บวงจรถาวร"
+    })
+
+    q.append({
+        "id": "LAB2_TF_01",
+        "week": 2,
+        "type": "tf",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 2: ฮาร์ดแวร์ปุ่มกด DE0]",
+        "source": "Practice Lab Sheet 2.pdf หน้า 2 & Week2_software installation.pdf Slide 17",
+        "question": "ปุ่มกด Push Button (KEY[2:0]) บนบอร์ด Altera DE0 มีคุณสมบัติทางไฟฟ้าเป็นแบบ Active-Low กล่าวคือ ขณะไม่กดจะมีค่าตรรกะเป็น 1 และเมื่อกดจะมีค่าตรรกะเป็น 0",
+        "options": [
+            "ถูก (True)",
+            "ผิด (False)"
+        ],
+        "answer_index": 0,
+        "explanation": "ถูก (True) เพราะวงจรบนบอร์ด DE0 ต่อปุ่มกด KEY เข้ากับตัวต้านทาน Pull-up ดึงไฟขึ้น 3.3V ตลอดเวลา เมื่อกดปุ่มจะต่อลงกราวด์ (GND) ทำให้สัญญาณกลายเป็นระดับ 0 (Active-Low)"
+    })
+
+    q.append({
+        "id": "LAB2_TF_02",
+        "week": 2,
+        "type": "tf",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 2: ฮาร์ดแวร์ 7-Segment DE0]",
+        "source": "Practice Lab Sheet 2.pdf หน้า 2 & Week2_software installation.pdf Slide 18",
+        "question": "จอแสดงผล 7-Segment (HEX[3:0]) บนบอร์ด Altera DE0 เป็นชนิด Common Anode ทำให้มีคุณสมบัติเป็น Active-High (ป้อน 1 เพื่อให้หลอด LED ของแต่ละ segment สว่าง)",
+        "options": [
+            "ถูก (True)",
+            "ผิด (False)"
+        ],
+        "answer_index": 1,
+        "explanation": "ผิด (False) จอแสดงผล 7-Segment บนบอร์ด DE0 เป็นแบบ Common Anode (ขั้วแอโนดร่วมต่อไฟเลี้ยง) จึงมีคุณสมบัติเป็น Active-Low กล่าวคือ ต้องป้อนตรรกะ 0 เพื่อดึงขาแคโทดลงกราวด์ให้ segment สว่าง หากป้อน 1 segment จะดับ"
+    })
+
+    q.append({
+        "id": "LAB2_CODE_01",
+        "week": 2,
+        "type": "code_fill",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 2: Pin Assignment]",
+        "source": "Practice Lab Sheet 2.pdf หน้า 2-3 & Week2_software installation.pdf Slide 12",
+        "question": "ในการกำหนดขาพิน (Pin Assignment) ผ่าน Pin Planner หรือไฟล์ .qsf เพื่อเชื่อมต่อสัญญาณนาฬิกา 50 MHz บนบอร์ด DE0 ต้องกำหนดชื่อสัญญาณ CLOCK_50 เข้ากับ Location พินใด?",
+        "options": [
+            "A. PIN_G21",
+            "B. PIN_B1",
+            "C. PIN_H2",
+            "D. PIN_J6"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามคู่มือ DE0 Board Manual และ Practice Lab Sheet 2 หน้า 2 สัญญาณนาฬิการะบบ 50 MHz (CLOCK_50) เชื่อมต่อเข้ากับขา PIN_G21 ของชิป Cyclone III EP3C16F484C6"
+    })
+
+    # =========================================================================
+    # WEEK 3 / LAB 3: Foundations & Language Basics
+    # =========================================================================
+    q.append({
+        "id": "LAB3_CODE_01",
+        "week": 3,
+        "type": "code_fill",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 3: แบบฝึกหัดข้อ 1 Half Adder]",
+        "source": "lab3.pdf หน้า 1-2 (Part A Exercise 1) & lab3_Answered.pdf",
+        "question": "จงเติมตัวกระทำ (Operators) ในช่องว่างของโมดูล Half Adder ให้ถูกต้องตามสมการ sum = a XOR b และ carry = a AND b:\n\n```verilog\nmodule half_adder (\n  input  wire a, b,\n  output wire sum, carry\n);\n  assign sum   = a ____ b;\n  assign carry = a ____ b;\nendmodule\n```",
+        "options": [
+            "A. ^ และ &",
+            "B. & และ |",
+            "C. ~ และ ^",
+            "D. ^ และ &&"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามแบบฝึกหัด Lab 3 Exercise 1: วงจร Half Adder คำนวณผลบวก sum ด้วย bitwise XOR (เครื่องหมาย ^) และคำนวณตัวทด carry ด้วย bitwise AND (เครื่องหมาย &)"
+    })
+
+    q.append({
+        "id": "LAB3_CHOICE_01",
+        "week": 3,
+        "type": "choice",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 3: แบบฝึกหัดข้อ 2 หาบั๊ก Full Adder]",
+        "source": "lab3.pdf หน้า 2 (Part A Exercise 2) & lab3_Answered.pdf",
+        "question": "พิจารณาโค้ด Full Adder จาก Lab 3 Exercise 2 ด้านล่าง ข้อใดระบุบั๊กทั้ง 3 จุดได้ถูกต้อง?\n\n```verilog\nmodule full_adder (\n  input wire a, b, cin\n  output wire sum, carry_out\n);\n  wire c1, c2;\n  assign sum = a ^ b ^ cin;\n  carry_out = c1 | c2;\nendmodule\n```",
+        "options": [
+            "A. 1) ขาดเครื่องหมายจุลภาคคั่นระหว่างพอร์ต cin และ output sum, 2) ขาดคำสั่ง assign หน้า carry_out, 3) c1 และ c2 ยังไม่ถูกสร้างหรือคำนวณค่าก่อนนำมา OR กัน",
+            "B. 1) คำสั่ง assign sum ผิดไวยากรณ์, 2) ตัวแปร cin ต้องเป็น reg, 3) carry_out ต้องเป็น reg",
+            "C. 1) ลืมใส่ timescale, 2) ตัวแปร a และ b ต้องเป็น 4 บิต, 3) ชื่อโมดูลต้องขึ้นต้นด้วยตัวพิมพ์ใหญ่",
+            "D. 1) พอร์ต cin ต้องเป็น inout, 2) ลืมใส่ begin-end, 3) c1 กับ c2 ต้องเป็น integer"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามเฉลย Lab 3 Exercise 2: บั๊กจุดที่ 1 คือบรรทัดที่ 2 ขาด comma (,) หลัง cin; บั๊กจุดที่ 2 คือ carry_out = c1 | c2 ขาดคำสั่ง assign นำหน้าทำให้คอมไพล์ไม่ผ่าน; บั๊กจุดที่ 3 คือ c1 และ c2 ลอยอยู่โดยไม่มีสมการสร้างสัญญาณขับ (undriven wires)"
+    })
+
+    q.append({
+        "id": "LAB3_CHOICE_02",
+        "week": 3,
+        "type": "choice",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 3: แบบฝึกหัดข้อ 3 จับคู่ตัวกระทำ]",
+        "source": "lab3.pdf หน้า 3 (Part B Exercise 3) & lab3_Answered.pdf",
+        "question": "จากการจับคู่ตัวกระทำใน Lab 3 Exercise 3 ข้อใดจับคู่สัญลักษณ์ตัวกระทำกับหน้าที่การทำงานได้ถูกต้องทั้งหมด?\n(1) `^` (2) `&` (3) `&&` (4) `{ }`",
+        "options": [
+            "A. (1) Bitwise XOR, (2) Bitwise AND, (3) Logical AND, (4) Concatenation",
+            "B. (1) Logical XOR, (2) Logical AND, (3) Bitwise AND, (4) Reduction OR",
+            "C. (1) Reduction XOR, (2) Bitwise OR, (3) Logical AND, (4) Bit slice",
+            "D. (1) Bitwise XOR, (2) Logical AND, (3) Bitwise AND, (4) Replication"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามตารางจับคู่ใน Lab 3 Exercise 3:\n- ^ คือ Bitwise XOR (กระทำทีละบิต)\n- & คือ Bitwise AND (กระทำทีละบิต)\n- && คือ Logical AND (ประเมินค่าจริง/เท็จ ผลลัพธ์ 1 บิต)\n- { } คือ Concatenation (เชื่อมต่อบิตเข้าด้วยกันเป็นเวกเตอร์กว้างขึ้น)"
+    })
+
+    q.append({
+        "id": "LAB3_CODE_02",
+        "week": 3,
+        "type": "code_fill",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 3: แบบฝึกหัดข้อ 4 Full Adder Specification]",
+        "source": "lab3.pdf หน้า 3 (Part C Exercise 4) & lab3_Answered.pdf",
+        "question": "จงเติมสมการ Boolean expression ของสัญญาณ cout (carry-out) ของ Full Adder ในแบบฝึกหัด Lab 3 Exercise 4 ให้ถูกต้องสมบูรณ์:\n\n```verilog\nmodule full_adder (\n  input  wire a, b, cin,\n  output wire sum, cout\n);\n  assign sum  = a ^ b ^ cin;\n  assign cout = _______________________________________ ;\nendmodule\n```",
+        "options": [
+            "A. (a & b) | (cin & (a ^ b))",
+            "B. (a | b) & (cin | (a ^ b))",
+            "C. a & b & cin",
+            "D. (a ^ b) | (cin & a)"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามข้อกำหนด Lab 3 Exercise 4: ตัวทด cout ของ Full Adder เกิดจากกรณีที่ a และ b เป็น 1 พร้อมกัน (a & b) หรือ cin เป็น 1 พร้อมกับตัวใดตัวหนึ่งของ a, b เป็น 1 (cin & (a ^ b)) จึงเขียนเป็น `(a & b) | (cin & (a ^ b))`"
+    })
+
+    q.append({
+        "id": "LAB3_CHOICE_03",
+        "week": 3,
+        "type": "choice",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 3: แบบฝึกหัดข้อ 5 BCD Adder]",
+        "source": "lab3.pdf หน้า 4-6 (Part D Exercise 5) & lab3_Answered.pdf",
+        "question": "ในแบบฝึกหัด Lab 3 Exercise 5 การออกแบบวงจร BCD Adder เพื่อนำผลบวกไปแสดงผลบน 7-Segment หากผลรวมไบนารีเกิน 9 (binary sum > 9 หรือ carry_out = 1) วงจรต้องทำ Decimal Correction ด้วยวิธีใด?",
+        "options": [
+            "A. บวกเพิ่มด้วย 6 (4'b0110) เข้ากับผลรวมไบนารี",
+            "B. ลบออกด้วย 6 (4'b0110)",
+            "C. บวกเพิ่มด้วย 10 (4'b1010)",
+            "D. เลื่อนบิตไปทางซ้าย 1 ตำแหน่ง"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามหลักการ BCD Arithmetic ใน Lab 3 Exercise 5 เมื่อเลขฐานสอง 4 บิตมีค่าตั้งแต่ 10 ถึง 15 (ซึ่งไม่เป็นรหัส BCD ที่ถูกต้อง) วงจรต้องทำการแก้ค่า (Decimal Correction) โดยการบวก 6 (4'b0110) เพื่อข้ามสถานะที่ผิดกฎ 6 สถานะและสร้างตัวทดไปยังหลักสิบ"
+    })
+
+    q.append({
+        "id": "LAB3_TF_01",
+        "week": 3,
+        "type": "tf",
+        "origin": "both",
+        "origin_th": "[ปฏิบัติการ LAB 3 & LECTURE Week 3: กฎของ wire และ reg]",
+        "source": "lab3.pdf หน้า 7 & Week3_foundations and language basics.pdf Slide 12",
+        "question": "ในภาษา Verilog ตัวแปรชนิด `wire` สามารถถูกกำหนดค่าได้ทั้งจากคำสั่งภายนอกบล็อก `assign` และถูกกำหนดค่าภายใน procedural block เช่น `always` ได้อย่างอิสระ",
+        "options": [
+            "ถูก (True)",
+            "ผิด (False)"
+        ],
+        "answer_index": 1,
+        "explanation": "ผิด (False) กฎเหล็กของ Verilog ระบุว่า `wire` ทำหน้าที่แทนสายสัญญาณ ต้องถูกขับค่า (driven) อย่างต่อเนื่องด้วยคำสั่ง `assign` หรือต่อเข้ากับ output ของโมดูลย่อยเท่านั้น ห้ามกำหนดค่าให้ `wire` ภายในบล็อก procedural เช่น `always` หรือ `initial` โดยเด็ดขาด สัญญาณที่ถูกกำหนดค่าใน `always` ต้องประกาศเป็น `reg`"
+    })
+
+    q.append({
+        "id": "LAB3_TF_02",
+        "week": 3,
+        "type": "tf",
+        "origin": "both",
+        "origin_th": "[ปฏิบัติการ LAB 3 & LECTURE Week 3: Reduction Operator]",
+        "source": "lab3.pdf หน้า 3 & Week3_foundations and language basics.pdf Slide 20",
+        "question": "การใช้ Reduction XOR operator `^bus` บนบัสขนาด 4 บิต เช่น `bus = 4'b1011` จะคืนค่าผลลัพธ์ขนาด 1 บิต เพื่อตรวจสอบความเท่ากันของบิตคู่หรือคี่ (Odd Parity)",
+        "options": [
+            "ถูก (True)",
+            "ผิด (False)"
+        ],
+        "answer_index": 0,
+        "explanation": "ถูก (True) Reduction operator ดำเนินการระหว่างบิตทั้งหมดภายในเวกเตอร์เดียวกัน โดย ^bus จะทำการ XOR บิตทั้งหมดเข้าด้วยกัน: bus[3] ^ bus[2] ^ bus[1] ^ bus[0] ได้ผลลัพธ์เป็น 1 บิต หากมีจำนวนบิตที่เป็น 1 เป็นเลขคี่ จะได้ผลลัพธ์เป็น 1 (Odd Parity)"
+    })
+
+    # =========================================================================
+    # WEEK 4 / LAB 4: Combinational Logic Design
+    # =========================================================================
+    q.append({
+        "id": "LAB4_CODE_01",
+        "week": 4,
+        "type": "code_fill",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 4: แบบฝึกหัดข้อ 1 เติมโค้ด 4-to-1 MUX]",
+        "source": "lab 4.pdf หน้า 1-2 (Part A Exercise 1) & lab4_Answered.pdf",
+        "question": "จงเติมคำสำคัญในช่องว่าง (2) และ (5) ของโมดูล 4-to-1 Multiplexer ใน Lab 4 Exercise 1 ให้ถูกต้องสมบูรณ์:\n\n```verilog\nmodule mux4to1 (\n  input  wire in0, in1, in2, in3,\n  input  wire [1:0] sel,\n  output ______ y                 // (2) ชนิดตัวแปรที่ถูกขับใน always\n);\n  always @(*) begin\n    case (sel)\n      2'b00: y = in0;\n      2'b01: y = in1;\n      2'b10: y = in2;\n      2'b11: y = in3;\n      default: y = ______;        // (5) ค่า default เพื่อป้องกัน latch\n    endcase\n  end\nendmodule\n```",
+        "options": [
+            "A. (2) reg, (5) 1'b0",
+            "B. (2) wire, (5) 1'b1",
+            "C. (2) integer, (5) in0",
+            "D. (2) reg, (5) 1'bx"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามแบบฝึกหัด Lab 4 Exercise 1: ช่อง (2) สัญญาณ y ถูกกำหนดค่าใน `always @(*)` จึงต้องประกาศเป็น `output reg y` และช่อง (5) กิ่ง `default` ต้องกำหนดค่าปลอดภัยที่ชัดเจนคือ `1'b0` เพื่อป้องกันไม่ให้เกิด Inferred Latch"
+    })
+
+    q.append({
+        "id": "LAB4_CHOICE_01",
+        "week": 4,
+        "type": "choice",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 4: แบบฝึกหัดข้อ 2 หา 5 บั๊กใน 2-to-4 Decoder]",
+        "source": "lab 4.pdf หน้า 2-3 (Part A Exercise 2) & lab4_Answered.pdf",
+        "question": "พิจารณาโค้ด 2-to-4 Decoder ใน Lab 4 Exercise 2 ด้านล่าง ข้อใดระบุข้อผิดพลาด (Bugs) ได้ถูกต้องครบถ้วนตามใบงาน?\n\n```verilog\nmodule decoder2to4 (\n  input  [1:0] sel,\n  output [3:0] out                 // จุดที่ 1\n);\n  always @(sel[0]) begin           // จุดที่ 2\n    case (sel)\n      2'd0: out = 4'b0001;\n      2'd0: out = 4'b0010;         // จุดที่ 3\n      2'd2: out = 4'b0010;         // จุดที่ 4\n    endcase                        // จุดที่ 5\n  end\nendmodule\n```",
+        "options": [
+            "A. 1) out ขาดคำว่า reg, 2) sensitivity list ไม่ครบขาด sel[1], 3) case label 2'd0 ซ้ำ, 4) ค่าเอาต์พุตของ 2'd2 ผิด (ต้องเป็น 4'b0100), 5) ขาดกรณี 2'd3 และขาด default ทำให้เกิด Inferred Latch",
+            "B. 1) out ต้องเป็น wire, 2) always ต้องเป็น posedge, 3) 2'd0 ต้องเป็น 2'b00, 4) out ต้องเป็น 2 บิต, 5) ต้องใส่ initial block",
+            "C. 1) sel ต้องเป็น 4 บิต, 2) ขาด timescale, 3) case label ห้ามใช้เลขฐานสิบ, 4) ขาด clock, 5) out ต้องใช้ non-blocking",
+            "D. 1) ลืม include ไลบรารี, 2) case ต้องเปลี่ยนเป็น if-else, 3) out ต้องเป็น active-low, 4) ขาด reset, 5) ไวยากรณ์ case ผิด"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามเฉลย Lab 4 Exercise 2: บั๊กทั้ง 5 จุดคือ:\n1. out ถูกขับใน always แต่ประกาศเป็น `output [3:0] out` ขาด `reg`\n2. `always @(sel[0])` ตรวจจับแค่บิตเดียว ทำให้เมื่อ sel[1] เปลี่ยนวงจรไม่อัปเดต ต้องแก้เป็น `always @(*)`\n3. case label `2'd0` ซ้ำกันสองครั้ง (บรรทัด 8 และ 9)\n4. กิ่ง `2'd2` จ่ายเอาต์พุตผิดเป็น `4'b0010` (ต้องเป็น `4'b0100` บิต 2 เป็น 1)\n5. ขาดกรณี `2'd3` และขาดกิ่ง `default` ทำให้เกิด Inferred Latch"
+    })
+
+    q.append({
+        "id": "LAB4_CHOICE_02",
+        "week": 4,
+        "type": "choice",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 4: แบบฝึกหัดข้อ 3 จับคู่พฤติกรรมโครงสร้าง]",
+        "source": "lab 4.pdf หน้า 3-4 (Part B Exercise 3) & lab4_Answered.pdf",
+        "question": "จากการจับคู่โครงสร้างคำสั่งใน Lab 4 Exercise 3 ข้อใดจับคู่ระหว่างคำสั่งและพฤติกรรมของฮาร์ดแวร์ได้ถูกต้อง?\n(1) `if with no final else` (2) `if-else chain` (3) `casez` (4) `case with no default`",
+        "options": [
+            "A. (1) เสี่ยงเกิด Inferred Latch ใน if, (2) Priority MUX (เงื่อนไขแรกชนะ), (3) Don't-care matching ด้วยเครื่องหมาย ?, (4) เสี่ยงเกิด Inferred Latch ใน case",
+            "B. (1) Parallel MUX, (2) Priority MUX, (3) Latch hazard, (4) Inferred Flip-Flop",
+            "C. (1) Tri-state buffer, (2) Parallel MUX, (3) Bitwise MUX, (4) Sequential memory",
+            "D. (1) Inferred Latch, (2) Parallel MUX, (3) Priority MUX, (4) Inferred Clock"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามเฉลย Lab 4 Exercise 3:\n- `if with no final else` เสี่ยงต่อการเกิด Inferred Latch เพราะหากเงื่อนไขไม่จริงตัวแปรจะคงค่าเดิม\n- `if-else chain` สังเคราะห์เป็น Priority Mux เงื่อนไขบนสุดที่จริงจะมีสิทธิ์เลือกก่อน\n- `casez` รองรับ Don't-care bit ด้วย ? ช่วยให้เขียนวงจร Priority Encoder ได้สั้น\n- `case with no default` เสี่ยงต่อการเกิด Inferred Latch หากอินพุตไม่ตรงกับ label ใดๆ"
+    })
+
+    q.append({
+        "id": "LAB4_CHOICE_03",
+        "week": 4,
+        "type": "choice",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 4: แบบฝึกหัดข้อ 4 ทายผลลัพธ์ ALU]",
+        "source": "lab 4.pdf หน้า 4 (Part B Exercise 4) & lab4_Answered.pdf",
+        "question": "พิจารณาโค้ด ALU ใน Lab 4 Exercise 4 กำหนดค่าคงที่ `a = 4'b0110` (6) และ `b = 4'b0011` (3) จงทำนายผลลัพธ์ `result` เมื่อ `op = 3'b001` และ `op = 3'b101` ตามลำดับ:\n\n```verilog\nalways @(*) begin\n  case (op)\n    3'b000: result = a + b;\n    3'b001: result = a - b;\n    3'b010: result = a & b;\n    3'b011: result = a | b;\n    default: result = 4'b0000;\n  endcase\nend\n```",
+        "options": [
+            "A. op=001 ได้ 3 (4'b0011) และ op=101 ได้ 0 (4'b0000 จาก default)",
+            "B. op=001 ได้ 9 (4'b1001) และ op=101 ได้ 3 (4'b0011)",
+            "C. op=001 ได้ 2 (4'b0010) และ op=101 ได้ 7 (4'b0111)",
+            "D. op=001 ได้ 3 (4'b0011) และ op=101 เกิดค่า X (unknown)"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามโจทย์ Lab 4 Exercise 4:\n- เมื่อ op = 3'b001 คือคำสั่ง a - b = 6 - 3 = 3 (ไบนารี 4'b0011)\n- เมื่อ op = 3'b101 ไม่อยู่ใน case list ใดๆ จึงตกเข้าสู่กิ่ง default ส่งผลให้ result = 4'b0000 (0)"
+    })
+
+    q.append({
+        "id": "LAB4_CHOICE_04",
+        "week": 4,
+        "type": "choice",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 4: แบบฝึกหัดข้อ 5 ALU คือ Big MUX]",
+        "source": "lab 4.pdf หน้า 4 (Part B Exercise 5) & lab4_Answered.pdf",
+        "question": "เหตุใดในทางสถาปัตยกรรมดิจิทัลจึงกล่าวว่า 'ALU เป็นเพียงแค่วงจร Multiplexer ตัวใหญ่ตัวหนึ่ง' (Why is an ALU just a big multiplexer?) ตามที่อธิบายใน Lab 4 Exercise 5?",
+        "options": [
+            "A. เพราะบล็อกคำนวณต่างๆ (บวก ลบ AND OR) จะประมวลผลอินพุตไปพร้อมๆ กันแบบคู่ขนานตลอดเวลา จากนั้นใช้สัญญาณรหัสคำสั่ง (Opcode) ทำหน้าที่เป็นขา Select ของ MUX เพื่อเลือกนำเฉพาะผลลัพธ์ที่ต้องการออกสู่เอาต์พุต",
+            "B. เพราะ ALU สามารถเก็บค่าผลลัพธ์ย้อนกลับมาบวกซ้ำได้เหมือน Counter",
+            "C. เพราะภายใน ALU ใช้เพียงเกต NAND ตัวเดียวต่อกันหลายชั้น",
+            "D. เพราะ MUX สามารถเพิ่มความเร็วของสัญญาณนาฬิกาได้โดยตรง"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามคำอธิบายใน Lab 4 Exercise 5: ในวงจรเชิงฮาร์ดแวร์ หน่วยคำนวณทั้งหมดจะคำนวณค่าจากอินพุต a และ b ตลอดเวลาแบบคู่ขนาน สัญญาณ Opcode ในคำสั่ง case/MUX จึงทำหน้าที่เพียงแค่เลือก (Select) ทางเดินสัญญาณว่าจะสวิตช์เอาผลลัพธ์ของหน่วยคำนวณตัวใดส่งออกสู่พอร์ต output"
+    })
+
+    q.append({
+        "id": "LAB4_CODE_02",
+        "week": 4,
+        "type": "code_fill",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 4: แบบฝึกหัดข้อ 6 Priority Encoder]",
+        "source": "lab 4.pdf หน้า 5 (Part C Exercise 6) & lab4_Answered.pdf",
+        "question": "ใน Lab 4 Exercise 6 การเขียน Priority Encoder ขนาด 4-to-2 โดยอินพุต `in[3]` มีความสำคัญสูงสุด หากใช้คำสั่ง `if-else` ข้อใดเขียนเงื่อนไขตรวจสอบอินพุตและความถูกต้องของสัญญาณ `val` (valid) ได้ถูกต้อง?",
+        "options": [
+            "A. assign val = |in; และใน always ตรวจสอบ if (in[3]) code = 2'd3; else if (in[2]) code = 2'd2; else if (in[1]) code = 2'd1; else if (in[0]) code = 2'd0; else code = 2'd0;",
+            "B. assign val = &in; และใน always ตรวจสอบ if (in[0]) code = 2'd3; else if (in[1]) code = 2'd2;",
+            "C. assign val = ^in; และใน always ใช้ case(in) โดยไม่มี default",
+            "D. assign val = ~in[0]; และใน always ใช้ if (in == 4'b1111) code = 2'd3;"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามข้อกำหนด Lab 4 Exercise 6: สัญญาณ val จะเป็น 1 เมื่อมีบิตใดบิตหนึ่งเป็น 1 ซึ่งเขียนด้วย OR-reduction ได้เป็น `val = |in;` ส่วนลำดับความสำคัญต้องเช็กจากบิตสูงสุดลงไปหาต่ำสุด (`in[3]` -> `in[2]` -> `in[1]` -> `in[0]`)"
+    })
+
+    # =========================================================================
+    # WEEK 5 / LAB 5: Sequential Logic Design
+    # =========================================================================
+    q.append({
+        "id": "LAB5_CHOICE_01",
+        "week": 5,
+        "type": "choice",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 5: แบบฝึกหัดข้อ 1 องค์ประกอบ Sequential]",
+        "source": "lab 5.pdf หน้า 1 (Part A Exercise 1) & lab5_Answered.pdf",
+        "question": "วงจรซีเควนเชียล (Sequential Circuit) มาตรฐานตามที่ระบุในวัตถุประสงค์ของ Lab 5 ประกอบด้วย 3 องค์ประกอบหลักพื้นฐานข้อใด?",
+        "options": [
+            "A. Next-State Logic, State Register (Flip-Flops), และ Output Logic",
+            "B. Multiplexer, Decoder, และ Priority Encoder",
+            "C. Clock Divider, Phase-Locked Loop, และ Crystal Oscillator",
+            "D. Half Adder, Full Adder, และ Ripple Carry Adder"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามวัตถุประสงค์และบทนำของ Lab 5 และสไลด์ Week 5 วงจร Sequential ประกอบด้วย 3 ส่วนหลักคือ 1) Next-state logic (วงจร Combinational คำนวณสถานะถัดไป), 2) State register (D Flip-Flop ทำหน้าที่จำสถานะปัจจุบัน), และ 3) Output logic (คำนวณเอาต์พุต)"
+    })
+
+    q.append({
+        "id": "LAB5_CHOICE_02",
+        "week": 5,
+        "type": "choice",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 5: แบบฝึกหัดข้อ 3 หา 5 บั๊ก Sequential]",
+        "source": "lab 5.pdf หน้า 2 (Part B Exercise 3) & lab5_Answered.pdf",
+        "question": "พิจารณาโค้ดโมดูล `dff_reg` และ `Top` ใน Lab 5 Exercise 3 ข้อใดระบุ 3 ใน 5 บั๊กที่ซ่อนอยู่ในโค้ดได้ถูกต้อง?\n\n```verilog\nmodule dff_reg (\n  input clk, rst_n, en       // จุดผิดที่ 1\n  input [7:0] d,\n  output reg [7:0] q\n);\n  always @(posedge clk, rst_n) begin // จุดผิดที่ 2\n    if (rst_n)               // จุดผิดที่ 3\n      q <= 8'b0;\n    else if (en)\n      q = d;                 // จุดผิดที่ 4\n  end\nendmodule\n```",
+        "options": [
+            "A. 1) บรรทัดที่ 2 ขาดจุลภาค (,) หลัง en, 2) sensitivity list ขาดคำว่า negedge หน้า rst_n, 3) ขา reset เป็น active-low แต่เขียนเงื่อนไข if (rst_n) กลับด้าน, 4) ใช้ blocking (=) ใน clocked always block",
+            "B. 1) clk ต้องเป็น wire, 2) q ต้องเป็น wire, 3) d ต้องเป็น reg, 4) ขาด timescale",
+            "C. 1) rst_n ต้องเป็น active-high เท่านั้น, 2) en ห้ามใช้ในบล็อก sequential, 3) ลืมคำสั่ง assign",
+            "D. 1) ต้องใช้ posedge rst_n เสมอ, 2) ขาดคำสั่ง default, 3) ห้ามใช้ if-else ใน always"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามเฉลย Lab 5 Exercise 3 บั๊กทั้ง 5 จุดได้แก่:\n1. บรรทัด 2 ขาด comma หลัง en\n2. `always @(posedge clk, rst_n)` ขาดคำว่า `negedge` นำหน้ารีเซ็ตแบบ asynchronous\n3. สัญญาณ rst_n เป็น Active-Low แต่เขียนเงื่อนไข `if (rst_n)` (ต้องเป็น `if (!rst_n)`)\n4. ใช้ Blocking assignment `q = d;` ใน clocked block (ต้องเป็น `q <= d;`)\n5. ในโมดูล Top เรียกพอร์ตชื่อผิดเป็น `.Q(q_wire)` (Verilog เป็น case-sensitive ต้องเป็น `.q`)"
+    })
+
+    q.append({
+        "id": "LAB5_CHOICE_03",
+        "week": 5,
+        "type": "choice",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 5: แบบฝึกหัดข้อ 4 Blocking vs Non-blocking]",
+        "source": "lab 5.pdf หน้า 3-4 (Part C Exercise 4) & lab5_Answered.pdf",
+        "question": "ใน Lab 5 Exercise 4 กำหนดวงจร Register Chain 4 ขั้น เริ่มต้นจากค่า 0 ทั้งหมด หากอินพุต `d = 1` เมื่อเกิดสัญญาณนาฬิกาขอบขาขึ้นครั้งที่ 1 (After Edge 1) ค่าของ `q1, q2, q3, q4` ในวงจร `confusing_reg` (ใช้ `=` ทั้งหมด) และ `correct_reg` (ใช้ `<=` ทั้งหมด) จะเป็นอย่างไร?",
+        "options": [
+            "A. confusing_reg: q1=1, q2=1, q3=1, q4=1 | correct_reg: q1=1, q2=0, q3=0, q4=0",
+            "B. confusing_reg: q1=1, q2=0, q3=0, q4=0 | correct_reg: q1=1, q2=1, q3=1, q4=1",
+            "C. ทั้งสองวงจรให้ค่าเหมือนกันคือ q1=1, q2=1, q3=1, q4=1",
+            "D. ทั้งสองวงจรให้ค่าเหมือนกันคือ q1=1, q2=0, q3=0, q4=0"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามเฉลย Lab 5 Exercise 4:\n- ใน `confusing_reg` ใช้ `=` (blocking) ทำให้ใน 1 clock cycle ค่า d=1 ถูกอัปเดตลง q1 ทันที แล้ว q2 อ่านค่าใหม่ของ q1 ทันที ไหลทะลุจน q1=1, q2=1, q3=1, q4=1 ภายในรอบเดียว (พฤติกรรมเหมือน Register 1 ตัว ไม่ใช่ 4 ขั้น!)\n- ใน `correct_reg` ใช้ `<=` (non-blocking) ค่าทางขวามือถูกอ่านพร้อมกันทั้งหมดก่อนอัปเดตลงคิว NBA ทำให้หลังจาก Edge 1 มีเพียง q1 ตัวเดียวที่ได้ค่า 1 ส่วน q2, q3, q4 ยังคงเป็น 0 ของเดิม ซึ่งเป็นพฤติกรรมที่ถูกต้องของ 4-stage shift register"
+    })
+
+    q.append({
+        "id": "LAB5_CHOICE_04",
+        "week": 5,
+        "type": "choice",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 5: แบบฝึกหัดข้อ 4 ฮาร์ดแวร์ที่สังเคราะห์ได้]",
+        "source": "lab 5.pdf หน้า 3-4 (Part C Exercise 4) & lab5_Answered.pdf",
+        "question": "จากแบบฝึกหัด Lab 5 Exercise 4 เมื่อนำโค้ด `confusing_reg` (ใช้ `=`) ไปสังเคราะห์ด้วย Quartus II วงจรฮาร์ดแวร์จริงที่สังเคราะห์ได้จะมีลักษณะใดเมื่อเทียบกับ `correct_reg`?",
+        "options": [
+            "A. confusing_reg จะถูกสังเคราะห์ยุบเหลือ D Flip-Flop เพียงตัวเดียว (หรือต่อตรง) ขาดท่อส่งข้อมูล 4 ขั้น ในขณะที่ correct_reg จะสังเคราะห์ได้ D Flip-Flop 4 ตัวต่อเรียงลำดับอย่างถูกต้อง",
+            "B. confusing_reg จะสังเคราะห์ได้วงจร combinational ล้วนๆ ไม่มี Flip-Flop",
+            "C. ทั้งสองโมดูลสังเคราะห์ได้ Flip-Flop 4 ตัวเท่ากันทุกประการ",
+            "D. confusing_reg สังเคราะห์ไม่ผ่านเพราะคอมไพเลอร์ไม่อนุญาตให้ใช้เครื่องหมาย ="
+        ],
+        "answer_index": 0,
+        "explanation": "ตามคำอธิบายใน Lab 5 Exercise 4 การใช้ blocking assignment `=` ในการต่อทอดสัญญาณแบบลูกโซ่ จะทำให้ Synthesizer มองว่าสัญญาณปลายทางเชื่อมต่อถึงอินพุตต้นทางทันที ส่งผลให้วงจรยุบเหลือ Flip-Flop เพียงตัวเดียว กลายเป็นความผิดพลาดระดับ Simulation-Synthesis Mismatch ที่ร้ายแรง"
+    })
+
+    q.append({
+        "id": "LAB5_CODE_01",
+        "week": 5,
+        "type": "code_fill",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 5: แบบฝึกหัดข้อ 5 Shift Register Concatenation]",
+        "source": "lab 5.pdf หน้า 4 (Part D Exercise 5) & lab5_Answered.pdf",
+        "question": "ใน Lab 5 Exercise 5 การทำงานของ 8-bit Shift Register เมื่อกดปุ่ม Enable (`en = 1`) บิตข้อมูลอนุกรม `serial_in` จะถูกเลื่อนเข้าไปต่อท้ายทางขวา (LSB) จงเติมคำสั่ง Concatenation ให้ถูกต้อง:\n\n```verilog\nalways @(posedge clk or negedge rst_n) begin\n  if (!rst_n)\n    q_reg <= 8'b0;\n  else if (en)\n    q_reg <= ____________________________________ ;\nend\n```",
+        "options": [
+            "A. {q_reg[6:0], serial_in}",
+            "B. {serial_in, q_reg[7:1]}",
+            "C. {q_reg[7:0], serial_in}",
+            "D. q_reg << 1"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามโค้ด shift_reg8.v ใน Lab 5 Exercise 5 หน้า 4 การเลื่อนข้อมูลไปทางซ้ายโดยรับบิตใหม่เข้าทาง LSB ทำได้โดยตัดบิตบนสุดออกเหลือ 7 บิต `q_reg[6:0]` แล้วนำ `serial_in` มาต่อท้ายด้วย Concatenation: `{q_reg[6:0], serial_in}`"
+    })
+
+    q.append({
+        "id": "LAB5_TF_01",
+        "week": 5,
+        "type": "tf",
+        "origin": "both",
+        "origin_th": "[ปฏิบัติการ LAB 5 & LECTURE Week 5: Multiple Drivers]",
+        "source": "lab 5.pdf หน้า 2 & Week5_sequential_logic.pdf Slide 24",
+        "question": "ในภาษา Verilog การกำหนดค่าให้กับสัญญาณตัวแปรตัวเดียวกันจากหลายๆ `always` block พร้อมกัน ถือเป็นข้อผิดพลาดร้ายแรงแบบ Multiple Drivers Violation ซึ่งจะทำให้เกิดสถานะขัดแย้ง (Contention / Unknown X)",
+        "options": [
+            "ถูก (True)",
+            "ผิด (False)"
+        ],
+        "answer_index": 0,
+        "explanation": "ถูก (True) ในฮาร์ดแวร์จริง สายสัญญาณ 1 เส้นไม่สามารถถูกขับด้วยเอาต์พุตของเกต 2 ตัวพร้อมกันได้ เพราะจะเกิดการลัดวงจร (Short Circuit) ใน Verilog หากกำหนดค่าตัวแปรเดียวกันใน always มากกว่า 1 บล็อก จะสังเคราะห์ไม่ผ่านหรือเกิดค่า 'X' ทันที"
+    })
+
+    # =========================================================================
+    # WEEK 6 / LAB 6: Counters & Shift Registers
+    # =========================================================================
+    q.append({
+        "id": "LAB6_TF_01",
+        "week": 6,
+        "type": "tf",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 6: แบบฝึกหัดข้อ 1 True/False ข้อ 2]",
+        "source": "Lab6.pdf หน้า 1 (Exercise 1 ข้อ 2) & Lab6_Answered.pdf",
+        "question": "วงจร 4-bit binary up counter สามารถนับค่าที่ไม่ซ้ำกันได้ทั้งหมด 32 ค่า (0 ถึง 31)",
+        "options": [
+            "ถูก (True)",
+            "ผิด (False)"
+        ],
+        "answer_index": 1,
+        "explanation": "ผิด (False) ตัวนับขนาด 4 บิต สามารถนับค่าได้สูงสุด 2^4 = 16 ค่าที่แตกต่างกันเท่านั้น คือตั้งแต่ 0 ถึง 15 (4'b0000 ถึง 4'b1111) หากต้องการนับ 32 ค่าต้องใช้ขนาด 5 บิต (2^5 = 32)"
+    })
+
+    q.append({
+        "id": "LAB6_TF_02",
+        "week": 6,
+        "type": "tf",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 6: แบบฝึกหัดข้อ 1 True/False ข้อ 3]",
+        "source": "Lab6.pdf หน้า 1 (Exercise 1 ข้อ 3) & Lab6_Answered.pdf",
+        "question": "วงจรนับ Mod-10 counter ต้องใช้ Flip-Flop อย่างน้อย 5 บิต เพราะสูตรคือ $clog2(10) = 5",
+        "options": [
+            "ถูก (True)",
+            "ผิด (False)"
+        ],
+        "answer_index": 1,
+        "explanation": "ผิด (False) สูตรคำนวณจำนวนบิตคือ ceil(log2(10)) หรือ $clog2(10) ซึ่ง 2^3 = 8 < 10 <= 2^4 = 16 ดังนั้น Mod-10 counter ใช้ Flip-Flop เพียง 4 บิตเท่านั้น ไม่ใช่ 5 บิต"
+    })
+
+    q.append({
+        "id": "LAB6_TF_03",
+        "week": 6,
+        "type": "tf",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 6: แบบฝึกหัดข้อ 1 True/False ข้อ 5]",
+        "source": "Lab6.pdf หน้า 1 (Exercise 1 ข้อ 5) & Lab6_Answered.pdf",
+        "question": "วงจร Clock Divider ที่ใช้ตัวนับเคาน์เตอร์และกลับสถานะ (Toggle) สามารถสร้างสัญญาณนาฬิกาที่มีความถี่สูงขึ้น (Frequency Multiplication) ได้",
+        "options": [
+            "ถูก (True)",
+            "ผิด (False)"
+        ],
+        "answer_index": 1,
+        "explanation": "ผิด (False) ตัวนับเคาน์เตอร์ (Counter) สามารถทำได้เพียงการหารความถี่ (Frequency Division) ให้สัญญาณช้าลงเท่านั้น ไม่สามารถคูณความถี่ให้สูงขึ้นได้ หากต้องการคูณความถี่จะต้องใช้วงจร Phase-Locked Loop (PLL)"
+    })
+
+    q.append({
+        "id": "LAB6_TF_04",
+        "week": 6,
+        "type": "tf",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 6: แบบฝึกหัดข้อ 1 True/False ข้อ 8]",
+        "source": "Lab6.pdf หน้า 1 (Exercise 1 ข้อ 8) & Lab6_Answered.pdf",
+        "question": "Shift Register ชนิด SIPO นิยมนำมาใช้ในฝั่งส่งข้อมูลของ UART (UART TX) ส่วน PISO นิยมใช้ในฝั่งรับข้อมูล (UART RX)",
+        "options": [
+            "ถูก (True)",
+            "ผิด (False)"
+        ],
+        "answer_index": 1,
+        "explanation": "ผิด (False) ในการสื่อสารอนุกรม UART ฝั่งส่ง (TX) รับข้อมูลขนาน 8 บิตจากระบบแล้วแปลงเป็นอนุกรมส่งออกสายเส้นเดียว จึงต้องใช้ PISO (Parallel-In Serial-Out) ส่วนฝั่งรับ (RX) รับสัญญาณอนุกรมทีละบิตแล้วแปลงออกขนาน 8 บิต จึงต้องใช้ SIPO (Serial-In Parallel-Out)"
+    })
+
+    q.append({
+        "id": "LAB6_TF_05",
+        "week": 6,
+        "type": "tf",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 6: แบบฝึกหัดข้อ 1 True/False ข้อ 9]",
+        "source": "Lab6.pdf หน้า 1 (Exercise 1 ข้อ 9) & Lab6_Answered.pdf",
+        "question": "วงจร Ring Counter ขนาด 4 บิต จะมีจำนวนสถานะที่เกิดขึ้นได้ทั้งหมด 4 สถานะ ขณะที่ Johnson Counter ขนาด 4 บิต จะมีจำนวนสถานะทั้งหมด 8 สถานะ",
+        "options": [
+            "ถูก (True)",
+            "ผิด (False)"
+        ],
+        "answer_index": 0,
+        "explanation": "ถูก (True) Ring Counter ขนาด N บิต จะมี N สถานะ (เช่น 1000 -> 0100 -> 0010 -> 0001) ส่วน Johnson Counter (Twisted-Ring) ขนาด N บิต จะนำบิตสุดท้ายกลับด้านวนกลับมาเข้าบิตแรก ทำให้มีจำนวนสถานะเป็น 2N = 8 สถานะ"
+    })
+
+    q.append({
+        "id": "LAB6_CHOICE_01",
+        "week": 6,
+        "type": "choice",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 6: แบบฝึกหัดข้อ 3 หา 4 บั๊กใน Clock Divider]",
+        "source": "Lab6.pdf หน้า 2 (Exercise 3) & Lab6_Answered.pdf",
+        "question": "พิจารณาโค้ดวงจรหารความถี่ใน Lab 6 Exercise 3 ด้านล่าง ข้อใดระบุ 2 บั๊กที่เป็นข้อผิดพลาดสำคัญในโค้ดนี้ได้ถูกต้อง?\n\n```verilog\n1  module clk_divider (\n2    input  wire clk_50m, rst_n,\n3    output wire clk_1hz             // บั๊ก\n4  );\n5  reg [23:0] divider;               // บั๊ก\n6  always @(posedge clk_50m) begin\n7    if (!rst_n) begin\n8      divider = 0;                  // บั๊ก\n9      clk_1hz = 0;\n10   end else if (divider == 25_000_000) begin // บั๊ก\n11     divider <= 0;\n12     clk_1hz <= ~clk_1hz;\n13   end else\n14     divider <= divider + 1;\n15 end\n```",
+        "options": [
+            "A. บรรทัด 3 `output wire clk_1hz` ขาดคำว่า `reg` และ บรรทัด 5 `reg [23:0] divider` มีขนาดบิตไม่พอ (24 บิตนับได้สูงสุด 16,777,215 ซึ่งล้นก่อนถึง 25,000,000)",
+            "B. บรรทัด 2 ขาดพอร์ต enable และ บรรทัด 6 ต้องเป็น negedge clk_50m",
+            "C. บรรทัด 10 ตัวเลขต้องเป็น 50,000,000 เท่านั้น และ บรรทัด 14 ต้องใช้ blocking =",
+            "D. บรรทัด 1 ขาด timescale และ บรรทัด 7 rst_n ต้องเป็น active-high"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามเฉลย Lab 6 Exercise 3 บั๊กทั้ง 4 จุดได้แก่:\n1. บรรทัด 3: clk_1hz ถูกกำหนดค่าใน always แต่ประกาศเป็น `output wire` ต้องเปลี่ยนเป็น `output reg clk_1hz`\n2. บรรทัด 5: `reg [23:0] divider` มี 24 บิต นับได้สูงสุดแค่ 16,777,215 ซึ่งจะ Overflow ก่อนถึง 25,000,000 ต้องใช้ 25 บิต (`reg [24:0] divider`)\n3. บรรทัด 8-9: ใช้ blocking assignment `=` ใน clocked always block\n4. บรรทัด 10: `divider == 25_000_000` นับเกินไป 1 คาบ (Off-by-one) ค่าที่ถูกต้องคือนับ 0 ถึง 24,999,999"
+    })
+
+    q.append({
+        "id": "LAB6_CODE_01",
+        "week": 6,
+        "type": "code_fill",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 6: แบบฝึกหัดข้อ 5(b) Concatenation ใน Shift Register]",
+        "source": "Lab6.pdf หน้า 3 (Exercise 5) & Lab6_Answered.pdf",
+        "question": "ใน Lab 6 Exercise 5(b) จงเติมคำสั่ง Concatenation `{ }` สำหรับการทำ Rotate Left (บิตบนสุด q[7] วนกลับมาเข้าบิตล่างสุด) ให้ถูกต้อง:\n\n```verilog\n// Rotate LEFT: bit บนสุดวนกลับเข้า LSB\nq <= { ________________ , ________________ };\n```",
+        "options": [
+            "A. q[6:0] และ q[7]",
+            "B. q[7] และ q[6:0]",
+            "C. q[7:1] และ q[0]",
+            "D. ser_in และ q[6:0]"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามเฉลย Lab 6 Exercise 5(b) ช่อง (3): การหมุนบิตไปทางซ้าย (Rotate Left) คือการเลื่อนบิต 6 ถึง 0 ขึ้นไปตำแหน่งบิต 7 ถึง 1 แล้วนำบิตบนสุดเดิมคือ `q[7]` วนกลับมาใส่ที่ตำแหน่ง LSB (บิต 0) จึงเขียนเป็น `{q[6:0], q[7]}`"
+    })
+
+    # =========================================================================
+    # WEEK 7 / LAB 7: Finite State Machine (FSM) Design
+    # =========================================================================
+    q.append({
+        "id": "LAB7_TF_01",
+        "week": 7,
+        "type": "tf",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 7: แบบฝึกหัดข้อ 1 Moore vs Mealy ข้อ 1]",
+        "source": "Lab7.pdf หน้า 1 (Exercise 1 ข้อ 1) & Lab7_Answered.pdf",
+        "question": "Moore FSM มีค่าเอาต์พุต (Output) ที่ขึ้นกับสถานะปัจจุบัน (State) เพียงอย่างเดียว ไม่ว่าสัญญาณอินพุตจะเปลี่ยนแปลงอย่างไร เอาต์พุตจะไม่เปลี่ยนจนกว่าสถานะจะเปลี่ยน",
+        "options": [
+            "ถูก (True)",
+            "ผิด (False)"
+        ],
+        "answer_index": 0,
+        "explanation": "ถูก (True) ตามคุณสมบัติของ Moore FSM: Output = f(State) เอาต์พุตขึ้นกับสเตตปัจจุบันเท่านั้น จึงมีเสถียรภาพสูงและปลอดจากสัญญาณรบกวนชั่วขณะ (Glitch-free)"
+    })
+
+    q.append({
+        "id": "LAB7_TF_02",
+        "week": 7,
+        "type": "tf",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 7: แบบฝึกหัดข้อ 1 Moore vs Mealy ข้อ 2]",
+        "source": "Lab7.pdf หน้า 1 (Exercise 1 ข้อ 2) & Lab7_Answered.pdf",
+        "question": "Mealy FSM ต้องเขียนด้วยรูปแบบโครงสร้าง 3-always-block เสมอเช่นเดียวกับ Moore FSM",
+        "options": [
+            "ถูก (True)",
+            "ผิด (False)"
+        ],
+        "answer_index": 1,
+        "explanation": "ผิด (False) Mealy FSM นิยมเขียนด้วยโครงสร้าง 2-always-block หรือรวม Next-State Logic เข้ากับ Output Logic ในบล็อกเดียวกัน เนื่องจาก Output เป็นฟังก์ชันร่วมของ Current State และ Inputs ไม่จำเป็นต้องแยก 3 บล็อกแบบ Moore เสมอไป"
+    })
+
+    q.append({
+        "id": "LAB7_TF_03",
+        "week": 7,
+        "type": "tf",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 7: แบบฝึกหัดข้อ 1 Moore vs Mealy ข้อ 4]",
+        "source": "Lab7.pdf หน้า 1 (Exercise 1 ข้อ 4) & Lab7_Answered.pdf",
+        "question": "ในผังสถานะ (State Diagram) ของ Moore FSM ค่าเอาต์พุตจะถูกเขียนกำกับไว้บนเส้นลูกศรการเปลี่ยนสถานะ (Transition Arrow) ระหว่าง State",
+        "options": [
+            "ถูก (True)",
+            "ผิด (False)"
+        ],
+        "answer_index": 1,
+        "explanation": "ผิด (False) ใน State Diagram ของ Moore FSM ค่าเอาต์พุตจะถูกเขียนไว้ภายในวงกลมของ State นั้นๆ (เพราะขึ้นกับสเตตเท่านั้น) ส่วนการเขียนเอาต์พุตบนลูกศร (เช่น Input/Output) เป็นสัญลักษณ์ของ Mealy FSM"
+    })
+
+    q.append({
+        "id": "LAB7_TF_04",
+        "week": 7,
+        "type": "tf",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 7: แบบฝึกหัดข้อ 1 Moore vs Mealy ข้อ 5]",
+        "source": "Lab7.pdf หน้า 1 (Exercise 1 ข้อ 5) & Lab7_Answered.pdf",
+        "question": "Mealy FSM สามารถสร้างเอาต์พุตตอบสนองต่อการเปลี่ยนแปลงของอินพุตได้เร็วกว่า Moore FSM อยู่ 1 คาบสัญญาณนาฬิกา (1 clock cycle) เพราะไม่ต้องรอให้เกิดการเปลี่ยนสเตตก่อน",
+        "options": [
+            "ถูก (True)",
+            "ผิด (False)"
+        ],
+        "answer_index": 0,
+        "explanation": "ถูก (True) Mealy FSM มีสมการ Output = f(State, Input) ดังนั้นเมื่ออินพุตเปลี่ยน สัญญาณเอาต์พุตจะเปลี่ยนตามทันทีผ่านวงจร Combinational โดยไม่ต้องรอขอบขาขึ้นของ Clock เพื่อเปลี่ยน State เหมือน Moore FSM"
+    })
+
+    q.append({
+        "id": "LAB7_TF_05",
+        "week": 7,
+        "type": "tf",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 7: แบบฝึกหัดข้อ 1 Moore vs Mealy ข้อ 6]",
+        "source": "Lab7.pdf หน้า 1 (Exercise 1 ข้อ 6) & Lab7_Answered.pdf",
+        "question": "การเข้ารหัสสถานะแบบ One-Hot Encoding ใช้จำนวน Flip-Flop น้อยกว่าแบบ Binary Encoding เสมอ จึงประหยัดพื้นที่ฮาร์ดแวร์ (Area) บน FPGA มากกว่า",
+        "options": [
+            "ถูก (True)",
+            "ผิด (False)"
+        ],
+        "answer_index": 1,
+        "explanation": "ผิด (False) One-Hot Encoding ใช้ Flip-Flop 1 ตัวต่อ 1 สถานะ (N สเตตใช้ N FFs) ซึ่งใช้จำนวน Flip-Flop 'มากกว่า' Binary Encoding (ซึ่งใช้เพียง ceil(log2 N) FFs) เสมอ แต่แลกมาด้วยความเร็วที่สูงกว่าและวงจร Combinational ถอดรหัสที่เรียบง่าย"
+    })
+
+    q.append({
+        "id": "LAB7_TF_06",
+        "week": 7,
+        "type": "tf",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 7: แบบฝึกหัดข้อ 1 Moore vs Mealy ข้อ 10]",
+        "source": "Lab7.pdf หน้า 1 (Exercise 1 ข้อ 10) & Lab7_Answered.pdf",
+        "question": "หากใช้สัญญาณนาฬิกา CLOCK_50 (50 MHz) ให้กับวงจรตรวจจับลำดับปุ่มกดบนบอร์ด DE0 สามารถต่อตรงสัญญาณจากปุ่มกดเข้ากับ FSM ได้ทันทีโดยไม่จำเป็นต้องมีวงจร Edge Detection",
+        "options": [
+            "ถูก (True)",
+            "ผิด (False)"
+        ],
+        "answer_index": 1,
+        "explanation": "ผิด (False) การกดปุ่มของมนุษย์ 1 ครั้งกินเวลานานหลายสิบถึงหลายร้อยมิลลิวินาที ซึ่งเทียบเท่ากับสัญญาณนาฬิกา 50 MHz นับล้านๆ รอบ หากไม่ใช้วงจร Edge Detection ตรวจจับเพียง 1 clock pulse วงจร FSM จะเปลี่ยนสเตตนับล้านครั้งในการกดเพียงครั้งเดียว"
+    })
+
+    q.append({
+        "id": "LAB7_CHOICE_01",
+        "week": 7,
+        "type": "choice",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 7: แบบฝึกหัดข้อ 4-7 หาบั๊กใน FSM]",
+        "source": "Lab7.pdf หน้า 3 (Exercise 4-7) & Lab7_Answered.pdf",
+        "question": "พิจารณาโค้ด FSM บล็อก Combinational Next-State Logic ด้านล่าง ข้อใดระบุข้อผิดพลาดที่ร้ายแรงที่สุดและผลกระทบต่อวงจรได้ถูกต้อง?\n\n```verilog\nalways @(*) begin\n  case (state)\n    IDLE: if (in) next_state = S1;\n    S1:   if (!in) next_state <= IDLE; else next_state <= S2;\n    S2:   next_state = IDLE;\n  endcase\nend\n```",
+        "options": [
+            "A. 1) มีการใช้ non-blocking (<=) ปนใน combinational block, 2) ขาดกิ่ง default และขาด else ในสเตต IDLE ทำให้เกิด Inferred Latch",
+            "B. 1) ตัวแปร state ต้องเป็น integer, 2) ชื่อสเตตต้องขึ้นต้นด้วยตัวพิมพ์เล็กเสมอ",
+            "C. 1) คำสั่ง case ต้องเปลี่ยนเป็น if-else, 2) next_state ต้องเป็น wire",
+            "D. 1) always @(*) ต้องเปลี่ยนเป็น always @(posedge clk), 2) ขาด reset"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามแบบฝึกหัด Lab 7 ข้อ 4-7 ในบล็อก combinational logic ห้ามใช้ non-blocking `<=` โดยเด็ดขาด และในคำสั่ง case หากระบุเงื่อนไขไม่ครบ (เช่น IDLE เมื่อ in=0 ไม่ได้บอกว่า next_state เป็นอะไร) และไม่มีกิ่ง default จะทำให้เครื่องมือสังเคราะห์สร้าง Latch ขึ้นมาทำลาย Timing ของวงจร"
+    })
+
+    q.append({
+        "id": "LAB7_CODE_01",
+        "week": 7,
+        "type": "code_fill",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 7: แบบฝึกหัดข้อ 9 วงจร Edge Detector]",
+        "source": "Lab7.pdf หน้า 7 (Exercise 9 edge_detector.v) & Lab7_Answered.pdf",
+        "question": "ใน Lab 7 Exercise 9 การเขียนโมดูล `edge_detector.v` เพื่อตรวจจับขอบขาลง (Falling Edge) ของปุ่มกด Active-Low ให้เกิดพัลส์กว้าง 1 คาบนาฬิกา จงเติมสมการลอจิกของสัญญาณ `tick` ให้ถูกต้อง:\n\n```verilog\nmodule edge_detector (\n  input  wire clk, rst_n, key_in,\n  output wire tick\n);\n  reg r1, r2;\n  always @(posedge clk or negedge rst_n) begin\n    if (!rst_n) begin r1 <= 1'b1; r2 <= 1'b1; end\n    else        begin r1 <= key_in; r2 <= r1; end\n  end\n  assign tick = _____________________ ;\nendmodule\n```",
+        "options": [
+            "A. r2 & ~r1",
+            "B. ~r2 & r1",
+            "C. r1 & r2",
+            "D. r1 ^ r2"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามเฉลย Lab 7 Exercise 9 หน้า 7: ปุ่มกดเป็น Active-Low (1=ปล่อย, 0=กด) การเกิดขอบขาลงหมายความว่าในรอบก่อนหน้าปุ่มยังปล่อยอยู่ (r2 = 1) และในรอบปัจจุบันปุ่มถูกกดลงแล้ว (r1 = 0) ดังนั้นสัญญาณพัลส์ตรวจจับขอบขาลงจึงมีสมการเป็น `assign tick = r2 & ~r1;`"
+    })
+
+    q.append({
+        "id": "LAB7_CHOICE_02",
+        "week": 7,
+        "type": "choice",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 7: สเปกระบบกลอนรหัส Combination Lock]",
+        "source": "Lab7.pdf หน้า 4-5 (Exercise 8 & 11) & Lab7_Answered.pdf",
+        "question": "ตามสเปกระบบกลอนประตูดิจิทัล (Combination Lock FSM) ใน Lab 7 Exercise 8 ข้อใดระบุรหัสผ่านที่ถูกต้องและพฤติกรรมความปลอดภัยเมื่อกดรหัสผิดได้ถูกต้อง?",
+        "options": [
+            "A. รหัสผ่าน 3 หลักคือ 3 -> 7 -> 1, หากกดผิดติดกัน 3 ครั้งระบบจะเข้าสู่สภาวะ LOCKOUT เป็นเวลา 10 วินาที และเมื่อปลดล็อคสำเร็จหากไม่กดปุ่มภายใน 5 วินาทีจะ Auto-relock",
+            "B. รหัสผ่านคือ 1 -> 2 -> 3, หากกดผิด 5 ครั้งจะส่งเสียงเตือน 1 นาที และไม่มีระบบ Auto-relock",
+            "C. รหัสผ่านคือ 9 -> 9 -> 9, ปลดล็อคค้างไว้ถาวรจนกว่าจะกดปุ่ม Reset",
+            "D. รหัสผ่านคือ 7 -> 3 -> 1, หากกดผิดครั้งเดียวจะตัดไฟระบบทันที"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามสเปกของ Lab 7 ข้อ 8.2 รหัสผ่านที่ hard-coded ไว้คือ 3-7-1; หากผู้ใช้กดผิดครบ 3 ครั้ง ระบบจะเข้าสู่สถานะ LOCKOUT เป็นเวลา 10 วินาทีพร้อมแสดง Alarm; และหากอยู่ในสถานะ UNLOCKED ครบ 5 วินาทีโดยไม่มีการกดปุ่มใดๆ วงจรจะล็อกกลับอัตโนมัติ (Auto-lock)"
+    })
+
+    # =========================================================================
+    # WEEK 8 / LAB 8: Testbench & Verification
+    # =========================================================================
+    q.append({
+        "id": "LAB8_CHOICE_01",
+        "week": 8,
+        "type": "choice",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 8: Debug Case Study 1 Shift Reg]",
+        "source": "Lab8.pdf หน้า 3-4 (Section 3.1 Case 1) & Lab8_Answered.pdf",
+        "question": "พิจารณาโค้ด Testbench ตรวจสอบ Shift Register ใน Lab 8 ข้อ 3.1 บรรทัดที่ 11 มีบั๊กที่ร้ายแรงที่สุดคือข้อใด?\n\n```verilog\ntask check_pout(input [3:0] exp, input [127:0] label);\n  begin\n    if (pout = exp) begin     // บรรทัดที่ 11\n      $display(\"[PASS] %s: pout=%b\", label, pout);\n    end else begin ... end\n  end\nendtask\n```",
+        "options": [
+            "A. ใช้เครื่องหมายกำหนดค่าเดี่ยว `=` แทนที่จะเป็นเครื่องหมายเปรียบเทียบ `===` หรือ `==` ทำให้เกิด Syntax Error หรือค่า pout ถูกเขียนทับ",
+            "B. ฟังก์ชัน $display ห้ามใช้ตัวระบุ %s",
+            "C. ตัวแปร pout ต้องประกาศเป็น input ของ task",
+            "D. task ต้องมีคำสั่ง return คืนค่า"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามเฉลย Lab 8 Section 3.1 Case Study 1: ในภาษา Verilog เครื่องหมาย `=` คือการกำหนดค่า (Assignment) ไม่ใช่การเปรียบเทียบความเท่ากัน (Comparison) ในคำสั่ง if จะต้องใช้ `==` หรือดีที่สุดคือ `===` (Case Equality)"
+    })
+
+    q.append({
+        "id": "LAB8_CHOICE_02",
+        "week": 8,
+        "type": "choice",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 8: Debug Case Study 1 Race Condition]",
+        "source": "Lab8.pdf หน้า 3-4 (Section 3.1 Case 1) & Lab8_Answered.pdf",
+        "question": "ใน Lab 8 ข้อ 3.1 Case Study 1 ในบล็อก initial บรรทัดที่ 24:\n`sin=1; @(posedge clk); check_pout(4'b0001, \"shift-in 1\");`\nเหตุใดการตรวจสอบผลลัพธ์จึงเกิดข้อผิดพลาด (FAIL) แม้ว่าวงจร DUT จะเขียนโค้ดถูกต้องแล้ว?",
+        "options": [
+            "A. ขาดการหน่วงเวลา `#1;` หลัง `@(posedge clk)` ทำให้เกิด Race Condition โดย Testbench สุ่มตรวจค่าเอาต์พุตพร้อมกับจังหวะที่ DUT กำลังอัปเดตผ่านคิว NBA จึงได้ค่าเก่าก่อนเลื่อนบิต",
+            "B. สัญญาณ clk มีความถี่สูงเกินไปสำหรับ ModelSim",
+            "C. บิต sin ต้องป้อนด้วยเลขฐานสิบหกเท่านั้น",
+            "D. ต้องรอ 10 คาบนาฬิกาก่อนตรวจเสมอ"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามเฉลย Lab 8 หน้า 4 บั๊กจุดที่ 2: DUT อัปเดตพอร์ตเอาต์พุตด้วยคำสั่ง Non-blocking (`<=`) ซึ่งถูกจัดตารางเวลาในคิว NBA ของ Verilog Event Queue หาก Testbench เรียก task ตรวจสอบค่าทันทีที่ `posedge clk` โดยไม่หน่วงเวลา `#1;` Testbench จะอ่านค่าเก่าที่ยังไม่อัปเดต เกิดเป็น Race Condition"
+    })
+
+    q.append({
+        "id": "LAB8_CHOICE_03",
+        "week": 8,
+        "type": "choice",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 8: Debug Case Study 3 Clock Generator]",
+        "source": "Lab8.pdf หน้า 4 & Lab8_Answered.pdf",
+        "question": "หากเขียนตัวกำเนิดสัญญาณนาฬิกาใน Testbench ดังนี้: `always clk = ~clk;` จะส่งผลอย่างไรต่อโปรแกรมจำลอง ModelSim?",
+        "options": [
+            "A. โปรแกรมจะค้างในลูปเวลาศูนย์ (Zero-delay infinite loop) ทำให้ Simulation แฮงก์ทันที เพราะไม่มีการระบุการหน่วงเวลา (เช่น #5)",
+            "B. วงจรจะสร้างความถี่ 100 MHz โดยอัตโนมัติ",
+            "C. สัญญาณ clk จะกลายเป็นค่า X",
+            "D. โปรแกรมจะข้ามคำสั่งนี้ไปโดยไม่ทำงาน"
+        ],
+        "answer_index": 0,
+        "explanation": "ใน Verilog บล็อก `always clk = ~clk;` ที่ไม่มีการหน่วงเวลา delay `#` จะทำงานวนรอบซ้ำไม่สิ้นสุดที่จุดเวลา t = 0 ส่งผลให้ Simulation Engine ของ ModelSim ค้าง (Hang) ทันที"
+    })
+
+    q.append({
+        "id": "LAB8_TF_01",
+        "week": 8,
+        "type": "tf",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 8: แบบฝึกหัดข้อ 3.2 True/False ข้อ 1]",
+        "source": "Lab8.pdf หน้า 5 (Section 3.2 ข้อ 1) & Lab8_Answered.pdf",
+        "question": "ควรใช้ `===` และ `!==` แทน `==` และ `!=` ในการเปรียบเทียบค่าใน Testbench เพื่อให้สามารถดักจับและตรวจสอบสถานะ X (Unknown) และ Z (High-Impedance) ได้อย่างถูกต้องแม่นยำ",
+        "options": [
+            "ถูก (True)",
+            "ผิด (False)"
+        ],
+        "answer_index": 0,
+        "explanation": "ถูก (True) เพราะตัวกระทำ Logical Equality (`==`) หากมีบิตใดเป็น X หรือ Z จะคืนค่า 1'bx ซึ่งในคำสั่ง if จะถูกมองว่าเป็นเท็จ (False) ทำให้บั๊กหลุดรอดไปได้ ส่วน Case Equality (`===`) จะเปรียบเทียบตรงบิตต่อบิตรวมถึงค่า 0, 1, X, Z"
+    })
+
+    q.append({
+        "id": "LAB8_TF_02",
+        "week": 8,
+        "type": "tf",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 8: แบบฝึกหัดข้อ 3.2 True/False ข้อ 2]",
+        "source": "Lab8.pdf หน้า 5 (Section 3.2 ข้อ 2) & Lab8_Answered.pdf",
+        "question": "ไฟล์ Testbench (`tb_*.v`) จะถูกนำไปผ่านขั้นตอน Synthesis และ Fitter เพื่อดาวน์โหลดลงสู่ชิป FPGA บนบอร์ด DE0 เช่นเดียวกับไฟล์ Design Under Test (DUT)",
+        "options": [
+            "ถูก (True)",
+            "ผิด (False)"
+        ],
+        "answer_index": 1,
+        "explanation": "ผิด (False) ไฟล์ Testbench มีโครงสร้างคำสั่งจำลองเวลาที่ไม่สามารถสังเคราะห์เป็นฮาร์ดแวร์จริงได้ (Non-synthesizable constructs เช่น #delay, initial, $display, $finish) ไฟล์ Testbench มีไว้สำหรับรันจำลองการทำงานบนคอมพิวเตอร์ผ่าน ModelSim เท่านั้น ไม่ถูกคอมไพล์ลงชิป FPGA"
+    })
+
+    q.append({
+        "id": "LAB8_TF_03",
+        "week": 8,
+        "type": "tf",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 8: แบบฝึกหัดข้อ 3.2 True/False ข้อ 4]",
+        "source": "Lab8.pdf หน้า 5 (Section 3.2 ข้อ 4) & Lab8_Answered.pdf",
+        "question": "ในไฟล์ Testbench ต้องมีคำสั่ง `$finish;` ถูกเรียกเมื่อการทดสอบสิ้นสุด มิฉะนั้นกระบวนการ Simulation อาจรันค้างต่อไปเรื่อยๆ โดยไม่ยอมหยุด",
+        "options": [
+            "ถูก (True)",
+            "ผิด (False)"
+        ],
+        "answer_index": 0,
+        "explanation": "ถูก (True) หากใน Testbench มีบล็อกกำเนิดสัญญาณนาฬิกา `always #5 clk = ~clk;` ตัวจำลองจะสร้างสัญญาณนาฬิกาต่อไปเรื่อยๆ อย่างไม่มีที่สิ้นสุด หากบล็อก `initial` ไม่เรียกคำสั่ง `$finish;` เพื่อสั่งปิดโปรแกรมจำลอง"
+    })
+
+    q.append({
+        "id": "LAB8_TF_04",
+        "week": 8,
+        "type": "tf",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 8: แบบฝึกหัดข้อ 3.2 True/False ข้อ 5]",
+        "source": "Lab8.pdf หน้า 5 (Section 3.2 ข้อ 5) & Lab8_Answered.pdf",
+        "question": "หากวงจรดิจิทัลผ่านการทดสอบ RTL Functional Simulation ด้วย Testbench แล้ว รับประกันได้ 100% ว่าวงจรจะทำงานได้อย่างถูกต้องแน่นอนเมื่อดาวน์โหลดลงสู่บอร์ด FPGA จริง",
+        "options": [
+            "ถูก (True)",
+            "ผิด (False)"
+        ],
+        "answer_index": 1,
+        "explanation": "ผิด (False) การทดสอบ RTL Functional Simulation เป็นการทดสอบพฤติกรรมเชิงตรรกะแบบเวลาศูนย์ (Zero-delay) ไม่ได้คำนึงถึงความล่าช้าของเกต (Gate Delay), การเดินสาย (Routing Delay), ปัญหา Setup Time / Hold Time Violations และปัญหา Metastability บนฮาร์ดแวร์จริง"
+    })
+
+    q.append({
+        "id": "LAB8_CHOICE_04",
+        "week": 8,
+        "type": "choice",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 8: ลำดับคำสั่ง ModelSim]",
+        "source": "Lab8.pdf หน้า 5 (Section 3.2 ข้อ 6) & Lab8_Answered.pdf",
+        "question": "ลำดับคำสั่งที่ถูกต้องในการสั่งคอมไพล์และจำลองการทำงานของวงจรผ่าน ModelSim Command Line (Transcript) คือข้อใด?",
+        "options": [
+            "A. vlib work -> vlog dut.v tb.v -> vsim work.tb -> run -all",
+            "B. vsim work.tb -> vlog dut.v -> vlib work -> run -all",
+            "C. run -all -> vlib work -> vlog dut.v -> vsim work.tb",
+            "D. vlog dut.v -> vsim work.tb -> vlib work -> run -all"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามเฉลย Lab 8 Section 3.2 ข้อ 6 ลำดับคำสั่งมาตรฐานของ ModelSim คือ 1) `vlib work` (สร้างไลบรารีออกแบบ), 2) `vlog *.v` (คอมไพล์โค้ด Verilog), 3) `vsim work.tb` (โหลดโมดูล testbench เข้า simulator), และ 4) `run -all` (เริ่มรันการจำลอง)"
+    })
+
+    q.append({
+        "id": "LAB8_CODE_01",
+        "week": 8,
+        "type": "code_fill",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 8: ส่วนที่ 2 เติมโค้ด tb_traffic_light]",
+        "source": "Lab8.pdf หน้า 15 (Section 6.2 tb_traffic_light.v) & Lab8_Answered.pdf",
+        "question": "ใน Lab 8 Section 6.2 โมดูล `tb_traffic_light.v` ไฟจราจรเปลี่ยนลำดับสถานะ RED (4 ticks) -> GREEN (4 ticks) -> YELLOW (2 ticks) -> RED จงเติมโค้ดตรวจสอบสถานะ YELLOW ในช่องว่าง (4) และเติมคำสั่งจบการทำงานในช่องว่าง (6) ให้ถูกต้อง:\n\n```verilog\n  repeat (4) pulse_tick; #1;\n  check_light(3'b___, \"GREEN(4)->YELLOW\");   // (4)\n  repeat (2) pulse_tick; #1;\n  check_light(3'b100, \"YELLOW(2)->RED (loop)\");\n  if (errors==0) $display(\"TESTBENCH PASSED\");\n  ______;                                     // (6)\n```",
+        "options": [
+            "A. (4) 010, (6) $finish;",
+            "B. (4) 001, (6) $stop;",
+            "C. (4) 100, (6) return;",
+            "D. (4) 111, (6) $display;"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามเฉลย Lab 8 หน้า 15: ลำดับไฟจราจรคือ RED=`3'b100`, GREEN=`3'b001`, และ YELLOW=`3'b010` ดังนั้นในช่อง (4) ตรวจสอบไฟเหลืองจึงเป็น `3'b010` และช่อง (6) คำสั่งจบการจำลองคือ `$finish;`"
+    })
+
+    # =========================================================================
+    # LAB 9: AES-128 Encryption with AI Assistance
+    # =========================================================================
+    q.append({
+        "id": "LAB9_CHOICE_01",
+        "week": 9,
+        "type": "choice",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 9: สเปกวงจร AES-128 Encryption]",
+        "source": "lab9_Lab_AES128_Encryption 1.pdf หน้า 1-3",
+        "question": "ตามมาตรฐาน NIST FIPS-197 ในเอกสารสเปก Lab 9 วงจรเข้ารหัส AES-128 ประมวลผลบล็อกข้อมูลขนาด 128 บิต ด้วยกุญแจขนาด 128 บิต มีจำนวนรอบการแปลง (Rounds) ทั้งหมดกี่รอบ?",
+        "options": [
+            "A. 10 รอบ (Round 0 ถึง Round 10 โดย Round 0 คือ AddRoundKey)",
+            "B. 12 รอบ",
+            "C. 14 รอบ",
+            "D. 16 รอบ"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามข้อกำหนด FIPS-197 ใน Lab 9 หน้า 2-3 สำหรับ AES-128 จะมีทั้งหมด 10 รอบหลัก โดยเริ่มจาก Round 0 (ทำเพียง AddRoundKey ด้วย Round Key 0), ตามด้วย Round 1 ถึง 9 (ทำครบ 4 ขั้นตอน: SubBytes, ShiftRows, MixColumns, AddRoundKey) และจบที่ Round 10"
+    })
+
+    q.append({
+        "id": "LAB9_CHOICE_02",
+        "week": 9,
+        "type": "choice",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 9: สถาปัตยกรรมรอบสุดท้ายของ AES-128]",
+        "source": "lab9_Lab_AES128_Encryption 1.pdf หน้า 3",
+        "question": "ในการคำนวณรอบสุดท้าย (Round 10) ของอัลกอริทึม AES-128 ใน Lab 9 ขั้นตอนใดถูกตัดออก (ข้ามการทำงาน) ตามมาตรฐาน?",
+        "options": [
+            "A. MixColumns (ไม่มีขั้นตอน MixColumns ใน Round 10)",
+            "B. SubBytes",
+            "C. ShiftRows",
+            "D. AddRoundKey"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามเอกสาร Lab 9 หน้า 3 ระบุชัดเจนว่า: 'Round 10: state = AddRoundKey( ShiftRows( SubBytes(state) ), round_key[10] ) <-- ไม่มี MixColumns' เพื่อให้โครงสร้างของการถอดรหัสและเข้ารหัสมีความสมมาตรตามสเปกของ NIST"
+    })
+
+    q.append({
+        "id": "LAB9_TF_01",
+        "week": 9,
+        "type": "tf",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 9: หลักการ S-Box]",
+        "source": "lab9_Lab_AES128_Encryption 1.pdf หน้า 3-4",
+        "question": "กล่องทดแทนไบต์ (S-Box) ในขั้นตอน SubBytes ของ AES-128 เป็นการแปลงแบบ Non-linear ที่สร้างขึ้นจากสมการคณิตศาสตร์การหาค่าส่วนกลับในฟีลด์จำกัด Galois Field GF(2^8) ร่วมกับการแปลงแอฟฟีน (Affine Transformation)",
+        "options": [
+            "ถูก (True)",
+            "ผิด (False)"
+        ],
+        "answer_index": 0,
+        "explanation": "ถูก (True) ตามเอกสาร Lab 9 หน้า 4 S-Box ของ AES ถูกออกแบบขึ้นทางคณิตศาสตร์ด้วย GF(2^8) multiplicative inverse ผสมกับ affine transformation เพื่อสร้างคุณสมบัติ Confusion ที่แข็งแกร่งที่สุดในการป้องกัน Differential Cryptanalysis"
+    })
+
+    # =========================================================================
+    # LAB 11: SoC Programming with RV32I
+    # =========================================================================
+    q.append({
+        "id": "LAB11_CHOICE_01",
+        "week": 11,
+        "type": "choice",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 11: แผนที่หน่วยความจำ RV32I SoC]",
+        "source": "Lab11_SoC_7seg_Counter.pdf หน้า 2",
+        "question": "ตามโครงสร้างระบบคอมพิวเตอร์บนชิป (RV32I SoC) ใน Lab 11 หน้า 2 แอดเดรสเริ่มต้นของหน่วยความจำ Instruction ROM (imem) และ Data RAM (dmem) คือข้อใด?",
+        "options": [
+            "A. imem: 0x0000_0000 และ dmem: 0x1000_0000",
+            "B. imem: 0x8000_0000 และ dmem: 0x0000_0000",
+            "C. imem: 0x1000_0000 และ dmem: 0x2000_0000",
+            "D. imem: 0x0000_1000 และ dmem: 0x0000_2000"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามตารางโมดูลใน Lab 11 หน้า 2:\n- imem (ROM เก็บโปรแกรมโหลดจาก main.hex) อยู่ที่แอดเดรส 0x0000_0000\n- dmem (RAM สำหรับตัวแปรและ stack) อยู่ที่แอดเดรส 0x1000_0000\nโดยมีโมดูล addr_decoder.v ทำหน้าที่ถอดรหัสจากแอดเดรสบิตบน addr[31:28]"
+    })
+
+    q.append({
+        "id": "LAB11_CHOICE_02",
+        "week": 11,
+        "type": "choice",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 11: การตรวจจับปุ่มกดในซอฟต์แวร์ C]",
+        "source": "Lab11_SoC_7seg_Counter.pdf หน้า 4",
+        "question": "ใน Lab 11 ข้อกำหนดระบุว่า 'เมื่อกดปุ่มค้างนานเท่าใดก็นับเพียง 1 ครั้ง' โปรแกรมภาษา C บนซีพียู RV32I แก้ปัญหานี้อย่างไร?",
+        "options": [
+            "A. วน loop อ่านค่าปุ่มและเปรียบเทียบกับค่าของรอบก่อนหน้า (KEY_prev) เพื่อนับเฉพาะรอบที่ปุ่มเปลี่ยนสถานะจากไม่กดเป็นกดเท่านั้น (Edge Detection in C)",
+            "B. ใส่ฟังก์ชัน delay_ms(5000) ทุกครั้งหลังอ่านค่า",
+            "C. สั่งปิดสัญญาณนาฬิกาของซีพียูชั่วคราว",
+            "D. ใช้ตัวต้านทานภายนอกหน่วงเวลา"
+        ],
+        "answer_index": 0,
+        "explanation": "ตามแนวทางใน Lab 11 หน้า 4: loop หลักของซีพียูทำงานเร็วกว่านิ้วคนมาก จึงต้องจำค่าปุ่มของรอบก่อนหน้าไว้เทียบกับรอบปัจจุบันเพื่อนับเฉพาะจังหวะขอบขาขึ้นของการกดปุ่มเท่านั้น"
+    })
+
+    q.append({
+        "id": "LAB11_TF_01",
+        "week": 11,
+        "type": "tf",
+        "origin": "lab",
+        "origin_th": "[ปฏิบัติการ LAB 11: ฮาร์ดแวร์ 7-Segment Peripheral]",
+        "source": "Lab11_SoC_7seg_Counter.pdf หน้า 3",
+        "question": "ใน Lab 11 การแปลงเลขฐานสองเป็นสัญญาณควบคุม 7-Segment (a-g) ถูกจัดการด้วยฮาร์ดแวร์ภายนอก (hex7seg.v) โปรแกรมภาษา C เพียงแค่เขียนตัวเลขลงใน Memory-Mapped Register ของแต่ละหลักเท่านั้น",
+        "options": [
+            "ถูก (True)",
+            "ผิด (False)"
+        ],
+        "answer_index": 0,
+        "explanation": "ถูก (True) ตามข้อกำหนดข้อ 3 ใน Lab 11 หน้า 3: ตัวแปลงเลขเป็น segment ทำด้วยฮาร์ดแวร์ (hex7seg.v) โปรแกรม C มีหน้าที่เพียงเขียนค่าตัวเลขลงใน register ของแต่ละหลัก เช่น HEX0 = count;"
+    })
+
+    return q
+
+if __name__ == "__main__":
+    questions = build_questions()
+    print("Total questions built:", len(questions))
+    output_path = r"D:\vhdl\exam_questions.json"
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump(questions, f, ensure_ascii=False, indent=2)
+    print(f"Saved {len(questions)} questions to {output_path}")

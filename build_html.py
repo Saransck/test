@@ -19,7 +19,7 @@ def build_standalone_html():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบจำลองสอบ Digital Circuit Design with Verilog HDL (Week 2 - 8)</title>
+    <title>ระบบจำลองสอบ Digital Circuit Design with Verilog HDL (ครอบคลุมทุก Lab & Lec)</title>
     <style>
         :root {{
             --primary: #004085;
@@ -46,7 +46,7 @@ def build_standalone_html():
             padding: 20px;
         }}
         .container {{
-            max-width: 960px;
+            max-width: 980px;
             margin: 0 auto;
         }}
         header {{
@@ -297,18 +297,29 @@ def build_standalone_html():
 </head>
 <body>
     <div class="container">
+        <!-- Quick Portal Navigation -->
+        <nav style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 12px 18px; background: white; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); font-size: 14px;">
+            <a href="index.html" style="text-decoration: none; color: #004085; font-weight: 700; display: flex; align-items: center; gap: 6px;">
+                🏠 หน้าหลัก (Portal Hub)
+            </a>
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <a href="guide.html" style="text-decoration: none; color: #495057; font-weight: 600;">📖 คู่มือทบทวน Lec & Lab (Guide)</a>
+                <a href="Complete_Study_Guide_Lec_and_Lab.pdf" target="_blank" style="text-decoration: none; color: #dc3545; font-weight: 600; display: flex; align-items: center; gap: 4px;">📥 ดาวน์โหลด PDF</a>
+            </div>
+        </nav>
+
         <header>
             <h1>ระบบจำลองสอบ Digital Circuit Design with Verilog HDL</h1>
-            <p>ระบุแหล่งที่มาชัดเจนว่ามาจาก LECTURE (สไลด์บรรยาย) หรือ LAB (ใบงานปฏิบัติการ) 100%</p>
+            <p>คลังข้อสอบฉบับสมบูรณ์ ({len(questions)} ข้อ) ครอบคลุมทั้ง LECTURE และ LAB ทุกสัปดาห์ 100%</p>
         </header>
 
         <div class="filter-section">
             <div class="filter-label">🏛️ กรองตามแหล่งที่มา (Origin: Lec / Lab):</div>
             <div class="nav-tabs" id="originTabs">
                 <button class="nav-btn origin-btn active" id="btn_orig_all" onclick="filterByOrigin('all')">ทั้งหมด ({len(questions)} ข้อ)</button>
-                <button class="nav-btn origin-btn" id="btn_orig_lec" onclick="filterByOrigin('lec')">📚 มาจาก LECTURE เท่านั้น [{lec_count} ข้อ]</button>
-                <button class="nav-btn origin-btn" id="btn_orig_lab" onclick="filterByOrigin('lab')">🧪 มาจาก LAB เท่านั้น [{lab_count} ข้อ]</button>
+                <button class="nav-btn origin-btn" id="btn_orig_lab" onclick="filterByOrigin('lab')">🧪 มาจาก LAB โดยตรง [{lab_count} ข้อ]</button>
                 <button class="nav-btn origin-btn" id="btn_orig_both" onclick="filterByOrigin('both')">📘 มาจากทั้ง LECTURE & LAB [{both_count} ข้อ]</button>
+                <button class="nav-btn origin-btn" id="btn_orig_lec" onclick="filterByOrigin('lec')">📚 มาจาก LECTURE [{lec_count} ข้อ]</button>
             </div>
 
             <div class="filter-label" style="margin-top: 10px;">📌 กรองตามรูปแบบข้อสอบ (Question Types):</div>
@@ -319,17 +330,19 @@ def build_standalone_html():
                 <button class="nav-btn type-btn" id="btn_type_tf" onclick="filterByType('tf')">⚖️ ถูก / ผิด [{tf_count}]</button>
             </div>
 
-            <div class="filter-label" style="margin-top: 10px;">📅 หรือกรองตามสัปดาห์ (Weeks 2 - 8):</div>
+            <div class="filter-label" style="margin-top: 10px;">📅 หรือกรองตามสัปดาห์ / แล็บ:</div>
             <div class="nav-tabs" id="weekTabs">
-                <button class="nav-btn" id="btn_w_all" onclick="filterByWeek('all')">ทุกสัปดาห์</button>
-                <button class="nav-btn" id="btn_w2" onclick="filterByWeek(2)">Week 2</button>
-                <button class="nav-btn" id="btn_w3" onclick="filterByWeek(3)">Week 3</button>
-                <button class="nav-btn" id="btn_w4" onclick="filterByWeek(4)">Week 4</button>
-                <button class="nav-btn" id="btn_w5" onclick="filterByWeek(5)">Week 5</button>
-                <button class="nav-btn" id="btn_w6" onclick="filterByWeek(6)">Week 6</button>
-                <button class="nav-btn" id="btn_w7" onclick="filterByWeek(7)">Week 7</button>
-                <button class="nav-btn" id="btn_w8" onclick="filterByWeek(8)">Week 8</button>
-                <button class="nav-btn" id="btn_mock" onclick="startMockExam()" style="background: #28a745; color: white; border-color: #28a745; margin-left: auto;">🎯 สุ่มสอบ 20 ข้อ (Mock Exam)</button>
+                <button class="nav-btn active" id="btn_w_all" onclick="filterByWeek('all')">ทุกสัปดาห์</button>
+                <button class="nav-btn" id="btn_w2" onclick="filterByWeek(2)">Lab 2</button>
+                <button class="nav-btn" id="btn_w3" onclick="filterByWeek(3)">Lab 3</button>
+                <button class="nav-btn" id="btn_w4" onclick="filterByWeek(4)">Lab 4</button>
+                <button class="nav-btn" id="btn_w5" onclick="filterByWeek(5)">Lab 5</button>
+                <button class="nav-btn" id="btn_w6" onclick="filterByWeek(6)">Lab 6</button>
+                <button class="nav-btn" id="btn_w7" onclick="filterByWeek(7)">Lab 7</button>
+                <button class="nav-btn" id="btn_w8" onclick="filterByWeek(8)">Lab 8</button>
+                <button class="nav-btn" id="btn_w9" onclick="filterByWeek(9)">Lab 9 (AES)</button>
+                <button class="nav-btn" id="btn_w11" onclick="filterByWeek(11)">Lab 11 (SoC)</button>
+                <button class="nav-btn" id="btn_mock" onclick="startMockExam()" style="background: #28a745; color: white; border-color: #28a745; margin-left: auto;">🎯 สุ่มสอบ 25 ข้อ (Mock Exam)</button>
             </div>
         </div>
 
@@ -399,61 +412,66 @@ def build_standalone_html():
             const btn = document.getElementById('btn_mock');
             if (btn) btn.classList.add('active');
             
-            // Randomly shuffle and take 20 questions
+            // Pick 25 random questions
             let shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
-            currentQuestions = shuffled.slice(0, 20);
+            currentQuestions = shuffled.slice(0, 25);
             renderQuestions();
         }}
 
-        function formatQuestionContent(text) {{
-            if (text.includes('```verilog') || text.includes('```')) {{
-                return text.replace(/```(?:verilog)?([\\s\\S]*?)```/g, (match, p1) => {{
-                    return '<div class="code-box">' + p1.trim().replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>';
-                }}).replace(/\\n/g, '<br>');
-            }}
-            return text.replace(/\\n/g, '<br>');
-        }}
-
         function renderQuestions() {{
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
             answeredCount = 0;
             scoreCount = 0;
             updateScore();
 
-            const container = document.getElementById('questionsContainer');
-            container.innerHTML = '';
-
             if (currentQuestions.length === 0) {{
-                container.innerHTML = '<p style="text-align: center; color: #6c757d; padding: 40px; font-weight: bold;">ไม่พบข้อสอบในเงื่อนไขที่เลือก</p>';
+                container.innerHTML = '<div style="background:white; padding:30px; border-radius:10px; text-align:center; color:#888;">ไม่พบข้อสอบในหมวดที่เลือก</div>';
                 return;
             }}
 
             currentQuestions.forEach((q, idx) => {{
                 const card = document.createElement('div');
-                card.className = 'question-card ' + q.type;
-                card.id = 'card_' + q.id;
+                card.className = `question-card ${{q.type}}`;
+                card.id = `q_card_${{q.id}}`;
 
-                const labels = (q.type === 'choice' || q.type === 'code_fill') ? ['A', 'B', 'C', 'D'] : ['1', '2'];
+                let typeLabel = "🔤 ปรนัย (A B C D)";
+                if (q.type === 'code_fill') typeLabel = "💻 เติมโค้ด (A B C D)";
+                else if (q.type === 'tf') typeLabel = "⚖️ ถูก / ผิด";
 
-                let typeLabel = '🔤 ปรนัย (A B C D)';
-                if (q.type === 'code_fill') typeLabel = '💻 เติมโค้ด Verilog (A B C D)';
-                if (q.type === 'tf') typeLabel = '⚖️ ถูก / ผิด';
-
-                let originLabel = '📚 มาจาก: LECTURE';
-                let originClass = 'lec';
+                let originLabel = "📚 LECTURE";
+                let originClass = "lec";
                 if (q.origin === 'lab') {{
-                    originLabel = '🧪 มาจาก: LAB';
-                    originClass = 'lab';
+                    originLabel = "🧪 LAB";
+                    originClass = "lab";
                 }} else if (q.origin === 'both') {{
-                    originLabel = '📘 มาจาก: LECTURE & LAB';
-                    originClass = 'both';
+                    originLabel = "📘 LEC & LAB";
+                    originClass = "both";
+                }}
+
+                // Format question text with code block if present
+                let qText = q.question;
+                let codeHtml = "";
+                if (qText.includes("```verilog")) {{
+                    const parts = qText.split("```verilog");
+                    qText = parts[0].trim();
+                    const codePart = parts[1].split("```")[0].trim();
+                    codeHtml = `<pre class="code-box"><code>${{escapeHtml(codePart)}}</code></pre>`;
+                }} else if (qText.includes("```")) {{
+                    const parts = qText.split("```");
+                    qText = parts[0].trim();
+                    const codePart = parts[1].trim();
+                    codeHtml = `<pre class="code-box"><code>${{escapeHtml(codePart)}}</code></pre>`;
                 }}
 
                 let optionsHtml = '';
+                const labels = ["A", "B", "C", "D"];
                 q.options.forEach((opt, optIdx) => {{
+                    let label = (q.type === 'tf') ? (optIdx === 0 ? "✓" : "✗") : labels[optIdx];
                     optionsHtml += `
                         <button class="option-btn" onclick="selectAnswer('${{q.id}}', ${{optIdx}}, ${{q.answer_index}})">
-                            <span class="opt-label">[${{labels[optIdx]}}]</span>
-                            <span>${{opt}}</span>
+                            <span class="opt-label">${{label}}.</span>
+                            <span>${{escapeHtml(opt)}}</span>
                         </button>
                     `;
                 }});
@@ -461,78 +479,91 @@ def build_standalone_html():
                 card.innerHTML = `
                     <div class="q-header">
                         <div class="badge-group">
-                            <span class="badge badge-week">Week ${{q.week}} • ${{q.topic}}</span>
+                            <span class="badge badge-week">${{q.week >= 9 ? 'Lab ' + q.week : 'Week ' + q.week}}</span>
                             <span class="badge badge-origin ${{originClass}}">${{originLabel}}</span>
                             <span class="badge badge-type ${{q.type}}">${{typeLabel}}</span>
                         </div>
-                        <span style="font-size: 13px; color: #6c757d; font-weight: bold;">ข้อที่ ${{idx + 1}} จาก ${{currentQuestions.length}}</span>
+                        <span style="font-size: 13px; color: #888; font-weight: bold;">ข้อที่ ${{idx + 1}} / ${{currentQuestions.length}}</span>
                     </div>
-                    <div class="q-title">${{formatQuestionContent(q.question)}}</div>
+                    <div class="q-title">${{escapeHtml(qText)}}</div>
+                    ${{codeHtml}}
                     <div class="options-list" id="opts_${{q.id}}">
                         ${{optionsHtml}}
                     </div>
                     <div class="explanation-card" id="exp_${{q.id}}">
-                        <div id="result_badge_${{q.id}}"></div>
-                        <div style="margin-top: 8px; line-height: 1.6;"><strong>💡 คำอธิบายเชิงเทคนิค:</strong> ${{q.explanation}}</div>
-                        <div class="source-tag">📌 แหล่งอ้างอิง: [${{q.origin_th}}]<br>รายละเอียด: ${{q.source}}</div>
+                        <div style="font-weight: bold; margin-bottom: 6px;" id="result_badge_${{q.id}}"></div>
+                        <div>${{escapeHtml(q.explanation)}}</div>
+                        <div class="source-tag">📌 ที่มา: ${{escapeHtml(q.source)}}</div>
                     </div>
                 `;
                 container.appendChild(card);
             }});
         }}
 
-        function selectAnswer(qid, chosenIdx, correctIdx) {{
-            const optContainer = document.getElementById('opts_' + qid);
+        function selectAnswer(qId, selectedIdx, correctIdx) {{
+            const optContainer = document.getElementById(`opts_${{qId}}`);
             const buttons = optContainer.querySelectorAll('.option-btn');
             
-            // Disable all buttons in this question card
-            buttons.forEach(btn => btn.disabled = true);
+            // Disable all buttons in this card
+            buttons.forEach(b => b.disabled = true);
 
-            const isCorrect = (chosenIdx === correctIdx);
-            buttons[chosenIdx].classList.add(isCorrect ? 'correct' : 'incorrect');
-            if (!isCorrect) {{
+            const isCorrect = (selectedIdx === correctIdx);
+            if (isCorrect) {{
+                buttons[selectedIdx].classList.add('correct');
+                scoreCount++;
+            }} else {{
+                buttons[selectedIdx].classList.add('incorrect');
                 buttons[correctIdx].classList.add('correct');
             }}
 
             answeredCount++;
-            if (isCorrect) scoreCount++;
             updateScore();
 
             // Show explanation
-            const expCard = document.getElementById('exp_' + qid);
-            const resultBadge = document.getElementById('result_badge_' + qid);
-            resultBadge.innerHTML = isCorrect ? 
-                '<span style="color: var(--success); font-weight: bold; font-size: 15px;">✓ ถูกต้อง! (CORRECT)</span>' : 
-                '<span style="color: var(--danger); font-weight: bold; font-size: 15px;">✗ ไม่ถูกต้อง! (INCORRECT)</span>';
+            const expCard = document.getElementById(`exp_${{qId}}`);
+            const resultBadge = document.getElementById(`result_badge_${{qId}}`);
+            if (isCorrect) {{
+                resultBadge.innerHTML = '<span style="color: #28a745;">✅ คำตอบถูกต้อง!</span>';
+            }} else {{
+                resultBadge.innerHTML = '<span style="color: #dc3545;">❌ ตอบผิด! ดูเฉลยด้านล่าง:</span>';
+            }}
             expCard.classList.add('show');
         }}
 
         function updateScore() {{
+            const pct = answeredCount === 0 ? 0 : Math.round((scoreCount / answeredCount) * 100);
             document.getElementById('scoreText').innerText = `${{scoreCount}} / ${{answeredCount}}`;
-            const pct = answeredCount > 0 ? ((scoreCount / answeredCount) * 100).toFixed(0) : 0;
             document.getElementById('scorePercent').innerText = `${{pct}}%`;
             
-            const prog = currentQuestions.length > 0 ? (answeredCount / currentQuestions.length) * 100 : 0;
+            const prog = currentQuestions.length === 0 ? 0 : (answeredCount / currentQuestions.length) * 100;
             document.getElementById('progressBar').style.width = `${{prog}}%`;
         }}
 
         function resetQuiz() {{
-            renderQuestions();
+            applyFilters();
         }}
 
-        // Run immediately when loaded
+        function escapeHtml(text) {{
+            if (!text) return "";
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }}
+
+        // Initial render
         window.addEventListener('DOMContentLoaded', () => {{
-            currentQuestions = [...allQuestions];
-            renderQuestions();
+            applyFilters();
         }});
     </script>
 </body>
-</html>"""
-
+</html>
+"""
     with open(r"D:\vhdl\exam_practice.html", "w", encoding="utf-8") as f:
         f.write(html_content)
-
-    print("Successfully built D:\\vhdl\\exam_practice.html with Origin tags!")
+    print("exam_practice.html successfully rebuilt with all questions!")
 
 if __name__ == "__main__":
     build_standalone_html()

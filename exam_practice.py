@@ -203,17 +203,21 @@ def main():
 
         if choice == "1":
             clear_screen()
-            print_header("เลือกสัปดาห์ที่ต้องการฝึกทำ")
-            for w in range(2, 9):
-                w_count = sum(1 for q in questions if q['week'] == w)
-                print(f"  [{w}] Week {w} (มีข้อสอบ {w_count} ข้อ)")
+            print_header("เลือกสัปดาห์ / แล็บที่ต้องการฝึกทำ")
+            weeks_available = sorted(list(set(q["week"] for q in questions)))
+            for w in weeks_available:
+                w_count = sum(1 for q in questions if q["week"] == w)
+                label = f"Lab {w} (AES)" if w == 9 else (f"Lab {w} (SoC)" if w == 11 else f"Week {w}")
+                print(f"  [{w}] {label} (มีข้อสอบ {w_count} ข้อ)")
             print("  [0] กลับเมนูหลัก")
             print("-" * 80)
-            w_choice = input("เลือกสัปดาห์ [2-8 หรือ 0]: ").strip()
-            if w_choice in [str(i) for i in range(2, 9)]:
+            avail_str = ", ".join(str(w) for w in weeks_available)
+            w_choice = input(f"เลือกสัปดาห์ [{avail_str} หรือ 0]: ").strip()
+            if w_choice.isdigit() and int(w_choice) in weeks_available:
                 target_w = int(w_choice)
-                sub_q = [q for q in questions if q['week'] == target_w]
-                run_quiz(sub_q, f"แบบทดสอบ Week {target_w}")
+                sub_q = [q for q in questions if q["week"] == target_w]
+                w_lbl = f"Lab {target_w} (AES)" if target_w == 9 else (f"Lab {target_w} (SoC)" if target_w == 11 else f"Week {target_w}")
+                run_quiz(sub_q, f"แบบทดสอบ {w_lbl}")
 
         elif choice == "2":
             clear_screen()
@@ -254,7 +258,7 @@ def main():
                 run_quiz(sub_q, "แบบทดสอบเฉพาะ ถูก / ผิด (True / False)")
 
         elif choice == "4":
-            sample_size = min(20, len(questions))
+            sample_size = min(25, len(questions))
             mock_q = random.sample(questions, sample_size)
             run_quiz(mock_q, f"Comprehensive Mock Exam ({sample_size} ข้อ)")
 
