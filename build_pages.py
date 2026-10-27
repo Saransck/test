@@ -1,5 +1,6 @@
 import re
 import os
+import json
 
 def generate_index_html():
     html = """<!DOCTYPE html>
@@ -387,16 +388,16 @@ def generate_index_html():
                 <span>Altera Cyclone III EP3C16F484C6</span>
             </div>
             <h1>Digital Circuit Design with Verilog HDL</h1>
-            <p>ศูนย์รวมสื่อการเรียนรู้ ระบบจำลองสอบเสมือนจริง และคู่มือเฉลยข้อสอบปฏิบัติการอย่างละเอียด ครอบคลุมเนื้อหา Week 2 ถึง Week 8 พร้อมการอ้างอิง Lecture & Lab ละเอียดยิบ 100%</p>
+            <p>ศูนย์รวมสื่อการเรียนรู้ ระบบจำลองสอบเสมือนจริง และคู่มือสรุปเนื้อหาทบทวนฉบับสมบูรณ์ ครอบคลุมทั้ง LECTURE และ LAB ตั้งแต่ Week 2 ถึง Week 8 พร้อมการอ้างอิงแหล่งที่มา 100%</p>
 
             <div class="stats-grid">
                 <div class="stat-item">
-                    <div class="val">48+</div>
-                    <div class="lbl">คลังข้อสอบ Interactive</div>
+                    <div class="val">48</div>
+                    <div class="lbl">คลังข้อสอบ 3 รูปแบบ (Choice, Code, T/F)</div>
                 </div>
                 <div class="stat-item">
                     <div class="val">Week 2-8</div>
-                    <div class="lbl">ขอบเขตเนื้อหาทั้งหมด</div>
+                    <div class="lbl">ขอบเขตเนื้อหา Lec & Lab</div>
                 </div>
                 <div class="stat-item">
                     <div class="val">50 MHz</div>
@@ -415,11 +416,12 @@ def generate_index_html():
             <div class="card">
                 <div class="card-icon blue">🎯</div>
                 <h2>ระบบจำลองทำข้อสอบ (Exam Practice Simulator)</h2>
-                <p>ระบบฝึกทำโจทย์แบบโต้ตอบ มีการตรวจคำตอบพร้อมแสดงคำอธิบายเฉลยและที่มาทันที สามารถเลือกโหมดสุ่มสอบ 20 ข้อ (Mock Exam) ได้</p>
+                <p>ระบบฝึกทำโจทย์แบบโต้ตอบ มีการตรวจคำตอบพร้อมแสดงคำอธิบายเฉลยและระบุแหล่งที่มา (Lec / Lab) ทันที รองรับโจทย์ 3 รูปแบบ</p>
                 <ul class="card-features">
-                    <li>กรองข้อสอบตามสัปดาห์ (Week 2 - 8)</li>
-                    <li>แบ่งตามหมวด ปรนัย (Choice), เติมโค้ด (Code), ถูก/ผิด (T/F)</li>
-                    <li>แยกแหล่งที่มา: มาจาก Lecture หรือ Lab ชัดเจน</li>
+                    <li>รูปแบบ 1: ปรนัย 4 ตัวเลือก (A, B, C, D)</li>
+                    <li>รูปแบบ 2: เติมโค้ด Verilog มีตัวเลือก (A, B, C, D)</li>
+                    <li>รูปแบบ 3: ถูก / ผิด (True / False)</li>
+                    <li>บอกแหล่งที่มาชัดเจน (Lec / Lab / Both) พร้อมเลขหน้า/สไลด์</li>
                     <li>โหมดสุ่ม Mock Exam 20 ข้อ พร้อมสรุปคะแนน Real-time</li>
                 </ul>
                 <div class="btn-group">
@@ -430,17 +432,17 @@ def generate_index_html():
             <!-- Card 2: Comprehensive Guide -->
             <div class="card">
                 <div class="card-icon purple">📖</div>
-                <h2>คู่มือเฉลยแล็บฉบับสมบูรณ์ (Lab Solutions Guide)</h2>
-                <p>คู่มือเฉลยใบงานปฏิบัติการ Week 2 – 8 อย่างละเอียด เชื่อมโยงทฤษฎีจากสไลด์บรรยายเข้ากับฮาร์ดแวร์จริงของบอร์ด DE0</p>
+                <h2>คู่มือทบทวนและเฉลยฉบับสมบูรณ์ (Lec & Lab Master Guide)</h2>
+                <p>คู่มือรวมสรุปเนื้อหาบรรยาย (Lecture) ควบคู่กับเฉลยใบงานปฏิบัติการ (Lab Sheet) Week 2 ถึง Week 8 ไว้อย่างละเอียดครบถ้วน 100%</p>
                 <ul class="card-features">
-                    <li>เนื้อหาครบทั้ง 7 สัปดาห์ (FPGA Flow, FSM, Testbench ฯลฯ)</li>
-                    <li>โค้ดตัวอย่าง Verilog ที่ถูกต้องตามมาตรฐานฮาร์ดแวร์</li>
-                    <li>ตารางสรุป Hardware Pinouts และ Active Low/High</li>
-                    <li>เปิดอ่านบนเว็บได้ทันที หรือดาวน์โหลดไฟล์ PDF เก็บไว้</li>
+                    <li>ครอบคลุมทั้ง 2 ส่วน: ส่วนที่ 1 Lecture + ส่วนที่ 2 Lab</li>
+                    <li>เนื้อหาครบทุกสัปดาห์ (Quartus, HDL, MUX, D-FF, FSM, Testbench)</li>
+                    <li>สมการตรรกะ, ตารางความจริง, โค้ด Verilog สมบูรณ์</li>
+                    <li>ดาวน์โหลดเอกสาร PDF (9 หน้า A4 จัดรูปเล่มพร้อมอ่าน)</li>
                 </ul>
                 <div class="btn-group">
                     <a href="guide.html" class="btn btn-primary">📖 เปิดอ่านออนไลน์</a>
-                    <a href="Lab_Solutions_Comprehensive_Guide.pdf" target="_blank" class="btn btn-secondary">📥 ดาวน์โหลด PDF</a>
+                    <a href="Complete_Study_Guide_Lec_and_Lab.pdf" target="_blank" class="btn btn-secondary">📥 ดาวน์โหลด PDF</a>
                 </div>
             </div>
 
@@ -451,8 +453,8 @@ def generate_index_html():
                 <p>รวบรวมไฟล์ต้นฉบับ สไลด์บรรยายรายสัปดาห์ ใบงานปฏิบัติการต้นฉบับ และเฉลยแล็บฉบับเต็ม พร้อมดาวน์โหลดใช้งาน</p>
                 <ul class="card-features">
                     <li>สไลด์เลกเชอร์ Week 2 ถึง Week 11 (SoC, RISC-V, Timing)</li>
-                    <li>ใบงานแล็บพร้อมเฉลย (Lab 3, 4, 5, 6, 7, 8 Answered)</li>
-                    <li>เอกสารแล็บพิเศษ (AES-128 Encryption, SoC 7-Segment)</li>
+                    <li>ใบงานแล็บพร้อมเฉลย (Lab 2, 3, 4, 5, 6, 7, 8 Answered)</li>
+                    <li>ไฟล์คำถามข้อสอบ JSON และสคริปต์แบบจำลอง CLI Python</li>
                     <li>ดูโค้ดและดาวน์โหลดผ่าน GitHub Repo โดยตรง</li>
                 </ul>
                 <div class="btn-group">
@@ -508,7 +510,15 @@ def generate_index_html():
                 <h3>📚 คลังเอกสารแล็บ & สไลด์บรรยาย (Download Links)</h3>
             </div>
             
-            <h4 style="font-size: 15px; color: var(--accent-blue); margin-bottom: 10px;">🧪 เอกสารแล็บพร้อมเฉลย (Answered Labs):</h4>
+            <h4 style="font-size: 15px; color: var(--accent-blue); margin-bottom: 10px;">🌟 คู่มือสรุปเนื้อหาและเฉลยฉบับสมบูรณ์ (Master Guides):</h4>
+            <div class="file-list" style="margin-bottom: 25px;">
+                <a href="Complete_Study_Guide_Lec_and_Lab.pdf" target="_blank" class="file-link" style="border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.1);">📕 <strong>คู่มือสมบูรณ์ Lec & Lab (PDF)</strong></a>
+                <a href="Complete_Study_Guide_Lec_and_Lab.md" target="_blank" class="file-link">📝 คู่มือสมบูรณ์ Lec & Lab (Markdown)</a>
+                <a href="Lab_Solutions_Comprehensive_Guide.pdf" target="_blank" class="file-link">📄 เฉพาะเฉลยแล็บฉบับละเอียด (PDF)</a>
+                <a href="exam_questions.json" target="_blank" class="file-link">📊 คลังข้อสอบ 48 ข้อ (JSON)</a>
+            </div>
+
+            <h4 style="font-size: 15px; color: var(--accent-green); margin-bottom: 10px;">🧪 เอกสารแล็บพร้อมเฉลย (Answered Labs):</h4>
             <div class="file-list">
                 <a href="lab/Practice_Lab_Sheet_2_Answered.pdf" target="_blank" class="file-link">📄 Practice Lab 2 (Quartus Flow)</a>
                 <a href="lab/lab3_Answered.pdf" target="_blank" class="file-link">📄 Lab 3 (Verilog Basics)</a>
@@ -517,8 +527,6 @@ def generate_index_html():
                 <a href="lab/Lab6_Answered.pdf" target="_blank" class="file-link">📄 Lab 6 (Clock Divider & Counter)</a>
                 <a href="lab/Lab7_Answered.pdf" target="_blank" class="file-link">📄 Lab 7 (FSM Combination Lock)</a>
                 <a href="lab/Lab8_Answered.pdf" target="_blank" class="file-link">📄 Lab 8 (Self-Checking Testbench)</a>
-                <a href="lab/lab9_Lab_AES128_Encryption 1.pdf" target="_blank" class="file-link">📄 Lab 9 (AES-128 Encryption)</a>
-                <a href="lab/Lab11_SoC_7seg_Counter.pdf" target="_blank" class="file-link">📄 Lab 11 (SoC 7-Segment Counter)</a>
             </div>
 
             <h4 style="font-size: 15px; color: var(--accent-purple); margin: 25px 0 10px 0;">🏛️ สไลด์ประกอบการบรรยาย (Lecture Slides):</h4>
@@ -530,9 +538,6 @@ def generate_index_html():
                 <a href="lec/Week6_Counters_ShiftRegisters.pdf" target="_blank" class="file-link">📑 Week 6: Counters & Shift Reg</a>
                 <a href="lec/Week7_FSM.pdf" target="_blank" class="file-link">📑 Week 7: Finite State Machines</a>
                 <a href="lec/Week8.pdf" target="_blank" class="file-link">📑 Week 8: Testbench & Verification</a>
-                <a href="lec/Timing_Analysis.pdf" target="_blank" class="file-link">📑 Timing Analysis (Setup/Hold)</a>
-                <a href="lec/Chapter10_Basic_SoC_RV32I.pdf" target="_blank" class="file-link">📑 Week 10: Basic SoC RV32I</a>
-                <a href="lec/Week11_SoC Programming.pdf" target="_blank" class="file-link">📑 Week 11: SoC Programming</a>
             </div>
         </section>
 
@@ -550,12 +555,9 @@ def generate_index_html():
     print("index.html created successfully.")
 
 def generate_guide_html():
-    with open(r"d:\vhdl\Lab_Solutions_Comprehensive_Guide.md", "r", encoding="utf-8") as f:
+    with open(r"d:\vhdl\Complete_Study_Guide_Lec_and_Lab.md", "r", encoding="utf-8") as f:
         md_content = f.read()
 
-    # Escape any backticks or script tags if inside script
-    # We can embed via JSON string or base64 or encodeURIComponent
-    import json
     md_json = json.dumps(md_content, ensure_ascii=False)
 
     html = f"""<!DOCTYPE html>
@@ -563,7 +565,7 @@ def generate_guide_html():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>คู่มือเฉลยและคำอธิบายข้อสอบปฏิบัติการอย่างละเอียด (Lab Solutions Guide)</title>
+    <title>คู่มือทบทวนและเฉลยข้อสอบฉบับสมบูรณ์ (Lecture & Lab Guide)</title>
     <!-- Marked for Markdown parsing -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <!-- Highlight.js for Verilog and code styling -->
@@ -875,27 +877,27 @@ def generate_guide_html():
     <header class="topbar">
         <a href="index.html" class="brand">
             <span>⚡</span>
-            <span>Verilog HDL Lab Solutions</span>
+            <span>Digital Circuit Design Study Guide (Lec & Lab)</span>
         </a>
         <div class="top-links">
             <a href="index.html" class="nav-btn nav-btn-outline">🏠 หน้าหลัก</a>
             <a href="exam_practice.html" class="nav-btn nav-btn-outline">🎯 ระบบสอบ</a>
-            <a href="Lab_Solutions_Comprehensive_Guide.pdf" target="_blank" class="nav-btn nav-btn-primary">📥 โหลด PDF</a>
+            <a href="Complete_Study_Guide_Lec_and_Lab.pdf" target="_blank" class="nav-btn nav-btn-primary">📥 โหลด PDF สมบูรณ์</a>
         </div>
     </header>
 
     <div class="layout">
         <!-- Sidebar Navigation -->
         <aside class="sidebar">
-            <h4>📑 สารบัญสัปดาห์</h4>
+            <h4>📑 สารบัญเนื้อหา</h4>
             <ul class="toc-list">
-                <li class="toc-item"><a href="#week-2" class="toc-link">Week 2: Quartus & Flow</a></li>
-                <li class="toc-item"><a href="#week-3" class="toc-link">Week 3: Verilog Basics</a></li>
-                <li class="toc-item"><a href="#week-4" class="toc-link">Week 4: Combinational ALU</a></li>
-                <li class="toc-item"><a href="#week-5" class="toc-link">Week 5: Sequential D-FF</a></li>
-                <li class="toc-item"><a href="#week-6" class="toc-link">Week 6: Divider & Counter</a></li>
-                <li class="toc-item"><a href="#week-7" class="toc-link">Week 7: FSM Combination Lock</a></li>
-                <li class="toc-item"><a href="#week-8" class="toc-link">Week 8: Self-Check Testbench</a></li>
+                <li class="toc-item"><a href="#week-2" class="toc-link">Week 2: Quartus Flow (Lec & Lab)</a></li>
+                <li class="toc-item"><a href="#week-3" class="toc-link">Week 3: Verilog Basics (Lec & Lab)</a></li>
+                <li class="toc-item"><a href="#week-4" class="toc-link">Week 4: Combinational (Lec & Lab)</a></li>
+                <li class="toc-item"><a href="#week-5" class="toc-link">Week 5: Sequential (Lec & Lab)</a></li>
+                <li class="toc-item"><a href="#week-6" class="toc-link">Week 6: Counters & Regs (Lec & Lab)</a></li>
+                <li class="toc-item"><a href="#week-7" class="toc-link">Week 7: FSM Design (Lec & Lab)</a></li>
+                <li class="toc-item"><a href="#week-8" class="toc-link">Week 8: Testbench (Lec & Lab)</a></li>
                 <li class="toc-item"><a href="#summary-table" class="toc-link">📊 ตารางสรุปภาพรวม</a></li>
             </ul>
         </aside>
@@ -929,36 +931,21 @@ def generate_guide_html():
 """
     with open(r"d:\vhdl\guide.html", "w", encoding="utf-8") as f:
         f.write(html)
-    print("guide.html created successfully.")
+    print("guide.html created successfully with Complete_Study_Guide_Lec_and_Lab.md content.")
 
 def update_exam_practice_html():
     with open(r"d:\vhdl\exam_practice.html", "r", encoding="utf-8") as f:
         content = f.read()
 
-    # Check if nav already exists
-    if "🏠 หน้าหลัก (Portal Hub)" in content:
-        print("exam_practice.html already has navbar.")
-        return
-
-    nav_bar = """        <!-- Quick Portal Navigation -->
-        <nav style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 12px 18px; background: white; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); font-size: 14px;">
-            <a href="index.html" style="text-decoration: none; color: #004085; font-weight: 700; display: flex; align-items: center; gap: 6px;">
-                🏠 หน้าหลัก (Portal Hub)
-            </a>
-            <div style="display: flex; gap: 15px; align-items: center;">
-                <a href="guide.html" style="text-decoration: none; color: #495057; font-weight: 600;">📖 คู่มือเฉลยแล็บ (Lab Guide)</a>
-                <a href="Lab_Solutions_Comprehensive_Guide.pdf" target="_blank" style="text-decoration: none; color: #dc3545; font-weight: 600; display: flex; align-items: center; gap: 4px;">📥 ดาวน์โหลด PDF</a>
-            </div>
-        </nav>
-"""
-    content = content.replace('<div class="container">\n        <header>', '<div class="container">\n' + nav_bar + '        <header>')
+    # Update PDF download link in exam_practice.html navbar if present
+    content = content.replace("Lab_Solutions_Comprehensive_Guide.pdf", "Complete_Study_Guide_Lec_and_Lab.pdf")
+    content = content.replace("คู่มือเฉลยแล็บ (Lab Guide)", "คู่มือทบทวน Lec & Lab (Guide)")
 
     with open(r"d:\vhdl\exam_practice.html", "w", encoding="utf-8") as f:
         f.write(content)
-    print("exam_practice.html updated with navbar.")
+    print("exam_practice.html updated navbar links.")
 
 def create_nojekyll():
-    # .nojekyll disables Jekyll on GitHub Pages so all raw files and assets are served properly
     with open(r"d:\vhdl\.nojekyll", "w", encoding="utf-8") as f:
         f.write("")
     print(".nojekyll created.")

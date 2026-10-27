@@ -14,9 +14,9 @@
 | เมนู | ลิงก์เข้าใช้งาน | รายละเอียด |
 | :--- | :--- | :--- |
 | 🏠 **Portal Hub (หน้าหลัก)** | [saransck.github.io/test/](https://saransck.github.io/test/) | แดชบอร์ดหลัก รวมทางเข้าสู่ทุกระบบและตารางสเปกฮาร์ดแวร์ |
-| 🎯 **Exam Practice Simulator** | [เข้าทำแบบทดสอบ](https://saransck.github.io/test/exam_practice.html) | ระบบจำลองสอบ Interactive 48+ ข้อ พร้อมโหมดสุ่ม 20 ข้อ (Mock Exam) |
-| 📖 **Lab Solutions Guide (Web)** | [อ่านคู่มือออนไลน์](https://saransck.github.io/test/guide.html) | คู่มือเฉลยแล็บฉบับเต็ม Week 2–8 จัดหน้าสวยงาม พร้อมสารบัญค้นหา |
-| 📥 **Lab Solutions Guide (PDF)** | [ดาวน์โหลดไฟล์ PDF](Lab_Solutions_Comprehensive_Guide.pdf) | ไฟล์เอกสารสรุปเฉลยแล็บฉบับสมบูรณ์ (ขนาดพิมพ์ A4) |
+| 🎯 **Exam Practice Simulator** | [เข้าทำแบบทดสอบ](https://saransck.github.io/test/exam_practice.html) | ระบบจำลองสอบ Interactive 48 ข้อ 3 รูปแบบ (Choice, Code, T/F) พร้อมโหมด Mock Exam |
+| 📖 **Master Study Guide (Web)** | [อ่านคู่มือออนไลน์](https://saransck.github.io/test/guide.html) | คู่มือสรุปเนื้อหาทบทวนและเฉลยฉบับสมบูรณ์ (ครอบคลุมทั้ง Lecture และ Lab Week 2–8) |
+| 📕 **Master Study Guide (PDF)** | [ดาวน์โหลดไฟล์ PDF](Complete_Study_Guide_Lec_and_Lab.pdf) | เอกสารคู่มือทบทวนและเฉลยฉบับสมบูรณ์ทั้ง Lec & Lab (ขนาดพิมพ์ A4 9 หน้า) |
 
 ---
 
@@ -58,11 +58,14 @@
 ```text
 ├── index.html                           # Landing Page & Portal Hub สำหรับ GitHub Pages
 ├── guide.html                           # เว็บสำหรับอ่านคู่มือเฉลยแล็บออนไลน์
-├── exam_practice.html                   # ระบบจำลองสอบ Interactive Exam Simulator
-├── exam_questions.json                  # คลังข้อมูลโจทย์และเฉลยข้อสอบทั้งหมด (JSON)
-├── Lab_Solutions_Comprehensive_Guide.md # เอกสารเฉลยและสรุปเนื้อหาแล็บฉบับสมบูรณ์ (Markdown)
-├── Lab_Solutions_Comprehensive_Guide.pdf# ไฟล์ PDF คู่มือเฉลยแล็บฉบับพิมพ์
-├── .nojekyll                            # ปิด Jekyll บน GitHub Pages เพื่อให้โหลดไฟล์ static ตรงๆ
+├── Complete_Study_Guide_Lec_and_Lab.md # คู่มือสรุปเนื้อหาทบทวนและเฉลยฉบับสมบูรณ์ (ครอบคลุมทั้ง Lecture & Lab)
+├── Complete_Study_Guide_Lec_and_Lab.pdf# ไฟล์ PDF คู่มือทบทวนสมบูรณ์ทั้ง Lec & Lab (9 หน้า A4)
+├── exam_practice.html                  # ระบบจำลองสอบ Interactive Exam Simulator (48 ข้อ 3 รูปแบบ)
+├── exam_practice.py                    # โปรแกรมทำข้อสอบผ่าน Terminal / Command Line (Python CLI)
+├── exam_questions.json                 # คลังข้อมูลโจทย์และเฉลยข้อสอบทั้งหมดพร้อมแท็ก Lec/Lab (JSON)
+├── Lab_Solutions_Comprehensive_Guide.md# เอกสารเฉลยและสรุปเนื้อหาเฉพาะแล็บ (Markdown)
+├── Lab_Solutions_Comprehensive_Guide.pdf# ไฟล์ PDF คู่มือเฉลยเฉพาะแล็บ
+├── .nojekyll                           # ปิด Jekyll บน GitHub Pages เพื่อให้โหลดไฟล์ static ตรงๆ
 ├── lab/                                 # โฟลเดอร์ใบงานแล็บและไฟล์เฉลยต้นฉบับ (PDF)
 │   ├── Practice_Lab_Sheet_2_Answered.pdf
 │   ├── lab3_Answered.pdf ... lab8_Answered.pdf
