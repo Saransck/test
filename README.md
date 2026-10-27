@@ -3,9 +3,9 @@
 [![GitHub Pages](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-0284c7?style=for-the-badge&logo=github)](https://saransck.github.io/test/)
 [![Verilog HDL](https://img.shields.io/badge/Language-Verilog%20HDL-blue?style=for-the-badge)](https://en.wikipedia.org/wiki/Verilog)
 [![FPGA Device](https://img.shields.io/badge/FPGA-Altera%20Cyclone%20III-orange?style=for-the-badge)](https://www.intel.com/content/www/us/en/products/details/fpga/cyclone/iii.html)
-[![Questions](https://img.shields.io/badge/Questions-48%2B%20Interactive-success?style=for-the-badge)](https://saransck.github.io/test/exam_practice.html)
+[![Questions](https://img.shields.io/badge/Questions-104%20Interactive-success?style=for-the-badge)](https://saransck.github.io/test/exam_practice.html)
 
-ศูนย์รวมสื่อการเรียนรู้ ระบบจำลองสอบเสมือนจริง และคู่มือเฉลยข้อสอบปฏิบัติการอย่างละเอียด สำหรับวิชา **Digital Circuit Design with Verilog HDL** มุ่งเน้นการออกแบบและทดสอบวงจรดิจิทัลบนบอร์ด **Altera DE0 (Cyclone III `EP3C16F484C6`)** ครอบคลุมเนื้อหาตั้งแต่ **Week 2 ถึง Week 8** อ้างอิงสไลด์บรรยาย (Lecture) และใบงานปฏิบัติการ (Lab) ถูกต้อง 100%
+ศูนย์รวมสื่อการเรียนรู้ ระบบจำลองสอบเสมือนจริง และคู่มือเฉลยข้อสอบปฏิบัติการอย่างละเอียด สำหรับวิชา **Digital Circuit Design with Verilog HDL** มุ่งเน้นการออกแบบและทดสอบวงจรดิจิทัลบนบอร์ด **Altera DE0 (Cyclone III `EP3C16F484C6`)** ครอบคลุมเนื้อหาตั้งแต่ **Week 2 ถึง Week 8 (รวม Lab 9 และ Lab 11)** อ้างอิงสไลด์บรรยาย (Lecture) และใบงานปฏิบัติการ (Lab) ถูกต้อง 100%
 
 ---
 
@@ -14,9 +14,11 @@
 | เมนู | ลิงก์เข้าใช้งาน | รายละเอียด |
 | :--- | :--- | :--- |
 | 🏠 **Portal Hub (หน้าหลัก)** | [saransck.github.io/test/](https://saransck.github.io/test/) | แดชบอร์ดหลัก รวมทางเข้าสู่ทุกระบบและตารางสเปกฮาร์ดแวร์ |
-| 🎯 **Exam Practice Simulator** | [เข้าทำแบบทดสอบ](https://saransck.github.io/test/exam_practice.html) | ระบบจำลองสอบ Interactive 48 ข้อ 3 รูปแบบ (Choice, Code, T/F) พร้อมโหมด Mock Exam |
+| 🎯 **Exam Practice Simulator** | [เข้าทำแบบทดสอบ (104 ข้อ)](https://saransck.github.io/test/exam_practice.html) | ระบบจำลองสอบ Interactive 104 ข้อ 3 รูปแบบ (Choice, Code, T/F) พร้อมโหมด Mock Exam |
 | 📖 **Master Study Guide (Web)** | [อ่านคู่มือออนไลน์](https://saransck.github.io/test/guide.html) | คู่มือสรุปเนื้อหาทบทวนและเฉลยฉบับสมบูรณ์ (ครอบคลุมทั้ง Lecture และ Lab Week 2–8) |
-| 📕 **Master Study Guide (PDF)** | [ดาวน์โหลดไฟล์ PDF](Complete_Study_Guide_Lec_and_Lab.pdf) | เอกสารคู่มือทบทวนและเฉลยฉบับสมบูรณ์ทั้ง Lec & Lab (ขนาดพิมพ์ A4 9 หน้า) |
+| 📕 **Master Study Guide (PDF)** | [ดาวน์โหลดไฟล์ PDF (53 หน้า)](Complete_Study_Guide_Lec_and_Lab.pdf) | เอกสารคู่มือทบทวนและเฉลยฉบับสมบูรณ์ทั้ง Lec & Lab (ขนาดพิมพ์ A4 หนา 53 หน้า) |
+| 📝 **Master Markdown (Source)** | [ดูโค้ด Markdown (179.7 KB)](Complete_Study_Guide_Lec_and_Lab.md) | ไฟล์ Master Markdown ฉบับเต็ม 2,923 บรรทัด รวบรวมทุกโจทย์และการทดลอง |
+
 
 ---
 
