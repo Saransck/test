@@ -881,8 +881,9 @@ def generate_guide_html():
         </a>
         <div class="top-links">
             <a href="index.html" class="nav-btn nav-btn-outline">🏠 หน้าหลัก</a>
-            <a href="exam_practice.html" class="nav-btn nav-btn-outline">🎯 ระบบสอบ</a>
-            <a href="Complete_Study_Guide_Lec_and_Lab.pdf" target="_blank" class="nav-btn nav-btn-primary">📥 โหลด PDF สมบูรณ์</a>
+            <a href="exam_practice.html" class="nav-btn nav-btn-outline">🎯 ระบบสอบ (48 ข้อ)</a>
+            <a href="Complete_Study_Guide_Lec_and_Lab.pdf" target="_blank" class="nav-btn nav-btn-primary">📕 โหลด PDF สมบูรณ์</a>
+            <a href="Lab_Solutions_Comprehensive_Guide.pdf" target="_blank" class="nav-btn nav-btn-outline">📄 เฉลยแล็บละเอียด (PDF)</a>
         </div>
     </header>
 
@@ -909,29 +910,21 @@ def generate_guide_html():
     </div>
 
     <script>
-        const rawMarkdown = {md_json};
-
         document.addEventListener("DOMContentLoaded", () => {{
-            marked.setOptions({{
-                highlight: function(code, lang) {{
-                    const language = hljs.getLanguage(lang) ? lang : 'plaintext';
-                    return hljs.highlight(code, {{ language }}).value;
-                }},
-                gfm: true,
-                breaks: true
-            }});
-
-            const html = marked.parse(rawMarkdown);
-            document.getElementById('content').innerHTML = html;
             hljs.highlightAll();
         }});
     </script>
 </body>
 </html>
 """
+    with open(r"d:\vhdl\complete_guide_body.html", "r", encoding="utf-8") as bf:
+        rendered_body = bf.read()
+
+    html = html.replace('<div id="content" class="markdown-body">กำลังโหลดคู่มือ...</div>', '<div id="content" class="markdown-body">\n' + rendered_body + '\n</div>')
+
     with open(r"d:\vhdl\guide.html", "w", encoding="utf-8") as f:
         f.write(html)
-    print("guide.html created successfully with Complete_Study_Guide_Lec_and_Lab.md content.")
+    print("guide.html created successfully with pre-rendered Complete_Study_Guide_Lec_and_Lab HTML.")
 
 def update_exam_practice_html():
     with open(r"d:\vhdl\exam_practice.html", "r", encoding="utf-8") as f:

@@ -26,7 +26,7 @@
 # 📘 Week 2: Quartus II Design Flow & DE0 Setup
 
 ## 📚 ส่วนที่ 1: สรุปเนื้อหา LECTURE
-**แหล่งอ้างอิง:** [Week2_software installation.pdf](file:///d:/vhdl/lec/Week2_software%20installation.pdf) (Slide 1–25)
+**แหล่งอ้างอิง:** [Week2_software installation.pdf](lec/Week2_software%20installation.pdf) (Slide 1–25)
 
 ### 1. วัตถุประสงค์และภาพรวม (Slide 2–3)
 - เข้าใจสถาปัตยกรรมของชิป FPGA และบอร์ดทดลอง Altera DE0
@@ -58,7 +58,7 @@
 ---
 
 ## 🧪 ส่วนที่ 2: สรุปและเฉลยใบงาน LAB 2
-**แหล่งอ้างอิง:** [Practice Lab Sheet 2.pdf](file:///d:/vhdl/lab/Practice%20Lab%20Sheet%202.pdf) (หัวข้อที่ 1–4)
+**แหล่งอ้างอิง:** [Practice Lab Sheet 2.pdf](lab/Practice%20Lab%20Sheet%202.pdf) (หัวข้อที่ 1–4)
 
 ### 1. โจทย์และวัตถุประสงค์ของ Lab
 - สร้างโปรเจกต์ใหม่ใน Quartus II โดยกำหนดชิปให้ถูกต้องเป็น `EP3C16F484C6`
@@ -77,7 +77,7 @@
 # 📘 Week 3: Foundations & Verilog Language Basics
 
 ## 📚 ส่วนที่ 1: สรุปเนื้อหา LECTURE
-**แหล่งอ้างอิง:** [Week3_foundations and language basics.pdf](file:///d:/vhdl/lec/Week3_foundations%20and%20language%20basics.pdf) (Slide 1–25)
+**แหล่งอ้างอิง:** [Week3_foundations and language basics.pdf](lec/Week3_foundations%20and%20language%20basics.pdf) (Slide 1–25)
 
 ### 1. วัตถุประสงค์และภาพรวม (Slide 2)
 - เข้าใจโครงสร้างโมดูลพื้นฐานของ Verilog HDL
@@ -109,7 +109,7 @@
 ---
 
 ## 🧪 ส่วนที่ 2: สรุปและเฉลยใบงาน LAB 3
-**แหล่งอ้างอิง:** [lab3.pdf](file:///d:/vhdl/lab/lab3.pdf) (หน้าที่ 1–8)
+**แหล่งอ้างอิง:** [lab3.pdf](lab/lab3.pdf) (หน้าที่ 1–8)
 
 ### 1. เฉลยโค้ดและคำอธิบายทางเทคนิค
 - **Exercise 1: Basic Logic Gates**
@@ -142,7 +142,7 @@
 # 📘 Week 4: Combinational Logic Design
 
 ## 📚 ส่วนที่ 1: สรุปเนื้อหา LECTURE
-**แหล่งอ้างอิง:** [Week4_Combinational_Design.pdf](file:///d:/vhdl/lec/Week4_Combinational_Design.pdf) (Slide 1–26)
+**แหล่งอ้างอิง:** [Week4_Combinational_Design.pdf](lec/Week4_Combinational_Design.pdf) (Slide 1–26)
 
 ### 1. วัตถุประสงค์และภาพรวม (Slide 2–4)
 - คุณสมบัติของ Combinational Logic: เอาต์พุตขึ้นกับอินพุตปัจจุบันเท่านั้น ไม่มีหน่วยความจำ และ**ห้ามมี Feedback loop**
@@ -167,7 +167,7 @@
 ---
 
 ## 🧪 ส่วนที่ 2: สรุปและเฉลยใบงาน LAB 4
-**แหล่งอ้างอิง:** [lab 4.pdf](file:///d:/vhdl/lab/lab%204.pdf) (หน้าที่ 1–10)
+**แหล่งอ้างอิง:** [lab 4.pdf](lab/lab%204.pdf) (หน้าที่ 1–10)
 
 ### 1. เฉลยโค้ดและคำอธิบายทางเทคนิค
 - **Exercise 1: 4-to-1 Multiplexer (`mux4to1.v`)**
@@ -196,7 +196,7 @@
 # 📘 Week 5: Sequential Logic Design
 
 ## 📚 ส่วนที่ 1: สรุปเนื้อหา LECTURE
-**แหล่งอ้างอิง:** [Week5_sequential_logic.pdf](file:///d:/vhdl/lec/Week5_sequential_logic.pdf) (Slide 1–25)
+**แหล่งอ้างอิง:** [Week5_sequential_logic.pdf](lec/Week5_sequential_logic.pdf) (Slide 1–25)
 
 ### 1. วัตถุประสงค์และภาพรวม (Slide 2–5)
 - เข้าใจความแตกต่างระหว่าง Latch (Level-Sensitive) กับ Flip-Flop (Edge-Triggered)
@@ -233,7 +233,7 @@
 ---
 
 ## 🧪 ส่วนที่ 2: สรุปและเฉลยใบงาน LAB 5
-**แหล่งอ้างอิง:** [lab 5.pdf](file:///d:/vhdl/lab/lab%205.pdf) (หน้าที่ 1–8)
+**แหล่งอ้างอิง:** [lab 5.pdf](lab/lab%205.pdf) (หน้าที่ 1–8)
 
 ### 1. เฉลยโค้ดและคำอธิบายทางเทคนิค
 - **Exercise 3: 4-bit Register with Load Enable**
@@ -262,7 +262,7 @@
 # 📘 Week 6: Counters & Shift Registers
 
 ## 📚 ส่วนที่ 1: สรุปเนื้อหา LECTURE
-**แหล่งอ้างอิง:** [Week6_Counters_ShiftRegisters.pdf](file:///d:/vhdl/lec/Week6_Counters_ShiftRegisters.pdf) (Slide 1–25)
+**แหล่งอ้างอิง:** [Week6_Counters_ShiftRegisters.pdf](lec/Week6_Counters_ShiftRegisters.pdf) (Slide 1–25)
 
 ### 1. วัตถุประสงค์และภาพรวม (Slide 2–5)
 - ออกแบบวงจรนับแบบซิงโครนัส (Synchronous Counter) และวงจรนับแบบขึ้น/ลง (Up/Down Counter)
@@ -286,7 +286,7 @@
 ---
 
 ## 🧪 ส่วนที่ 2: สรุปและเฉลยใบงาน LAB 6
-**แหล่งอ้างอิง:** [Lab6.pdf](file:///d:/vhdl/lab/Lab6.pdf) (หน้าที่ 1–8)
+**แหล่งอ้างอิง:** [Lab6.pdf](lab/Lab6.pdf) (หน้าที่ 1–8)
 
 ### 1. เฉลยโค้ดและคำอธิบายทางเทคนิค
 - **Section 2: Mod-10 Up/Down Counter (`mod10_counter.v`)**
@@ -318,7 +318,7 @@
 # 📘 Week 7: Finite State Machine (FSM) Design
 
 ## 📚 ส่วนที่ 1: สรุปเนื้อหา LECTURE
-**แหล่งอ้างอิง:** [Week7_FSM.pdf](file:///d:/vhdl/lec/Week7_FSM.pdf) (Slide 1–33)
+**แหล่งอ้างอิง:** [Week7_FSM.pdf](lec/Week7_FSM.pdf) (Slide 1–33)
 
 ### 1. วัตถุประสงค์และองค์ประกอบ 4 ส่วนของ FSM (Slide 3–4)
 FSM ประกอบด้วย 4 องค์ประกอบสำคัญ:
@@ -370,7 +370,7 @@ end
 ---
 
 ## 🧪 ส่วนที่ 2: สรุปและเฉลยใบงาน LAB 7
-**แหล่งอ้างอิง:** [Lab7.pdf](file:///d:/vhdl/lab/Lab7.pdf) (หน้าที่ 1–12)
+**แหล่งอ้างอิง:** [Lab7.pdf](lab/Lab7.pdf) (หน้าที่ 1–12)
 
 ### 1. เฉลยระบบ Combination Lock System
 - **รหัสผ่านเริ่มต้น:** `PW0 = 3`, `PW1 = 7`, `PW2 = 1`
@@ -397,7 +397,7 @@ assign pulse_out = r2 & ~r1; // ตรวจจับ Falling Edge ของป�
 # 📘 Week 8: Testbench Design & Functional Verification
 
 ## 📚 ส่วนที่ 1: สรุปเนื้อหา LECTURE
-**แหล่งอ้างอิง:** [Week8.pdf](file:///d:/vhdl/lec/Week8.pdf) (Slide 1–33)
+**แหล่งอ้างอิง:** [Week8.pdf](lec/Week8.pdf) (Slide 1–33)
 
 ### 1. วัตถุประสงค์และโครงสร้าง Testbench 4 ส่วน (Slide 3–6)
 Testbench ไม่สามารถสังเคราะห์เป็นฮาร์ดแวร์ได้ (Non-synthesizable) มี 4 องค์ประกอบ:
@@ -430,7 +430,7 @@ Testbench ไม่สามารถสังเคราะห์เป็น�
 ---
 
 ## 🧪 ส่วนที่ 2: สรุปและเฉลยใบงาน LAB 8
-**แหล่งอ้างอิง:** [Lab8.pdf](file:///d:/vhdl/lab/Lab8.pdf) (หน้าที่ 1–16)
+**แหล่งอ้างอิง:** [Lab8.pdf](lab/Lab8.pdf) (หน้าที่ 1–16)
 
 ### 1. เฉลยแบบฝึกหัด Debugging Case Studies
 - **Case Study 1: Shift Register TB (หน้า 4)**
