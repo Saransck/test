@@ -22,7 +22,7 @@
 
 <a name="week-2"></a>
 # 📘 Week 2: Practice Lab Sheet 2 – Quartus II Project & FPGA Design Flow
-**เอกสารอ้างอิง:** [Week2_software installation.pdf](file:///d:/vhdl/lec/Week2_software%20installation.pdf) และ [Practice Lab Sheet 2.pdf](file:///d:/vhdl/lab/Practice%20Lab%20Sheet%202.pdf)
+**เอกสารอ้างอิง:** [Week2_software installation.pdf](lec/Week2_software%20installation.pdf) และ [Practice Lab Sheet 2.pdf](lab/Practice%20Lab%20Sheet%202.pdf)
 
 ### 1. วัตถุประสงค์และการเรียนรู้
 - เข้าใจขั้นตอน **FPGA Design Flow**: Design Entry $\rightarrow$ Analysis & Synthesis $\rightarrow$ Fitter (Place & Route) $\rightarrow$ TimeQuest Timing Analyzer $\rightarrow$ Assembler $\rightarrow$ Programmer
@@ -60,7 +60,7 @@
 
 <a name="week-3"></a>
 # 📘 Week 3: Lab 3 – Foundations & Verilog Language Basics
-**เอกสารอ้างอิง:** [Week3_foundations and language basics.pdf](file:///d:/vhdl/lec/Week3_foundations%20and%20language%20basics.pdf) และ [lab3.pdf](file:///d:/vhdl/lab/lab3.pdf)
+**เอกสารอ้างอิง:** [Week3_foundations and language basics.pdf](lec/Week3_foundations%20and%20language%20basics.pdf) และ [lab3.pdf](lab/lab3.pdf)
 
 ### 1. วัตถุประสงค์และการเรียนรู้
 - เข้าใจโครงสร้างโมดูลและรูปแบบการเชื่อมต่อพอร์ต (Named Port Mapping vs Positional Port Mapping)
@@ -94,7 +94,7 @@
 
 <a name="week-4"></a>
 # 📘 Week 4: Lab 4 – Combinational Logic Design
-**เอกสารอ้างอิง:** [Week4_Combinational_Design.pdf](file:///d:/vhdl/lec/Week4_Combinational_Design.pdf) และ [lab 4.pdf](file:///d:/vhdl/lab/lab%204.pdf)
+**เอกสารอ้างอิง:** [Week4_Combinational_Design.pdf](lec/Week4_Combinational_Design.pdf) และ [lab 4.pdf](lab/lab%204.pdf)
 
 ### 1. วัตถุประสงค์และการเรียนรู้
 - ออกแบบวงจร Combinational ขั้นสูง: Multiplexer, Decoder, ALU ขนาด 4 บิต และ BCD to 7-Segment Decoder
@@ -124,7 +124,7 @@
 
 <a name="week-5"></a>
 # 📘 Week 5: Lab 5 – Sequential Logic Design
-**เอกสารอ้างอิง:** [Week5_sequential_logic.pdf](file:///d:/vhdl/lec/Week5_sequential_logic.pdf) และ [lab 5.pdf](file:///d:/vhdl/lab/lab%205.pdf)
+**เอกสารอ้างอิง:** [Week5_sequential_logic.pdf](lec/Week5_sequential_logic.pdf) และ [lab 5.pdf](lab/lab%205.pdf)
 
 ### 1. วัตถุประสงค์และการเรียนรู้
 - เข้าใจความแตกต่างระหว่าง Level-Sensitive Latch กับ Edge-Triggered Flip-Flop
@@ -168,7 +168,7 @@
 
 <a name="week-6"></a>
 # 📘 Week 6: Lab 6 – Counters & Shift Registers
-**เอกสารอ้างอิง:** [Week6_Counters_ShiftRegisters.pdf](file:///d:/vhdl/lec/Week6_Counters_ShiftRegisters.pdf) และ [Lab6.pdf](file:///d:/vhdl/lab/Lab6.pdf)
+**เอกสารอ้างอิง:** [Week6_Counters_ShiftRegisters.pdf](lec/Week6_Counters_ShiftRegisters.pdf) และ [Lab6.pdf](lab/Lab6.pdf)
 
 ### 1. วัตถุประสงค์และการเรียนรู้
 - คำนวณและออกแบบวงจรหารความถี่ (Clock Divider / Frequency Divider)
@@ -208,7 +208,7 @@
 
 <a name="week-7"></a>
 # 📘 Week 7: Lab 7 – Finite State Machine (FSM): Combination Lock System
-**เอกสารอ้างอิง:** [Week7_FSM.pdf](file:///d:/vhdl/lec/Week7_FSM.pdf) และ [Lab7.pdf](file:///d:/vhdl/lab/Lab7.pdf)
+**เอกสารอ้างอิง:** [Week7_FSM.pdf](lec/Week7_FSM.pdf) และ [Lab7.pdf](lab/Lab7.pdf)
 
 ### 1. วัตถุประสงค์และการเรียนรู้
 - เข้าใจทฤษฎี FSM และความแตกต่างระหว่าง **Moore FSM** กับ **Mealy FSM**
@@ -254,7 +254,7 @@
 
 <a name="week-8"></a>
 # 📘 Week 8: Lab 8 – Testbench Design & Functional Verification
-**เอกสารอ้างอิง:** [Week8.pdf](file:///d:/vhdl/lec/Week8.pdf) และ [Lab8.pdf](file:///d:/vhdl/lab/Lab8.pdf)
+**เอกสารอ้างอิง:** [Week8.pdf](lec/Week8.pdf) และ [Lab8.pdf](lab/Lab8.pdf)
 
 ### 1. วัตถุประสงค์และการเรียนรู้
 - ออกแบบ **Self-Checking Testbench** ที่ตัดสินผล `[PASS]` / `[FAIL]` อัตโนมัติ

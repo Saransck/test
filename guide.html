@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>คู่มือเฉลยและคำอธิบายข้อสอบปฏิบัติการอย่างละเอียด (Lab Solutions Guide)</title>
+    <!-- Marked for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Highlight.js for Verilog and code styling -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/verilog.min.js"></script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Sarabun:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #f8fafc;
+            --bg-surface: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --font-display: 'Chakra Petch', sans-serif;
+            --font-body: 'Sarabun', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.7;
+        }
+
+        /* Top Navbar */
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 17px;
+            color: var(--text-main);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .top-links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-btn {
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 600;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-btn-outline {
+            background: #f1f5f9;
+            color: #334155;
+            border: 1px solid var(--border);
+        }
+
+        .nav-btn-outline:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .nav-btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Layout Container */
+        .layout {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 30px;
+            padding: 30px 24px;
+        }
+
+        /* Sidebar TOC */
+        .sidebar {
+            position: sticky;
+            top: 80px;
+            height: calc(100vh - 100px);
+            overflow-y: auto;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .sidebar h4 {
+            font-family: var(--font-display);
+            font-size: 15px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .toc-list {
+            list-style: none;
+        }
+
+        .toc-item {
+            margin-bottom: 6px;
+        }
+
+        .toc-link {
+            display: block;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 13.5px;
+            color: #475569;
+            text-decoration: none;
+            transition: all 0.15s;
+        }
+
+        .toc-link:hover {
+            background: #f0f9ff;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Content Area */
+        .content-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 45px 50px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            min-width: 0;
+        }
+
+        /* Markdown Styles */
+        .markdown-body h1 {
+            font-family: var(--font-display);
+            font-size: 26px;
+            color: #0f172a;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 12px;
+            margin-top: 35px;
+            margin-bottom: 20px;
+        }
+
+        .markdown-body h1:first-child {
+            margin-top: 0;
+        }
+
+        .markdown-body h2 {
+            font-family: var(--font-display);
+            font-size: 21px;
+            color: #1e293b;
+            margin-top: 28px;
+            margin-bottom: 14px;
+        }
+
+        .markdown-body h3 {
+            font-family: var(--font-display);
+            font-size: 18px;
+            color: #334155;
+            margin-top: 22px;
+            margin-bottom: 10px;
+        }
+
+        .markdown-body h4 {
+            font-size: 16px;
+            color: #475569;
+            margin-top: 18px;
+            margin-bottom: 8px;
+        }
+
+        .markdown-body p {
+            margin-bottom: 16px;
+            font-size: 15px;
+            color: #334155;
+        }
+
+        .markdown-body ul, .markdown-body ol {
+            margin-bottom: 16px;
+            padding-left: 24px;
+        }
+
+        .markdown-body li {
+            margin-bottom: 6px;
+            font-size: 15px;
+            color: #334155;
+        }
+
+        .markdown-body hr {
+            border: 0;
+            height: 1px;
+            background: #e2e8f0;
+            margin: 30px 0;
+        }
+
+        .markdown-body code {
+            font-family: var(--font-mono);
+            font-size: 13.5px;
+            background: #f1f5f9;
+            color: #0369a1;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .markdown-body pre {
+            background: #282c34 !important;
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            margin: 18px 0;
+        }
+
+        .markdown-body pre code {
+            background: transparent !important;
+            color: #abb2bf !important;
+            padding: 0;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .markdown-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+
+        .markdown-body th, .markdown-body td {
+            border: 1px solid #cbd5e1;
+            padding: 10px 14px;
+            text-align: left;
+        }
+
+        .markdown-body th {
+            background: #f1f5f9;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .markdown-body tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .markdown-body blockquote {
+            border-left: 4px solid var(--primary);
+            padding: 10px 18px;
+            background: #f0f9ff;
+            color: #0369a1;
+            border-radius: 0 8px 8px 0;
+            margin: 18px 0;
+        }
+
+        .markdown-body a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .markdown-body a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 900px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                display: none;
+            }
+            .content-card {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <a href="index.html" class="brand">
+            <span>⚡</span>
+            <span>Verilog HDL Lab Solutions</span>
+        </a>
+        <div class="top-links">
+            <a href="index.html" class="nav-btn nav-btn-outline">🏠 หน้าหลัก</a>
+            <a href="exam_practice.html" class="nav-btn nav-btn-outline">🎯 ระบบสอบ</a>
+            <a href="Lab_Solutions_Comprehensive_Guide.pdf" target="_blank" class="nav-btn nav-btn-primary">📥 โหลด PDF</a>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <h4>📑 สารบัญสัปดาห์</h4>
+            <ul class="toc-list">
+                <li class="toc-item"><a href="#week-2" class="toc-link">Week 2: Quartus & Flow</a></li>
+                <li class="toc-item"><a href="#week-3" class="toc-link">Week 3: Verilog Basics</a></li>
+                <li class="toc-item"><a href="#week-4" class="toc-link">Week 4: Combinational ALU</a></li>
+                <li class="toc-item"><a href="#week-5" class="toc-link">Week 5: Sequential D-FF</a></li>
+                <li class="toc-item"><a href="#week-6" class="toc-link">Week 6: Divider & Counter</a></li>
+                <li class="toc-item"><a href="#week-7" class="toc-link">Week 7: FSM Combination Lock</a></li>
+                <li class="toc-item"><a href="#week-8" class="toc-link">Week 8: Self-Check Testbench</a></li>
+                <li class="toc-item"><a href="#summary-table" class="toc-link">📊 ตารางสรุปภาพรวม</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content-card">
+            <div id="content" class="markdown-body">กำลังโหลดคู่มือ...</div>
+        </main>
+    </div>
+
+    <script>
+        const rawMarkdown = "# คู่มือเฉลยและคำอธิบายข้อสอบปฏิบัติการอย่างละเอียด (Comprehensive Lab Solutions & Study Guide)\n## วิชา Digital Circuit Design with Verilog HDL (Week 2 ถึง Week 8)\n\n---\n\n### บทนำ\nเอกสารฉบับนี้จัดทำขึ้นเพื่อเป็นคู่มือเฉลยและอธิบายคำตอบในใบงานปฏิบัติการ (Lab Sheet) ตั้งแต่ **Week 2 ถึง Week 8** อย่างละเอียด โดยเชื่อมโยงทฤษฎีจากสไลด์บรรยาย (Lecture) ประกอบเข้ากับข้อกำหนดทางฮาร์ดแวร์จริงของบอร์ด Altera DE0 (Cyclone III EP3C16F484C6) ทุกประเด็นสำคัญมีการอ้างอิงแหล่งที่มาตามเอกสารทางการของรายวิชาอย่างเคร่งครัด\n\n---\n\n# 📑 สารบัญ\n1. [Week 2: Practice Lab Sheet 2 – Quartus II Project & FPGA Design Flow](#week-2)\n2. [Week 3: Lab 3 – Foundations & Verilog Language Basics](#week-3)\n3. [Week 4: Lab 4 – Combinational Logic Design](#week-4)\n4. [Week 5: Lab 5 – Sequential Logic Design](#week-5)\n5. [Week 6: Lab 6 – Counters & Shift Registers](#week-6)\n6. [Week 7: Lab 7 – Finite State Machine (FSM): Combination Lock System](#week-7)\n7. [Week 8: Lab 8 – Testbench Design & Functional Verification](#week-8)\n8. [ตารางสรุปภาพรวม Week 2–8](#summary-table)\n\n---\n\n<a name=\"week-2\"></a>\n# 📘 Week 2: Practice Lab Sheet 2 – Quartus II Project & FPGA Design Flow\n**เอกสารอ้างอิง:** [Week2_software installation.pdf](lec/Week2_software%20installation.pdf) และ [Practice Lab Sheet 2.pdf](lab/Practice%20Lab%20Sheet%202.pdf)\n\n### 1. วัตถุประสงค์และการเรียนรู้\n- เข้าใจขั้นตอน **FPGA Design Flow**: Design Entry $\\rightarrow$ Analysis & Synthesis $\\rightarrow$ Fitter (Place & Route) $\\rightarrow$ TimeQuest Timing Analyzer $\\rightarrow$ Assembler $\\rightarrow$ Programmer\n- รู้วิธีเลือกชิปเป้าหมายที่ถูกต้องในโปรเจกต์ Quartus II: **Altera Cyclone III `EP3C16F484C6`**\n- รู้วิธีกำหนดขาพอร์ต (Pin Assignment) ของบอร์ด DE0 ผ่าน Pin Planner และการโปรแกรมชิปด้วยสาย USB-Blaster (โหมด JTAG)\n\n### 2. คำอธิบายคำตอบและทฤษฎีประกอบ\n\n#### 2.1 สถาปัตยกรรมและอุปกรณ์บนบอร์ด Altera DE0\n- **ชิปประมวลผลหลัก (FPGA Device):** `EP3C16F484C6`\n  - มี Logic Elements (LEs) จำนวน **15,408 LEs**\n  - มีบล็อกหน่วยความจำ M9K จำนวน **56 บล็อก** (รวม 504K RAM bits)\n  - มีวงจรคูณสัญญาณในตัว (Embedded Multipliers) จำนวน **56 ตัว**\n  - มี Phase-Locked Loops (PLLs) จำนวน **4 วงจร**\n  - ตัวถังเป็นแบบ 484-pin FineLine BGA (FBGA) และความเร็วเกรด 6 (Speed Grade 6)\n  *(อ้างอิง: Week2_software installation.pdf Slide 5)*\n- **อุปกรณ์รับข้อมูลและแสดงผล (Peripherals):**\n  - สวิตช์เลื่อน (Slide Switches): `SW[9:0]` เป็น Active-High (เลื่อนขึ้น = 1, เลื่อนลง = 0)\n  - ปุ่มกด (Push Buttons): `KEY[2:0]` เป็น **Active-Low** (ไม่กด = 1, กด = 0) เพราะมีวงจร Pull-up resistor บนบอร์ด\n  - หลอดไฟ LED สีเขียว: `LEDG[9:0]` เป็น Active-High (ลอจิก 1 = ไฟติด, ลอจิก 0 = ไฟดับ)\n  - จอแสดงผล 7 ส่วน: `HEX0` ถึง `HEX3` เป็นแบบ **Common Anode (Active-Low)** ขาสัญญาณลอจิก 0 จะทำให้ segment สว่าง และลอจิก 1 จะทำให้ segment ดับ\n  - แหล่งกำเนิดสัญญาณนาฬิกา: `CLOCK_50` ความถี่ **50 MHz** (คาบเวลา $T = 20\\text{ ns}$)\n\n#### 2.2 ขั้นตอน FPGA Design Flow ใน Quartus II\n1. **Design Entry:** เขียนโค้ดวงจรด้วย Verilog HDL (`.v`) หรือ VHDL (`.vhd`) หรือสร้าง Schematic\n2. **Analysis & Synthesis:** ตรวจสอบไวยากรณ์และแปลงโค้ด Verilog ให้อยู่ในรูปของสมการตรรกะและโครงสร้างระดับเกต (Logic Synthesis)\n3. **Fitter (Place & Route):** จัดสรรสมการตรรกะลงใน Logic Elements (LEs) จริงของชิป และเชื่อมต่อเส้นทางเดินสายสัญญาณ (Routing) ตามข้อจำกัดของ Pin Assignment\n4. **TimeQuest Timing Analysis:** คำนวณความเร็วสูงสุดที่วงจรสามารถทำงานได้ ($F_{\\max}$) และตรวจเช็คเงื่อนไขเวลา Setup Time / Hold Time\n5. **Assembler:** สร้างไฟล์บิตสตรีมสำหรับโปรแกรมชิป:\n   - ไฟล์ `.sof` (SRAM Object File) สำหรับโปรแกรมลงหน่วยความจำ SRAM ของ FPGA โดยตรงผ่านโหมด JTAG (ข้อมูลจะหายเมื่อดับไฟ)\n   - ไฟล์ `.pof` (Programmer Object File) สำหรับโปรแกรมลงชิปคอนฟิกูเรชันแฟลช EPCS ผ่านโหมด Active Serial (AS)\n6. **Programmer:** ถ่ายโอนไฟล์ `.sof` ลงสู่บอร์ด DE0 ผ่านสายดาวน์โหลด USB-Blaster\n\n---\n\n<a name=\"week-3\"></a>\n# 📘 Week 3: Lab 3 – Foundations & Verilog Language Basics\n**เอกสารอ้างอิง:** [Week3_foundations and language basics.pdf](lec/Week3_foundations%20and%20language%20basics.pdf) และ [lab3.pdf](lab/lab3.pdf)\n\n### 1. วัตถุประสงค์และการเรียนรู้\n- เข้าใจโครงสร้างโมดูลและรูปแบบการเชื่อมต่อพอร์ต (Named Port Mapping vs Positional Port Mapping)\n- เข้าใจความแตกต่างระหว่าง Data Types: `wire` กับ `reg`\n- เข้าใจรูปแบบตัวเลข (Number Literals) และระดับลอจิก (`0`, `1`, `X`, `Z`)\n- การเขียนวงจร Combinational ด้วย Gate Primitives และ Continuous Assignment (`assign`)\n\n### 2. คำอธิบายคำตอบและทฤษฎีประกอบ\n\n#### 2.1 ความแตกต่างระหว่าง `wire` และ `reg`\n- **`wire` (Net Data Type):**\n  - ใช้แทนสายสัญญาณทางกายภาพที่เชื่อมต่อระหว่างเกตหรือโมดูล\n  - ไม่สามารถเก็บค่าได้ (ไม่มีหน่วยความจำ) ต้องถูกขับสัญญาณ (driven) อย่างต่อเนื่องตลอดเวลาด้วยคำสั่ง `assign` หรือต่อเข้ากับพอร์ตเอาต์พุตของ submodule\n- **`reg` (Variable Data Type):**\n  - ตัวแปรที่สามารถเก็บค่าได้ในระหว่างการจำลอง (Simulation)\n  - **ต้องได้รับค่าภายใน Procedural Block เท่านั้น** (บล็อก `always` หรือ `initial`)\n  - **ข้อควรระวังสำคัญ:** การประกาศตัวแปรเป็น `reg` **ไม่ได้แปลว่าจะต้องสังเคราะห์ได้ Flip-Flop เสมอไป** หากใช้ในบล็อก `always @(*)` ที่กำหนดค่าครบทุกเงื่อนไข คอมไพเลอร์จะสังเคราะห์เป็นวงจร Combinational ล้วน\n\n#### 2.2 การเชื่อมโยงพอร์ต (Port Mapping Styles)\n- **Positional Port Mapping:** อิงตามลำดับพอร์ต เช่น `full_adder fa1 (a, b, cin, sum, cout);`\n  - *จุดอ่อน:* หากในอนาคตมีการสลับตำแหน่งพอร์ตในโมดูลย่อย วงจรจะต่อสายผิดทันทีโดยไม่มีการแจ้งเตือน\n- **Named Port Mapping:** อิงตามชื่อพอร์ต เช่น `full_adder fa1 (.a(a), .b(b), .cin(cin), .sum(sum), .cout(cout));`\n  - *ข้อดี:* มีความปลอดภัยสูงที่สุด แม้จะเรียงลำดับสลับกันก็ยังคงเชื่อมต่อได้ถูกต้อง เป็นมาตรฐานที่แนะนำในระดับอุตสาหกรรม\n\n#### 2.3 วงจรเสียงข้างมาก (3-Input Majority Circuit) ใน Lab 3\n- สมการตรรกะ: $M = (A \\cdot B) + (B \\cdot C) + (A \\cdot C)$\n- เอาต์พุต $M$ จะเป็น 1 เมื่อมีอินพุตเป็น 1 ตั้งแต่ 2 ขาขึ้นไป (เช่น `011`, `101`, `110`, `111`)\n- ใน Verilog เขียนได้ด้วยคำสั่ง Dataflow: `assign M = (A & B) | (B & C) | (A & C);`\n\n---\n\n<a name=\"week-4\"></a>\n# 📘 Week 4: Lab 4 – Combinational Logic Design\n**เอกสารอ้างอิง:** [Week4_Combinational_Design.pdf](lec/Week4_Combinational_Design.pdf) และ [lab 4.pdf](lab/lab%204.pdf)\n\n### 1. วัตถุประสงค์และการเรียนรู้\n- ออกแบบวงจร Combinational ขั้นสูง: Multiplexer, Decoder, ALU ขนาด 4 บิต และ BCD to 7-Segment Decoder\n- เข้าใจการทำงานของบล็อก `always @(*)` และคำสั่ง `case`, `if-else`\n- เข้าใจสาเหตุ กลไก และวิธีการป้องกันปัญหา **Inferred Latch**\n\n### 2. คำอธิบายคำตอบและทฤษฎีประกอบ\n\n#### 2.1 ปัญหา Inferred Latch (กลไก สาเหตุ และผลกระทบ)\n- **สาเหตุ:** เกิดขึ้นเมื่อมีการใช้บล็อก `always @(*)` เพื่อสร้างวงจร Combinational แต่เขียนเงื่อนไขไม่ครอบคลุม เช่น:\n  - คำสั่ง `if` ที่ไม่มีคู่ `else`\n  - คำสั่ง `case` ที่แจกแจงกรณีไม่ครบทุกค่าของตัวแปรเลือก และไม่มีเงื่อนไข `default:`\n- **ผลกระทบ:** เมื่ออินพุตตกอยู่ในกรณีที่ไม่ได้ระบุไว้ ตัวแปรนั้นจะต้อง \"จดจำค่าเดิม\" ไว้ ซึ่งทำให้ Quartus สังเคราะห์แลตช์ (Level-Sensitive Latch) ขึ้นมาโดยไม่ได้ตั้งใจ ส่งผลให้เกิด Glitch, วงจรทำงานช้าลง และเกิดปัญหา Timing Violation\n- **วิธีแก้ไขมาตรฐาน:**\n  1. กำหนดค่าเริ่มต้น (Default Assignment) ไว้ที่บรรทัดแรกสุดของบล็อก `always @(*)` ก่อนเริ่มคำสั่งเงื่อนไข\n  2. ใส่ `else` เสมอในทุกบล็อก `if`\n  3. ใส่ `default:` เสมอในทุกคำสั่ง `case`\n\n#### 2.2 วงจรถอดรหัส 7-Segment Display (`HEX`)\n- วงจร 7 ส่วนบนบอร์ด DE0 เป็นแบบ Common Anode มี 7 ส่วนย่อยเรียงจาก `a` ถึง `g` (บิต 0 ถึง 6)\n- **การทำงานแบบ Active-Low:**\n  - ตัวเลข `0`: ต้องให้ส่วน `a, b, c, d, e, f` ติด และ `g` ดับ $\\rightarrow$ รหัสบิตคือ `7'b1000000` (`7'h40`)\n  - ตัวเลข `8`: ต้องให้ติดครบทุกส่วน $\\rightarrow$ รหัสบิตคือ `7'b0000000` (`7'h00`)\n  - ดับทุกส่วน: รหัสบิตคือ `7'b1111111` (`7'h7F`)\n\n---\n\n<a name=\"week-5\"></a>\n# 📘 Week 5: Lab 5 – Sequential Logic Design\n**เอกสารอ้างอิง:** [Week5_sequential_logic.pdf](lec/Week5_sequential_logic.pdf) และ [lab 5.pdf](lab/lab%205.pdf)\n\n### 1. วัตถุประสงค์และการเรียนรู้\n- เข้าใจความแตกต่างระหว่าง Level-Sensitive Latch กับ Edge-Triggered Flip-Flop\n- รู้วิธีเขียน D Flip-Flop พร้อมระบบ Asynchronous Reset และ Synchronous Reset\n- เข้าใจและปฏิบัติตาม **กฎเหล็กของการกำหนดค่า (Assignment Rules)** เพื่อป้องกัน Race Condition\n\n### 2. คำอธิบายคำตอบและทฤษฎีประกอบ\n\n#### 2.1 Asynchronous Reset เทียบกับ Synchronous Reset\n- **Active-Low Asynchronous Reset:**\n  ```verilog\n  always @(posedge clk or negedge rst_n) begin\n      if (!rst_n)\n          q <= 1'b0; // ทำงานทันทีที่ rst_n ตกเป็น 0 โดยไม่ต้องรอจังหวะ clock\n      else\n          q <= d;\n  end\n  ```\n  สัญญาณ `rst_n` ปรากฏอยู่ใน Sensitivity List ทำให้มีลำดับความสำคัญสูงสุด สามารถเคลียร์สถานะวงจรได้ทันทีแม้สัญญาณนาฬิกาจะหยุดทำงาน\n- **Synchronous Reset:**\n  ```verilog\n  always @(posedge clk) begin\n      if (!rst_n)\n          q <= 1'b0; // ต้องรอจนกว่าจะถึงขอบขาขึ้นของ clk ก่อนจึงจะรีเซ็ต\n      else\n          q <= d;\n  end\n  ```\n  สัญญาณ `rst_n` ไม่ได้อยู่ใน Sensitivity List วงจรจะตอบสนองต่อการรีเซ็ตที่ขอบขาขึ้นของ clock เท่านั้น ช่วยกรองสัญญาณรบกวน (Glitch) บนสายรีเซ็ตได้ดี\n\n#### 2.2 กฎทองคำของ Blocking (`=`) และ Non-blocking (`<=`)\n1. **ใน Sequential Always Block (`@(posedge clk)`):** ให้ใช้ **Non-blocking Assignment (`<=`)** เสมอ\n   - *เหตุผล:* สัญญาณ Non-blocking ทั้งหมดใน time-step เดียวกันจะถูกคำนวณค่าฝั่งขวามือพร้อมกัน แล้วอัปเดตลงตัวแปรฝั่งซ้ายมือพร้อมกันในเฟส NBA (Non-Blocking Assignment) ของ Simulator ทำให้จำลองพฤติกรรมการทำงานขนานของ Flip-Flop จริงได้อย่างถูกต้อง ป้องกันปัญหา Race Condition\n2. **ใน Combinational Always Block (`@(*)`):** ให้ใช้ **Blocking Assignment (`=`)**\n   - *เหตุผล:* เพื่อให้คำสั่งถูกประเมินผลตามลำดับบรรทัดบนลงล่างเช่นเดียวกับเกตตรรกะที่ต่ออนุกรมกัน\n3. **ข้อห้ามเด็ดขาด:**\n   - ห้ามใช้ `=` และ `<=` ปะปนกันภายใน `always` บล็อกเดียวกัน\n   - ห้ามกำหนดค่าตัวแปรตัวเดียวกันจากหลายๆ `always` บล็อก (เกิด Multiple Drivers)\n\n---\n\n<a name=\"week-6\"></a>\n# 📘 Week 6: Lab 6 – Counters & Shift Registers\n**เอกสารอ้างอิง:** [Week6_Counters_ShiftRegisters.pdf](lec/Week6_Counters_ShiftRegisters.pdf) และ [Lab6.pdf](lab/Lab6.pdf)\n\n### 1. วัตถุประสงค์และการเรียนรู้\n- คำนวณและออกแบบวงจรหารความถี่ (Clock Divider / Frequency Divider)\n- ออกแบบวงจรนับแบบขึ้น/ลง (Up/Down Mod-N Counter)\n- ออกแบบวงจรเลื่อนข้อมูล (Universal Shift Register) และการควบคุมไฟวิ่ง (Running LED)\n\n### 2. คำอธิบายคำตอบและทฤษฎีประกอบ\n\n#### 2.1 การคำนวณวงจรหารความถี่ (Clock Divider)\n- แหล่งกำเนิดสัญญาณนาฬิกาบนบอร์ด DE0: `CLOCK_50` ความถี่ $f_{\\text{in}} = 50\\text{ MHz} = 50,000,000\\text{ Hz}$\n- ต้องการสร้างสัญญาณพัลส์ความถี่ $f_{\\text{out}} = 1\\text{ Hz}$ (คาบเวลา 1 วินาที):\n  $$\\text{จำนวนรอบที่ต้องนับ} = \\frac{f_{\\text{in}}}{f_{\\text{out}}} = \\frac{50,000,000}{1} = 50,000,000\\text{ รอบ}$$\n- เนื่องจากตัวนับเริ่มนับจาก 0 ค่าสูงสุดที่ต้องเปรียบเทียบคือ:\n  $$\\text{Terminal Count} = 50,000,000 - 1 = 49,999,999$$\n- จำนวนบิตของ Register ที่ต้องใช้:\n  $$2^B > 49,999,999 \\implies B = \\lceil \\log_2 50,000,000 \\rceil = 26\\text{ บิต}$$\n  (เนื่องจาก $2^{25} = 33,554,432$ ไม่เพียงพอ ส่วน $2^{26} = 67,108,864$ รองรับได้)\n\n#### 2.2 วงจรเลื่อนข้อมูล (Shift Register) ในการทำไฟวิ่ง\n- การเลื่อนบิตไปทางซ้าย (Shift Left):\n  `led <= {led[6:0], led[7]};` (นำบิตสูงสุดวนกลับมาต่อที่บิตต่ำสุด เป็น Ring Counter)\n- การเลื่อนบิตไปทางขวา (Shift Right):\n  `led <= {led[0], led[7:1]};` (นำบิตต่ำสุดวนกลับมาต่อที่บิตสูงสุด)\n- การใช้ Tick Enable: แทนที่จะนำสัญญาณ 1 Hz ไปต่อเป็น Clock ของ Flip-Flop โดยตรง (ซึ่งเป็นการสร้าง Asynchronous Clock Domain ที่ไม่ปลอดภัย) ให้ใช้ `CLOCK_50` เป็น Clock หลักเสมอ แล้วใช้พัลส์ 1 Hz เป็นสัญญาณ Enable:\n  ```verilog\n  always @(posedge clk or negedge rst_n) begin\n      if (!rst_n)\n          led <= 8'b00000001;\n      else if (tick_1hz && !pause) begin\n          if (dir) led <= {led[6:0], led[7]};\n          else     led <= {led[0], led[7:1]};\n      end\n  end\n  ```\n\n---\n\n<a name=\"week-7\"></a>\n# 📘 Week 7: Lab 7 – Finite State Machine (FSM): Combination Lock System\n**เอกสารอ้างอิง:** [Week7_FSM.pdf](lec/Week7_FSM.pdf) และ [Lab7.pdf](lab/Lab7.pdf)\n\n### 1. วัตถุประสงค์และการเรียนรู้\n- เข้าใจทฤษฎี FSM และความแตกต่างระหว่าง **Moore FSM** กับ **Mealy FSM**\n- โครงสร้างการเขียนโค้ด **Moore 3-Always-Block Style**\n- การพัฒนาวงจรตรวจจับขอบสัญญาณ (Edge Detector) สำหรับปุ่มกดเชิงกล\n- การพัฒนาระบบกลอนประตูดิจิทัล (Combination Lock System) รหัส 3 หลัก พร้อมระบบรักษาความปลอดภัยหน่วงเวลาและล็อกระบบ\n\n### 2. คำอธิบายคำตอบและทฤษฎีประกอบ\n\n#### 2.1 การเปรียบเทียบ Moore vs Mealy FSM\n| หัวข้อ | Moore FSM | Mealy FSM |\n| :--- | :--- | :--- |\n| **Output Logic** | ขึ้นกับ **Current State** เท่านั้น | ขึ้นกับ **Current State** และ **Current Input** |\n| **ความเสี่ยง Glitch** | **ไม่มี Glitch** ปลอดภัยสูง | **เสี่ยงเกิด Glitch** หากอินพุตมีสัญญาณรบกวน |\n| **ความเร็วตอบสนอง** | ช้ากว่า 1 clock cycle | ตอบสนองได้ทันทีใน cycle เดียวกัน |\n| **โครงสร้าง Verilog** | นิยมใช้ **3 Always Blocks** | นิยมใช้ **2 Always Blocks** |\n\n#### 2.2 วงจรตรวจจับขอบขาลง (Falling-Edge Detector)\n- ปุ่มกด `KEY[1]` บนบอร์ด DE0 เป็นแบบ Active-Low เมื่อกดปุ่ม สัญญาณจะเปลี่ยนจาก `1` เป็น `0` (Falling Edge)\n- โค้ดในโมดูล `edge_detector.v`:\n  ```verilog\n  always @(posedge clk or negedge rst_n) begin\n      if (!rst_n) begin\n          r1 <= 1'b1; r2 <= 1'b1;\n      end else begin\n          r1 <= key_in; // เก็บสถานะรอบปัจจุบัน\n          r2 <= r1;     // เก็บสถานะรอบก่อนหน้า (หน่วง 1 cycle)\n      end\n  end\n  assign pulse_out = r2 & ~r1; // เป็น 1 รอบเดียวตอนที่สัญญาณเพิ่งเปลี่ยนจาก 1 -> 0\n  ```\n\n#### 2.3 การทำงานของสถานะใน Combination Lock FSM\n- รหัสผ่านที่กำหนด: `PW0 = 3`, `PW1 = 7`, `PW2 = 1`\n1. `IDLE`: รอรับรหัสตัวแรก หากกด Enter แล้วค่าตรง `PW0` จะไป `D1_OK` หากผิดไป `WRONG`\n2. `D1_OK`: รอรับรหัสตัวที่สอง หากตรง `PW1` ไป `D2_OK` หากผิดไป `WRONG`\n3. `D2_OK`: รอรับรหัสตัวที่สาม หากตรง `PW2` ไป `UNLOCKED` หากผิดไป `WRONG`\n4. `UNLOCKED`: สัญญาณ `unlocked = 1` ประตูเปิด หน่วงเวลาด้วย `unlock_timer` ครบ 5 วินาทีแล้ว Auto-lock กลับสู่ `IDLE`\n5. `WRONG`: เพิ่มตัวนับ `attempt_cnt` ขึ้น 1 หน่วงเวลาแสดงสถานะ 1 วินาที หาก `attempt_cnt >= 3` จะเข้าสู่ `LOCKOUT` มิฉะนั้นกลับสู่ `IDLE` ให้ลองใหม่\n6. `LOCKOUT`: ล็อกระบบ 10 วินาที ไฟเตือน `alarm = 10'h3FF` (LEDR ติดทุกดวง) และแสดงตัวเลขนับถอยหลัง $10 \\rightarrow 0$ บน HEX0 ก่อนจะปลดล็อกให้กลับไป `IDLE`\n\n---\n\n<a name=\"week-8\"></a>\n# 📘 Week 8: Lab 8 – Testbench Design & Functional Verification\n**เอกสารอ้างอิง:** [Week8.pdf](lec/Week8.pdf) และ [Lab8.pdf](lab/Lab8.pdf)\n\n### 1. วัตถุประสงค์และการเรียนรู้\n- ออกแบบ **Self-Checking Testbench** ที่ตัดสินผล `[PASS]` / `[FAIL]` อัตโนมัติ\n- ป้องกันปัญหา **Race Condition** ใน Testbench ด้วยการหน่วงเวลา `#1;`\n- ใช้ตัวดำเนินการ **Case Equality (`===` และ `!==`)** เพื่อตรวจจับสถานะ `X` และ `Z`\n- เข้าใจความแตกต่างระหว่าง 3 ระดับการจำลอง: **RTL**, **Post-Synthesis**, และ **Post-Implementation (Timing)**\n\n### 2. คำอธิบายคำตอบและทฤษฎีประกอบ\n\n#### 2.1 การป้องกัน Race Condition ด้วย `#1;` ใน Testbench\n- ภายในวงจร DUT สัญญาณเอาต์พุตจาก Flip-Flop ถูกอัปเดตด้วยคำสั่ง Non-blocking assignment (`<=`) ซึ่งจะเกิดขึ้นในคิวเฟส NBA (Non-Blocking Assignment region)\n- หากใน Testbench เราเขียนคำสั่งตรวจสอบค่าทันทีที่ `@(posedge clk);` คำสั่งเปรียบเทียบจะทำงานใน Active region ของเวลาเดียวกัน ทำให้อ่านได้ \"ค่าเดิมก่อนอัปเดต\" ส่งผลให้รายงานผล `[FAIL]` ผิดพลาด\n- **วิธีแก้:** ต้องใส่การหน่วงเวลาสั้นๆ `#1;` หลังขอบขา clock เช่น `@(posedge clk); #1; check_count(...);` เพื่อให้สัญญาณใน DUT settle สมบูรณ์ก่อนอ่านค่า\n\n#### 2.2 ทำไมต้องใช้ `===` และ `!==` ใน Testbench?\n- ตัวดำเนินการเปรียบเทียบมาตรฐาน `==` และ `!=` หากมีบิตใดบิตหนึ่งเป็น `X` (Unknown) หรือ `Z` (High-Impedance) ผลลัพธ์ที่ได้จะเป็น `X` ซึ่งในเงื่อนไข `if` จะถือว่าเป็นเท็จ ทำให้ไม่สามารถตรวจจับความผิดปกติที่เกิดจากเกตที่ไม่มีสัญญาณขับหรือลืมรีเซ็ตได้\n- ตัวดำเนินการ **Case Equality (`===` และ `!==`)** สามารถเปรียบเทียบได้ครบทั้ง 4 ระดับสถานะ (`0`, `1`, `X`, `Z`) อย่างแม่นยำ หากเอาต์พุตหลุดค่า `X` ออกมา ตัวดำเนินการ `!==` จะตรวจพบและแจ้งเตือนทันที\n\n#### 2.3 ระดับของการทำ Simulation\n1. **RTL Simulation (Functional Simulation):** จำลองโค้ดโดยตรง แบบ Zero-delay รันเร็วที่สุด แต่ไม่เห็นผลกระทบของ Gate delay, Glitch, และปัญหา Inferred Latch\n2. **Post-Synthesis Simulation:** จำลองโครงสร้าง Netlist ของเกตจริงที่ได้หลังคอมไพล์ ช่วยตรวจจับ Inferred Latch และโค้ดส่วนที่ถูกตัดทิ้ง (Dead Logic)\n3. **Post-Implementation / Post-Fit Timing Simulation:** ดึงค่าความหน่วงเวลาจริงจากชิป (รวม Wire Routing Delay) ผ่านไฟล์ SDF จำลองเสมือนฮาร์ดแวร์จริงที่สุด ช่วยตรวจจับ Glitch และปัญหา Setup/Hold Violation ร่วมกับ TimeQuest\n\n---\n\n<a name=\"summary-table\"></a>\n# 📊 ตารางสรุปภาพรวมความเชื่อมโยง Week 2 ถึง Week 8\n\n| สัปดาห์ | หัวข้อ Lecture | หัวข้อ Lab | แนวคิดหลักที่เชื่อมโยงกันอย่างเป็นระบบ |\n| :---: | :--- | :--- | :--- |\n| **Week 2** | **Quartus II Installation & Design Flow** | **Practice Lab Sheet 2:** Project Setup & DE0 Configuration | การแปลงแนวคิดสู่ฮาร์ดแวร์ผ่าน FPGA Flow, การเลือกชิป `EP3C16F484C6`, การกำหนดขา Pin Planner, และการโปรแกรมบอร์ด DE0 |\n| **Week 3** | **Foundations & Language Basics** | **Lab 3:** Basic Gates & Structural/Dataflow Design | โครงสร้างโมดูล, Named vs Positional mapping, Data types (`wire` vs `reg`), Gate primitives, และ Continuous Assignment (`assign`) |\n| **Week 4** | **Combinational Logic Design** | **Lab 4:** Multiplexer, Decoder, ALU & 7-Segment | วงจรไร้หน่วยความจำ, `case`/`if-else` ใน `always @(*)`, การป้องกัน **Inferred Latch**, และการขับจอแสดงผล 7-Segment แบบ Active-Low |\n| **Week 5** | **Sequential Logic Design** | **Lab 5:** Latches, Flip-Flops & Clocked Registers | วงจรหน่วยความจำตามสัญญาณนาฬิกา, Async vs Sync Reset, และกฎเหล็ก **Non-blocking Assignment (`<=`)** เพื่อป้องกัน Race Condition |\n| **Week 6** | **Counters and Shift Registers** | **Lab 6:** Mod-N Counters, Clock Divider & Running LED | วงจรนับเชิงเวลา: การหารความถี่ 50 MHz เป็น 1 Hz (นับ 0 ถึง 49,999,999 ใช้ 26 บิต), Up/Down Counter, และ Shift Register ทำไฟวิ่ง |\n| **Week 7** | **Finite State Machine (FSM) Design** | **Lab 7:** Combination Lock System (Moore FSM) | การควบคุมเชิงลำดับ: สถาปัตยกรรม **Moore 3-Always-Block**, State Encoding (Binary vs One-hot), และวงจรตรวจจับขอบขาปุ่มกด (Edge Detector) |\n| **Week 8** | **Testbench Design & Verification** | **Lab 8:** Self-Checking TB for Counter & FSM | การตรวจสอบอัตโนมัติ (Simulation-only): โครงสร้าง Testbench 4 ส่วน, การหน่วงเวลา `#1` ป้องกัน Race condition, ระดับการซิม, และ Functional Coverage |\n";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            marked.setOptions({
+                highlight: function(code, lang) {
+                    const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+                    return hljs.highlight(code, { language }).value;
+                },
+                gfm: true,
+                breaks: true
+            });
+
+            const html = marked.parse(rawMarkdown);
+            document.getElementById('content').innerHTML = html;
+            hljs.highlightAll();
+        });
+    </script>
+</body>
+</html>
